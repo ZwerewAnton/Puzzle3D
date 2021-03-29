@@ -124,7 +124,55 @@ public class ObjectMagnet : MonoBehaviour
         _isInstantiate = false;
         if (_isConnect)
         {
-            _installedDetails.Add(_instObject.GetComponent<Detail>());
+            if(_installedDetails.Count != 0)
+            {
+                
+                for (int i = 0; i < _installedDetails.Count; i++)
+                {
+                    Detail installedDetail = _installedDetails[i];
+                    Detail instObjectDetail = _instObject.GetComponent<Detail>();
+                    if(instObjectDetail == installedDetail)
+                    {
+                        Transform transform = _instObject.GetComponent<Transform>();
+                        foreach(PointParentConnector pointParConn in installedDetail.points)
+                        {
+                            //TODO Is it a enough check?
+                            if(transform.position == pointParConn.point.Position &&
+                                transform.rotation.eulerAngles == pointParConn.point.Rotation)
+                                {
+                                    pointParConn.Install();
+                                }
+                        }
+                    }
+                    else
+                    {
+                        _installedDetails.Add(_instObject.GetComponent<Detail>());
+                    }
+                }
+                /*
+                foreach(Detail installedDetail in _installedDetails)
+                {
+                    Detail instObjectDetail = _instObject.GetComponent<Detail>();
+                    if(instObjectDetail == installedDetail)
+                    {
+                        Transform transform = _instObject.GetComponent<Transform>();
+                        foreach(PointParentConnector pointParConn in installedDetail.points)
+                        {
+                            //TODO Is it a enough check?
+                            if(transform.position == pointParConn.point.Position &&
+                                transform.rotation.eulerAngles == pointParConn.point.Rotation)
+                                {
+                                    pointParConn.Install();
+                                }
+                        }
+                    }
+                    else
+                    {
+                        _installedDetails.Add(_instObject.GetComponent<Detail>());
+                    }
+                }
+                */
+            }
             meshRenderer.material = _mainMaterial;
             target = null;
             return true;
@@ -163,6 +211,7 @@ public class ObjectMagnet : MonoBehaviour
     //TODO Add a camera transform position
     private void TransformPosition(Vector3 targetPosition, Vector3 mousePosition, float distance)
     {
+        //Хрень
         Vector3 bestPoint = Vector3.zero, bestRotation = Vector3.zero;
         Vector3 Yposition = Vector3.zero;
         float tempDist = Single.MaxValue, dist = 0;

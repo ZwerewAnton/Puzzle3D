@@ -6,10 +6,10 @@ using UnityEngine;
 [Serializable]
 public class Detail : MonoBehaviour
 {
+    #if UNITY_EDITOR
     public List<bool> showPointList = new List<bool>();  
-    public List<bool> showParentDetailList = new List<bool>();  
-    public List<bool> showParentPointList = new List<bool>();  
     public List<bool> showParentsList = new List<bool>();  
+    #endif
 
     public float count = 1;
     public GameObject _prefab;
@@ -22,6 +22,7 @@ public class Detail : MonoBehaviour
     {
         
         _count = count;
+        Debug.Log(_count);
     }
     //TODO Make a integer field in inspector
     

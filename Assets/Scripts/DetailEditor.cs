@@ -21,8 +21,6 @@ public class DetailEditor : Editor
         Detail detail = (Detail) target;
         showPointList = detail.showPointList;
         showParentsList = detail.showParentsList;
-        showParentDetailList = detail.showParentDetailList;
-        showParentPointList = detail.showParentPointList;
 
 
         DrawParameters(detail);
@@ -43,22 +41,27 @@ public class DetailEditor : Editor
 
             if(pointParentConnectorList.Count != pointParentConnectorSize)
             {
-                while(pointParentConnectorSize > showPointList.Count)
-                {
-                    showPointList.Add(false);
-                    showParentsList.Add(false);
-                }
                 while(pointParentConnectorSize > pointParentConnectorList.Count)
                 {
                     pointParentConnectorList.Add(null);
                 }
                 while(pointParentConnectorSize < pointParentConnectorList.Count)
                 {
-                    showPointList.RemoveAt(showPointList.Count - 1);
-                    showParentsList.RemoveAt(showParentsList.Count - 1);
                     pointParentConnectorList.RemoveAt(pointParentConnectorList.Count - 1);
                 }
-                
+            }
+            if(pointParentConnectorSize != showPointList.Count)
+            {
+                while(pointParentConnectorSize > showPointList.Count)
+                {
+                    showPointList.Add(false);
+                    showParentsList.Add(false);
+                }
+                while(pointParentConnectorSize < showPointList.Count)
+                {
+                    showPointList.RemoveAt(showPointList.Count - 1);
+                    showParentsList.RemoveAt(showParentsList.Count - 1);
+                }
             }
 
             serializedObject.Update();
@@ -68,7 +71,8 @@ public class DetailEditor : Editor
                 SerializedProperty parentListSP = pointsListSP.GetArrayElementAtIndex(i).FindPropertyRelative("parentList");
 
                 showPointList[i] = EditorGUILayout.Foldout(showPointList[i],new GUIContent("Point " + (i).ToString()), true);
-                if(showPointList[i]){   
+                if(showPointList[i])
+                {   
                     
                     EditorGUI.indentLevel++;
                     EditorGUI.BeginChangeCheck();
@@ -92,24 +96,31 @@ public class DetailEditor : Editor
                     {
                         EditorGUI.indentLevel++;
                         EditorGUI.BeginChangeCheck();
+                        showParentDetailList = detail.points[i].showParentDetailList;
                         int parentListSize = Mathf.Max(0, EditorGUILayout.IntField("Size", pointParentConnectorList[i].parentList.Count));
                         if( EditorGUI.EndChangeCheck() ) {
                             EditorUtility.SetDirty(target);
                         }
                         if(pointParentConnectorList[i].parentList.Count != parentListSize){
-                            while(pointParentConnectorList[i].parentList.Count > showParentDetailList.Count)
-                            {
-                                showParentDetailList.Add(false);
-                            }
+
                             while(parentListSize > pointParentConnectorList[i].parentList.Count)
                             {
-                                showParentDetailList.Add(false);
                                 pointParentConnectorList[i].parentList.Add(null);
                             }
                             while(parentListSize < pointParentConnectorList[i].parentList.Count)
                             {
-                                showParentDetailList.RemoveAt(pointParentConnectorList[i].parentList.Count - 1);
                                 pointParentConnectorList[i].parentList.RemoveAt(pointParentConnectorList[i].parentList.Count - 1);
+                            }
+                        }
+                        if(parentListSize != showParentDetailList.Count)
+                        {
+                            while(parentListSize > showParentDetailList.Count)
+                            {
+                                showParentDetailList.Add(false);
+                            }
+                            while(parentListSize < showParentDetailList.Count)
+                            {
+                                showParentDetailList.RemoveAt(pointParentConnectorList[i].parentList.Count - 1);
                             }
                         }
                         serializedObject.Update();
@@ -121,13 +132,15 @@ public class DetailEditor : Editor
                             showParentDetailList[j] = EditorGUILayout.Foldout(showParentDetailList[j], new GUIContent("Parent Detail Points " + (j).ToString()), true);
                             if(showParentDetailList[j])
                             { 
-                                EditorGUI.indentLevel++;                              
+                                EditorGUI.indentLevel++;                           
                                 //EditorGUI.BeginChangeCheck();
                                 EditorGUILayout.PropertyField(parentDetailSP, new UnityEngine.GUIContent("Parent" + "_" + (j).ToString()), true);
                                 Detail ob = parentDetailSP.objectReferenceValue as Detail;
                                 if(ob != null && ob.points != null)
                                 {
-                                    EditorGUI.BeginChangeCheck();
+                                    EditorGUI.BeginChangeCheck(); 
+                                    
+                                    showParentPointList = detail.points[i].parentList[j].showParentPointList;   
                                     List<Point> thisParentPointList = detail.points[i].parentList[j].parentPointList;
                                     List<bool> checkToogleList = detail.points[i].parentList[j].checkToogleList;
                                     int parentPointListSize = ob.points.Count;
@@ -157,7 +170,7 @@ public class DetailEditor : Editor
                                             //SerializedProperty parentPointPositionSP = parentPointListSP.GetArrayElementAtIndex(k).FindPropertyRelative("Position");
                                             //SerializedProperty parentPointRotationSP = parentPointListSP.GetArrayElementAtIndex(k).FindPropertyRelative("Rotation");
 
-                                            showParentPointList[k] = EditorGUILayout.Foldout(showParentPointList[k], ("\"" + parentDetailSP.objectReferenceValue.name + "\"" + " point " + k.ToString()), true);
+                                            showParentPointList[k] = EditorGUILayout.Foldout(showParentPointList[k], ("\"" + ob.gameObject.name + "\"" + " point " + k.ToString()), true);
                                             if(showParentPointList[k])
                                             {  
                                                 EditorGUI.BeginChangeCheck();
@@ -196,17 +209,20 @@ public class DetailEditor : Editor
                                         }
                                         EditorGUI.indentLevel--;
                                     }
+                                
+                                }
                                 EditorGUI.indentLevel--;
                             }
+                        
                         }
                         EditorGUI.indentLevel--;
                     }
                     EditorGUI.indentLevel--;
                 }
-            }   
-            EditorGUI.indentLevel--;
+            } 
+            EditorGUI.indentLevel--;  
         }
-        }
+        
         serializedObject.ApplyModifiedProperties();
     }
 

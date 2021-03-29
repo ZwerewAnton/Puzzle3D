@@ -88,7 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8192893042400228190}
-  - component: {fileID: 6748519800578715445}
+  - component: {fileID: -2926157498257615711}
   m_Layer: 0
   m_Name: 06_backwall
   m_TagString: Untagged
@@ -111,7 +111,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6748519800578715445
+--- !u!114 &-2926157498257615711
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,15 +120,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 8861061501767166436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22fe0a9e3c4a4686a3e578db4b24ae88, type: 3}
+  m_Script: {fileID: 11500000, guid: bdabf2c9950e2414ca76ece2b6dd22b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _count: 1
+  showPointList: 00
+  showParentsList: 01
+  count: 1
   _prefab: {fileID: 8861061501767166436}
-  icon: {fileID: -3608423769239708510, guid: 24bed07e49c32f246a212d0e283beb6d, type: 3}
+  icon: {fileID: 4692581371930257257, guid: 24bed07e49c32f246a212d0e283beb6d, type: 3}
   points:
-  - Position: {x: 0.8, y: 5.65, z: 3.4}
-    Rotation: {x: 0, y: 0, z: 0}
-    BaseList:
-    - {fileID: 3561702018009717145, guid: 972fd0714ce8d97438d11c6fc3aa7b2c, type: 3}
-    BaseList1: []
+  - showParentDetailList: 
+    point:
+      Position: {x: 0.8, y: 5.65, z: 3.4}
+      Rotation: {x: -0, y: -0, z: -0}
+    parentList:
+    - checkToogleList: 01
+      showParentPointList: 
+      parentDetail: {fileID: 7497595355432918353, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+        type: 3}
+      parentPointList:
+      - Position: {x: 0, y: 0, z: 0}
+        Rotation: {x: 0, y: 0, z: 0}

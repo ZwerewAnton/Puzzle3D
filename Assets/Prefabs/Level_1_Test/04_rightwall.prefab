@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3256720976999102894}
-  - component: {fileID: 3339037258575379613}
+  - component: {fileID: -3010759309813145039}
   m_Layer: 0
   m_Name: 04_rightwall
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3339037258575379613
+--- !u!114 &-3010759309813145039
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,18 +41,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 2772496453772796692}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22fe0a9e3c4a4686a3e578db4b24ae88, type: 3}
+  m_Script: {fileID: 11500000, guid: bdabf2c9950e2414ca76ece2b6dd22b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _count: 1
-  _prefab: {fileID: 2772496453772796692}
-  icon: {fileID: 745625226178756884, guid: 73ea8edad4993174e889ff423f891108, type: 3}
+  showPointList: 01
+  showParentDetailList: 01
+  showParentPointList: 01
+  showParentsList: 01
+  count: 1
+  _prefab: {fileID: 5291858792870022000, guid: 9c257b3cc9aad8941bac37c189f9d19c, type: 3}
+  icon: {fileID: -2293559303108314877, guid: a6e755c5808ed894aa521ab324706540, type: 3}
   points:
-  - Position: {x: 4.1, y: 5.65, z: -0.15}
-    Rotation: {x: 0, y: 0, z: 0}
-    BaseList:
-    - {fileID: 3561702018009717145, guid: 972fd0714ce8d97438d11c6fc3aa7b2c, type: 3}
-    BaseList1: []
+  - point:
+      Position: {x: 4.1, y: 5.65, z: -0.15}
+      Rotation: {x: -0, y: -0, z: -0}
+    parentList:
+    - checkToogleList: 01
+      parentDetail: {fileID: 7497595355432918353, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+        type: 3}
+      parentPointList:
+      - Position: {x: 0, y: 0, z: 0}
+        Rotation: {x: 0, y: 0, z: 0}
 --- !u!1 &6625966261891963853
 GameObject:
   m_ObjectHideFlags: 0

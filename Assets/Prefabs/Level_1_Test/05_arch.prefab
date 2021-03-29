@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 621111851351442936}
-  - component: {fileID: 4757315295239558803}
+  - component: {fileID: -8516924141718755286}
   m_Layer: 0
   m_Name: 05_arch
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4757315295239558803
+--- !u!114 &-8516924141718755286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,18 +41,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 276251595243970370}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22fe0a9e3c4a4686a3e578db4b24ae88, type: 3}
+  m_Script: {fileID: 11500000, guid: bdabf2c9950e2414ca76ece2b6dd22b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _count: 1
+  showPointList: 01
+  showParentDetailList: 01
+  showParentPointList: 01
+  showParentsList: 01
+  count: 1
   _prefab: {fileID: 276251595243970370}
   icon: {fileID: 3874062672193952588, guid: f2820f713b0b6ff4a9178d686e823561, type: 3}
   points:
-  - Position: {x: 0.85, y: 4.9, z: -3.55}
-    Rotation: {x: 0, y: 0, z: 0}
-    BaseList:
-    - {fileID: 1499857944277830563, guid: cef5f2616deeb6245a6f2fd9aabe8a75, type: 3}
-    BaseList1: []
+  - point:
+      Position: {x: 0.85, y: 4.9, z: -3.55}
+      Rotation: {x: -0, y: -0, z: -0}
+    parentList:
+    - checkToogleList: 01
+      parentDetail: {fileID: 7438673893920066003, guid: cef5f2616deeb6245a6f2fd9aabe8a75,
+        type: 3}
+      parentPointList:
+      - Position: {x: 0.85, y: 5.65, z: -3.35}
+        Rotation: {x: -0, y: -0, z: -0}
 --- !u!1 &9104231967419115419
 GameObject:
   m_ObjectHideFlags: 0

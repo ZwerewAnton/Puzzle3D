@@ -123,23 +123,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdabf2c9950e2414ca76ece2b6dd22b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showPointList: 010101
+  showPointList: 01
   showParentDetailList: 
   showParentPointList: 
-  showParentsList: 000100
+  showParentsList: 00
   count: 1
   _prefab: {fileID: 5291858792870022000}
   icon: {fileID: 0}
   points:
   - point:
       Position: {x: 0, y: 0, z: 0}
-      Rotation: {x: 0, y: 0, z: 0}
-    parentList: []
-  - point:
-      Position: {x: 2, y: 2, z: 2}
-      Rotation: {x: -0, y: -0, z: -0}
-    parentList: []
-  - point:
-      Position: {x: 1, y: 1, z: 44}
       Rotation: {x: 0, y: 0, z: 0}
     parentList: []
