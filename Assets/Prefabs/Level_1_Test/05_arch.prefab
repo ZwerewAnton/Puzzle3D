@@ -45,19 +45,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showPointList: 01
-  showParentDetailList: 01
-  showParentPointList: 01
   showParentsList: 01
   count: 1
   _prefab: {fileID: 276251595243970370}
   icon: {fileID: 3874062672193952588, guid: f2820f713b0b6ff4a9178d686e823561, type: 3}
   points:
-  - point:
+  - showParentDetailList: 01
+    point:
       Position: {x: 0.85, y: 4.9, z: -3.55}
       Rotation: {x: -0, y: -0, z: -0}
     parentList:
-    - checkToogleList: 01
-      parentDetail: {fileID: 7438673893920066003, guid: cef5f2616deeb6245a6f2fd9aabe8a75,
+    - checkToogleList: 0100
+      showParentPointList: 01
+      parentDetail: {fileID: 8076848352520528009, guid: cef5f2616deeb6245a6f2fd9aabe8a75,
         type: 3}
       parentPointList:
       - Position: {x: 0.85, y: 5.65, z: -3.35}
@@ -117,6 +117,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -141,3 +142,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

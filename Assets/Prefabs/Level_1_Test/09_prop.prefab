@@ -55,6 +55,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -79,6 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5442263602904640269
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,8 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdabf2c9950e2414ca76ece2b6dd22b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showPointList: 00000001
-  showParentsList: 01000101
+  showPointList: 01010101
+  showParentsList: 01010101
   count: 4
   _prefab: {fileID: 5442263602904640269}
   icon: {fileID: 982040766770604714, guid: 0f62dc69e644a2f40a46e693628b6fc6, type: 3}
@@ -177,7 +179,7 @@ MonoBehaviour:
     parentList:
     - checkToogleList: 01
       showParentPointList: 01
-      parentDetail: {fileID: 7497595355432918353, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+      parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
         type: 3}
       parentPointList:
       - Position: {x: 0, y: 0, z: 0}
@@ -185,11 +187,11 @@ MonoBehaviour:
   - showParentDetailList: 01
     point:
       Position: {x: 2.95, y: 1, z: -5.5}
-      Rotation: {x: -0, y: -180, z: -0}
+      Rotation: {x: -0, y: 180, z: -0}
     parentList:
     - checkToogleList: 01
-      showParentPointList: 00
-      parentDetail: {fileID: 7497595355432918353, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+      showParentPointList: 01
+      parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
         type: 3}
       parentPointList:
       - Position: {x: 0, y: 0, z: 0}
@@ -201,7 +203,7 @@ MonoBehaviour:
     parentList:
     - checkToogleList: 01
       showParentPointList: 01
-      parentDetail: {fileID: 7497595355432918353, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+      parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
         type: 3}
       parentPointList:
       - Position: {x: 0, y: 0, z: 0}
@@ -209,11 +211,11 @@ MonoBehaviour:
   - showParentDetailList: 01
     point:
       Position: {x: 2.95, y: 1, z: -8.9}
-      Rotation: {x: -0, y: -180, z: -0}
+      Rotation: {x: -0, y: 180, z: -0}
     parentList:
     - checkToogleList: 01
       showParentPointList: 01
-      parentDetail: {fileID: 7497595355432918353, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+      parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
         type: 3}
       parentPointList:
       - Position: {x: 0, y: 0, z: 0}

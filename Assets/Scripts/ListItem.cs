@@ -8,13 +8,15 @@ using UnityEngine.UI;
 
 public class ListItem : MonoBehaviour
 {
-     public GameObject instObject;
+     //public GameObject instObject;
      public Detail detail;
+     public TextMesh countText;
 
      public void DeleteDelatil(){
-          if(detail.IsLastDetail()){
-               Destroy(this.gameObject);
-          }
+          Destroy(this.gameObject);
+          //if(detail.IsLastDetail()){
+               
+          //}
      }
 
 }

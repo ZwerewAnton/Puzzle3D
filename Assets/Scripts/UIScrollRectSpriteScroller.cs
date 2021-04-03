@@ -59,7 +59,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
             //_rectTransform.localScale = _originScale;
             if (_isInstantiate && (listItem != null))
             {
-                objectMagnet.InstantiateObject(listItem.detail.gameObject);
+                objectMagnet.InstantiateObject(listItem.detail);
                 //instantiateDetailEvent.Invoke();
             }
         }
@@ -76,7 +76,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
         if(_isInstantiate)
         {
             _isInstantiate = false;
-            if(objectMagnet.InstalOrDropObject())
+            if(objectMagnet.IsLastDetail())
             {
                 listItem.DeleteDelatil();
             }

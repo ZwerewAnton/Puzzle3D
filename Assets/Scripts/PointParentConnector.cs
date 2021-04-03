@@ -27,4 +27,9 @@ public class PointParentConnector
         _isInstalled = true;
     }
 
+    public void Uninstall()
+    {
+        _isInstalled = false;
+    }
+
 }

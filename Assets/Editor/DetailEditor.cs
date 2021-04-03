@@ -8,12 +8,12 @@ using UnityEngine;
 [CanEditMultipleObjects]
 public class DetailEditor : Editor
 {
-    bool showPoints, showParentPoints, showPoint;
+    bool showPoints, showParentPoints = true;
     List<bool> showPointList, showParentDetailList, showParentPointList, showParentsList;
 
     public void OnEnable()
     {
-        Debug.Log("OnEnable");
+        //Debug.Log("OnEnable");
     }       
     public override void OnInspectorGUI()
     {
@@ -101,6 +101,19 @@ public class DetailEditor : Editor
                         if( EditorGUI.EndChangeCheck() ) {
                             EditorUtility.SetDirty(target);
                         }
+                        if(parentListSize != showParentDetailList.Count)
+                        {
+                            while(parentListSize > showParentDetailList.Count)
+                            {
+                                showParentDetailList.Add(false);
+                            }
+                            while(parentListSize < showParentDetailList.Count)
+                            {
+                                Debug.Log(pointParentConnectorList[i].parentList.Count);
+                                int ss = pointParentConnectorList[i].parentList.Count - 1;
+                                showParentDetailList.RemoveAt(showParentDetailList.Count - 1);
+                            }
+                        }
                         if(pointParentConnectorList[i].parentList.Count != parentListSize){
 
                             while(parentListSize > pointParentConnectorList[i].parentList.Count)
@@ -112,17 +125,7 @@ public class DetailEditor : Editor
                                 pointParentConnectorList[i].parentList.RemoveAt(pointParentConnectorList[i].parentList.Count - 1);
                             }
                         }
-                        if(parentListSize != showParentDetailList.Count)
-                        {
-                            while(parentListSize > showParentDetailList.Count)
-                            {
-                                showParentDetailList.Add(false);
-                            }
-                            while(parentListSize < showParentDetailList.Count)
-                            {
-                                showParentDetailList.RemoveAt(pointParentConnectorList[i].parentList.Count - 1);
-                            }
-                        }
+
                         serializedObject.Update();
                         for (int j = 0; j < pointParentConnectorList[i].parentList.Count; j++)
                         {
@@ -133,9 +136,15 @@ public class DetailEditor : Editor
                             if(showParentDetailList[j])
                             { 
                                 EditorGUI.indentLevel++;                           
-                                //EditorGUI.BeginChangeCheck();
+                                EditorGUI.BeginChangeCheck();
                                 EditorGUILayout.PropertyField(parentDetailSP, new UnityEngine.GUIContent("Parent" + "_" + (j).ToString()), true);
+                                
+                                if( EditorGUI.EndChangeCheck() ) {
+                                        EditorUtility.SetDirty(target);
+                                    }
+
                                 Detail ob = parentDetailSP.objectReferenceValue as Detail;
+                                pointParentConnectorList[i].parentList[j].parentDetail = ob;
                                 if(ob != null && ob.points != null)
                                 {
                                     EditorGUI.BeginChangeCheck(); 
@@ -202,7 +211,6 @@ public class DetailEditor : Editor
                                                                 }
                                                         }
                                                     }
-                                                    Debug.Log(thisParentPointList.Count);
                                                     EditorUtility.SetDirty(target);
                                                 }
                                             }

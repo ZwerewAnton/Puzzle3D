@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4296613991229064845}
-  - component: {fileID: 683772652704482798}
+  - component: {fileID: -7579358993945108425}
   m_Layer: 0
   m_Name: 03_leftwall
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &683772652704482798
+--- !u!114 &-7579358993945108425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,23 +45,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showPointList: 01
-  showParentDetailList: 01
-  showParentPointList: 01
   showParentsList: 01
   count: 1
   _prefab: {fileID: 3525037600918133815}
-  icon: {fileID: -8320027910100507182, guid: a6e755c5808ed894aa521ab324706540, type: 3}
+  icon: {fileID: 3384881355329753939, guid: 73ea8edad4993174e889ff423f891108, type: 3}
   points:
-  - point:
+  - showParentDetailList: 01
+    point:
       Position: {x: -2.5, y: 5.65, z: -0.15}
       Rotation: {x: -0, y: -0, z: -0}
     parentList:
     - checkToogleList: 01
-      parentDetail: {fileID: 7497595355432918353, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+      showParentPointList: 01
+      parentDetail: {fileID: -2747106471576355175, guid: 972fd0714ce8d97438d11c6fc3aa7b2c,
         type: 3}
       parentPointList:
-      - Position: {x: 0, y: 0, z: 0}
-        Rotation: {x: 0, y: 0, z: 0}
+      - Position: {x: 0.8, y: 2.2, z: 0.05}
+        Rotation: {x: -0, y: 0, z: 0}
 --- !u!1 &5577348485713077486
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,6 +117,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -141,3 +142,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

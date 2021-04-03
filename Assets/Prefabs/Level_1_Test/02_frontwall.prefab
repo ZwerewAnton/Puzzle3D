@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2277484912460828953}
-  - component: {fileID: 7438673893920066003}
+  - component: {fileID: 8076848352520528009}
   m_Layer: 0
   m_Name: 02_frontwall
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7438673893920066003
+--- !u!114 &8076848352520528009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,23 +45,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showPointList: 01
-  showParentDetailList: 01
-  showParentPointList: 01
   showParentsList: 01
   count: 1
   _prefab: {fileID: 1499857944277830563}
   icon: {fileID: -2012466146504006616, guid: 8c875c4a5bbce7d438c1d0cab7eff8db, type: 3}
   points:
-  - point:
+  - showParentDetailList: 01
+    point:
       Position: {x: 0.85, y: 5.65, z: -3.35}
       Rotation: {x: -0, y: -0, z: -0}
     parentList:
     - checkToogleList: 01
-      parentDetail: {fileID: 7497595355432918353, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+      showParentPointList: 01
+      parentDetail: {fileID: -2747106471576355175, guid: 972fd0714ce8d97438d11c6fc3aa7b2c,
         type: 3}
       parentPointList:
-      - Position: {x: 0, y: 0, z: 0}
-        Rotation: {x: 0, y: 0, z: 0}
+      - Position: {x: 0.8, y: 2.2, z: 0.05}
+        Rotation: {x: -0, y: 0, z: 0}
 --- !u!1 &7592324854835655546
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,6 +117,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -141,3 +142,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

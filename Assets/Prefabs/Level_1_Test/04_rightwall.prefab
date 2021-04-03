@@ -45,23 +45,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showPointList: 01
-  showParentDetailList: 01
-  showParentPointList: 01
   showParentsList: 01
   count: 1
-  _prefab: {fileID: 5291858792870022000, guid: 9c257b3cc9aad8941bac37c189f9d19c, type: 3}
+  _prefab: {fileID: 2772496453772796692}
   icon: {fileID: -2293559303108314877, guid: a6e755c5808ed894aa521ab324706540, type: 3}
   points:
-  - point:
+  - showParentDetailList: 01
+    point:
       Position: {x: 4.1, y: 5.65, z: -0.15}
       Rotation: {x: -0, y: -0, z: -0}
     parentList:
-    - checkToogleList: 01
-      parentDetail: {fileID: 7497595355432918353, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+    - checkToogleList: 0100
+      showParentPointList: 01
+      parentDetail: {fileID: -2747106471576355175, guid: 972fd0714ce8d97438d11c6fc3aa7b2c,
         type: 3}
       parentPointList:
       - Position: {x: 0, y: 0, z: 0}
         Rotation: {x: 0, y: 0, z: 0}
+      - Position: {x: 0.8, y: 2.2, z: 0.05}
+        Rotation: {x: -0, y: 0, z: 0}
 --- !u!1 &6625966261891963853
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,6 +119,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -141,3 +144,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

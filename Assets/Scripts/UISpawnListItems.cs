@@ -9,15 +9,20 @@ public class UISpawnListItems : MonoBehaviour
 {
     public GameObject ContentPanel;
     public GameObject ListItemPrefab;
-    public List<Detail> detailsList;
+    private List<Detail> _detailsList;
+    public ObjectMagnet objectMagnet;
  
     void Start () {
-        foreach(Detail detail in detailsList){
-            GameObject itemList = Instantiate(ListItemPrefab, ContentPanel.transform, false);
-            ListItem listItem = itemList.GetComponent<ListItem>();
-            listItem.detail = detail;
-            //listItem.instObject = simpleDetail.gameObject;
-            itemList.GetComponent<Image>().sprite = detail.icon;
+        if(objectMagnet != null){
+            _detailsList = objectMagnet.detailsList;
+            foreach(Detail detail in _detailsList){
+                GameObject itemList = Instantiate(ListItemPrefab, ContentPanel.transform, false);
+                ListItem listItem = itemList.GetComponent<ListItem>();
+                listItem.detail = detail;
+                listItem.countText.text = detail.count.ToString();
+                //listItem.instObject = simpleDetail.gameObject;
+                itemList.GetComponent<Image>().sprite = detail.icon;
+            }
         }
     }
 }
