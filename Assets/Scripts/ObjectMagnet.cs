@@ -70,6 +70,7 @@ public class ObjectMagnet : MonoBehaviour
         connectionPoints.Clear();
 
         mZCoord = cam.WorldToScreenPoint(_instObject.transform.position).z;
+        //Debug.Log(mZCoord);
         mOffset = _instObject.transform.position - GetMouseAsWorldPoint();
 
         
@@ -222,6 +223,7 @@ public class ObjectMagnet : MonoBehaviour
         //Debug.Log(GetMouseAsWorldPoint());
         if(Input.GetKeyDown("space"))
         {
+            Debug.Log(target.transform.position);
             //InstantiateObject();
         } 
         //TODO Invert or check another thing
@@ -271,21 +273,24 @@ public class ObjectMagnet : MonoBehaviour
                 }
             }
             
-            //Debug.DrawLine(targetPosition, bestPoint);
+            Debug.DrawLine(targetPosition, bestPoint);
     
             target.transform.rotation = Quaternion.Euler(bestRotation);
             //TODO WTF???
-            if ((Math.Abs(mousePosition.x) <= distance) &&
+            /*if ((Math.Abs(mousePosition.x) <= distance) &&
                 (Math.Abs(mousePosition.y) <= distance) &&
-                (Math.Abs(mousePosition.z) <= distance))
+                (Math.Abs(mousePosition.z) <= distance))*/
+            if(((Math.Abs(mousePosition.x) - (Math.Abs(bestPoint.x))) <= distance) &&
+                ((Math.Abs(mousePosition.y) - (Math.Abs(bestPoint.y))) <= distance) &&
+                ((Math.Abs(mousePosition.z) - (Math.Abs(bestPoint.z))) <= distance))
             {
                 _isConnect = true;
-                target.transform.position =  bestPoint;
+                target.transform.position = bestPoint;
             }
             else
             {
                 _isConnect = false;
-                Yposition =  mousePosition  + bestPoint;
+                Yposition =  mousePosition;
                 if(Yposition.y < 0)
                 {
                     Yposition.y = 0f;
