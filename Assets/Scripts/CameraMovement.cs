@@ -67,8 +67,9 @@ public class CameraMovement : MonoBehaviour
     {
         //TODO Make a touch control.
         //Scroll
-        if (_isDragObject)
+        if (_isDragObject && GUIUtility.hotControl == 0)
         {
+            //Debug.Log(GUIUtility.hotControl);
             if (Input.GetAxis("Mouse ScrollWheel") != 0f)
             {
                 _desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(_desiredDistance);

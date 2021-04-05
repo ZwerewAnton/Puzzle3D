@@ -5,13 +5,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class ListItem : MonoBehaviour
 {
      //public GameObject instObject;
      public Detail detail;
-     public TextMesh countText;
-
+     public TMP_Text countText;
+     
      public void DeleteDelatil(){
           Destroy(this.gameObject);
           //if(detail.IsLastDetail()){

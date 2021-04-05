@@ -12,6 +12,7 @@ public class ObjectMagnet : MonoBehaviour
     public float magnDist = 0.5f;
     public Detail ground;
     public Material grayMaterial;
+    public Vector3 objectOffset;
     
     [SerializeField]
     //private GameObject instObject;
@@ -30,6 +31,7 @@ public class ObjectMagnet : MonoBehaviour
     private Detail _instDetail;
     private Material _mainMaterial;
     private MeshRenderer meshRenderer;
+    
 
     private void Start()
     {
@@ -38,7 +40,7 @@ public class ObjectMagnet : MonoBehaviour
         _installedDetails = new List<Detail>();
         _installedDetails.Add(ground);
 
-
+        
         //uiSpawnListItems.spawnListEvent.AddListener(InstantiateObject);
         //uiSpawnListItems.dropDetailEvent.AddListener(InstalOrDropObject);
     }
@@ -49,6 +51,7 @@ public class ObjectMagnet : MonoBehaviour
         Vector3 mousePoint = Input.mousePosition;
         //Debug.Log(mousePoint);
         // z coordinate of game object on screen
+        //mousePoint = mousePoint;
         mousePoint.z = mZCoord;
         // Convert it to world points
         return cam.ScreenToWorldPoint(mousePoint);
@@ -246,6 +249,7 @@ public class ObjectMagnet : MonoBehaviour
     private void TransformPosition(Vector3 targetPosition, Vector3 mousePosition, float distance)
     {
         //Хрень
+        //mousePosition = mousePosition;
         Vector3 bestPoint = Vector3.zero, bestRotation = Vector3.zero;
         Vector3 Yposition = Vector3.zero;
         float tempDist = Single.MaxValue, dist = 0;
@@ -258,7 +262,7 @@ public class ObjectMagnet : MonoBehaviour
             {
                 Yposition.y = 0f;
             }
-            target.transform.position = Yposition;
+            target.transform.position = Yposition + objectOffset;
         }
         else
         {
@@ -282,7 +286,7 @@ public class ObjectMagnet : MonoBehaviour
                 (Math.Abs(mousePosition.z) <= distance))*/
             if(((Math.Abs(mousePosition.x) - (Math.Abs(bestPoint.x))) <= distance) &&
                 ((Math.Abs(mousePosition.y) - (Math.Abs(bestPoint.y))) <= distance) &&
-                ((Math.Abs(mousePosition.z) - (Math.Abs(bestPoint.z))) <= distance))
+                ((Math.Abs(mousePosition.z) - (Math.Abs(bestPoint.z) )) <= distance))
             {
                 _isConnect = true;
                 target.transform.position = bestPoint;
@@ -291,11 +295,13 @@ public class ObjectMagnet : MonoBehaviour
             {
                 _isConnect = false;
                 Yposition =  mousePosition;
-                if(Yposition.y < 0)
+                /*
+                if((Yposition.y - off.y) < 0)
                 {
                     Yposition.y = 0f;
                 }
-                target.transform.position = Yposition;
+                */
+                target.transform.position = Yposition + objectOffset;
             }
         }
     }

@@ -48,7 +48,7 @@ MonoBehaviour:
   showParentsList: 01
   count: 1
   _prefab: {fileID: 1499857944277830563}
-  icon: {fileID: -2012466146504006616, guid: 8c875c4a5bbce7d438c1d0cab7eff8db, type: 3}
+  icon: {fileID: -5452287152701893335, guid: 8c875c4a5bbce7d438c1d0cab7eff8db, type: 3}
   points:
   - showParentDetailList: 01
     point:

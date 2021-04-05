@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: SettingsCanvas
+    uniqueID: 4202292529
+    locked: 0
+  - name: MainCanvas
+    uniqueID: 1832032295
+    locked: 0
