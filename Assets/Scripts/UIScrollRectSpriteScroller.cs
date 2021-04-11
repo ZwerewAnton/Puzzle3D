@@ -11,11 +11,11 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
     public float dragDistance = 70f;
     public ScrollRect scrollRect;
     public ObjectMagnet objectMagnet;
-    
-    //public InstantiateEvent instantiateDetailEvent;
-    //public UnityEvent instantiateDetailEvent;
-    //public UnityEvent dropDetailEvent;
+    public GameObject contentPanel;
+    public GameObject listItemPrefab;
 
+    public LevelContainer levelContainer;
+    
     [SerializeField] 
     private UnityEvent rotateCameraOffEvent;
     [SerializeField] 
@@ -23,29 +23,59 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
 
     private Vector2 _startClickPosition;
     private bool _isInstantiate;
-    private ListItem listItem;
-    private GameObject myObject;
+    private ListItem _listItem;
+    private GameObject _myObject;
 
+    private List<Detail> _detailsList;
+    private List<ListItem> _listItemList;
+
+    private Color32 _enableColor = new Color32(255, 255, 255, 255);
+    private Color32 _disableColor = new Color32(255, 255, 255, 100);
+
+
+
+
+    private void Start() 
+    {
+        if(objectMagnet != null)
+        {
+            _listItemList = new List<ListItem>();
+            //_detailsList = objectMagnet.detailsList;
+            _detailsList = levelContainer._currentLevel;
+
+            foreach(Detail detail in _detailsList)
+            {
+                GameObject itemList = Instantiate(listItemPrefab, contentPanel.transform, false);
+                ListItem listItem = itemList.GetComponent<ListItem>();
+                listItem.detail = detail;
+                listItem.count = detail.count;
+                if(listItem.count == 1)
+                {
+                    listItem.countText.enabled = false;
+                }
+                else
+                {
+                    listItem.countText.text = listItem.count.ToString();
+                }
+                itemList.GetComponent<Image>().sprite = detail.icon;
+                _listItemList.Add(listItem);
+            }
+            
+            ScrollRectUpdate(objectMagnet.ground);
+        }
+    }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        /*
-        //if(eventData.pointerEnter.gameObject.GetComponent<ListItem>)
-        if(eventData.pointerCurrentRaycast.gameObject.TryGetComponent<ListItem>(out ListItem _listItem)){
-            listItem = _listItem;
-        }
-        else{
-            listItem = null;
-        }
-        */
-        myObject = eventData.pointerCurrentRaycast.gameObject;
-        listItem = eventData.pointerCurrentRaycast.gameObject.GetComponent<ListItem>();
+        _myObject = eventData.pointerCurrentRaycast.gameObject;
+        _listItem = eventData.pointerCurrentRaycast.gameObject.GetComponent<ListItem>();
         rotateCameraOffEvent.Invoke();
     }
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(listItem != null){
+        if(_listItem != null)
+        {
             scrollRect.vertical = false;
         }
         _startClickPosition = eventData.position;
@@ -57,9 +87,23 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
         {
             _isInstantiate = true;
             //_rectTransform.localScale = _originScale;
-            if (_isInstantiate && (listItem != null))
+            if (_isInstantiate && (_listItem != null))
             {
-                objectMagnet.InstantiateObject(listItem.detail);
+                objectMagnet.InstantiateObject(_listItem.detail);
+
+
+                _listItem.count--;
+                _listItem.countText.text = _listItem.count.ToString();
+
+                if(_listItem.count == 1)
+                {
+                    _listItem.countText.enabled = false;
+                }
+                else if(_listItem.count == 0)
+                {
+                    _listItem.image.enabled = false;
+                    _listItem.countText.enabled = false;
+                }
                 //instantiateDetailEvent.Invoke();
             }
         }
@@ -73,12 +117,36 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
     {
         scrollRect.vertical = true;
 
+        
+
+
         if(_isInstantiate)
         {
             _isInstantiate = false;
-            if(objectMagnet.IsLastDetail())
+            if(objectMagnet.InstalOrDropObject())
             {
-                listItem.DeleteDelatil();
+                ScrollRectUpdate(_listItem.detail);
+                if(objectMagnet.IsLastDetail())
+                {
+                    //TODO Take this up 
+                    _listItemList.Remove(_listItem);
+                    _listItem.DeleteDelatil();
+                }
+            }
+            else
+            {
+                _listItem.image.enabled = true;
+
+                _listItem.count++;
+                if(_listItem.count > 1)
+                {
+                    _listItem.countText.enabled = true;
+                    _listItem.countText.text = _listItem.count.ToString();
+                }
+                else
+                {
+                    _listItem.countText.enabled = false;
+                }
             }
         }
         //dropDetailEvent.Invoke();
@@ -87,5 +155,32 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
     public void OnPointerUp(PointerEventData eventData)
     { 
         rotateCameraOnEvent.Invoke();
+    }
+
+    public void ScrollRectUpdate(Detail detail)
+    {
+        List<Detail> openDetailList = objectMagnet.GetAvailableDetails();
+        List<ListItem> openListItem = new List<ListItem>();
+
+        foreach (Detail openDetail in openDetailList)
+        {
+            foreach(ListItem listItem in _listItemList)
+            {   
+                listItem.enabled = false;
+                listItem.image.color = _disableColor;
+                listItem.countText.color = _disableColor;
+                
+                if(openDetail == listItem.detail)
+                {
+                    openListItem.Add(listItem);
+                }
+            }
+        }
+        foreach(ListItem listItem in openListItem)
+        {
+            listItem.enabled = true;
+            listItem.image.color = _enableColor;
+            listItem.countText.color = _enableColor;
+        }
     }
 }

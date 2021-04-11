@@ -19,7 +19,15 @@ public class UISpawnListItems : MonoBehaviour
                 GameObject itemList = Instantiate(ListItemPrefab, ContentPanel.transform, false);
                 ListItem listItem = itemList.GetComponent<ListItem>();
                 listItem.detail = detail;
-                listItem.countText.text = detail.count.ToString();
+                listItem.count = detail.count;
+                if(listItem.count == 1)
+                {
+                    listItem.countText.enabled = false;
+                }
+                else
+                {
+                    listItem.countText.text = listItem.count.ToString();
+                }
                 //listItem.instObject = simpleDetail.gameObject;
                 itemList.GetComponent<Image>().sprite = detail.icon;
             }

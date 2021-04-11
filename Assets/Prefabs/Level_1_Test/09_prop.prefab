@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3894212942019187668}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.75, y: -1, z: 5.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4669420570903540151}
@@ -203,11 +203,13 @@ MonoBehaviour:
     parentList:
     - checkToogleList: 01
       showParentPointList: 01
-      parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+      parentDetail: {fileID: 8076848352520528009, guid: cef5f2616deeb6245a6f2fd9aabe8a75,
         type: 3}
       parentPointList:
       - Position: {x: 0, y: 0, z: 0}
         Rotation: {x: 0, y: 0, z: 0}
+      - Position: {x: 0.85, y: 5.65, z: -3.35}
+        Rotation: {x: -0, y: -0, z: -0}
   - showParentDetailList: 01
     point:
       Position: {x: 2.95, y: 1, z: -8.9}
@@ -215,8 +217,10 @@ MonoBehaviour:
     parentList:
     - checkToogleList: 01
       showParentPointList: 01
-      parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+      parentDetail: {fileID: 8076848352520528009, guid: cef5f2616deeb6245a6f2fd9aabe8a75,
         type: 3}
       parentPointList:
       - Position: {x: 0, y: 0, z: 0}
         Rotation: {x: 0, y: 0, z: 0}
+      - Position: {x: 0.85, y: 5.65, z: -3.35}
+        Rotation: {x: -0, y: -0, z: -0}

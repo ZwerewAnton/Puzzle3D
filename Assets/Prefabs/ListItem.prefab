@@ -91,6 +91,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detail: {fileID: 0}
   countText: {fileID: 2831495892483638763}
+  image: {fileID: 1775881065355688194}
+  count: 0
 --- !u!1 &5477210244032312448
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,8 +160,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c708f2bdc5dc92d4aacd880c64136b17, type: 2}
+  m_sharedMaterial: {fileID: -81714861844702445, guid: c708f2bdc5dc92d4aacd880c64136b17,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

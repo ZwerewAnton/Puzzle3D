@@ -12,12 +12,18 @@ public class ListItem : MonoBehaviour
      //public GameObject instObject;
      public Detail detail;
      public TMP_Text countText;
+     public Image image;
+
+     bool isInteractable = false;
+     
+
+
+     public float count = 0;
      
      public void DeleteDelatil(){
           Destroy(this.gameObject);
-          //if(detail.IsLastDetail()){
-               
-          //}
      }
+
+     
 
 }

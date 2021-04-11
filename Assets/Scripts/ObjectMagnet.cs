@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class ObjectMagnet : MonoBehaviour
 {
     //public UISpawnListItems uiSpawnListItems;
+    public LevelContainer levelContainer;
     public List<Detail> detailsList;
     public Camera cam;
     public float magnDist = 0.5f;
@@ -14,8 +15,6 @@ public class ObjectMagnet : MonoBehaviour
     public Material grayMaterial;
     public Vector3 objectOffset;
     
-    [SerializeField]
-    //private GameObject instObject;
     private GameObject target;
     private Vector3 mOffset;
     private Vector3 _position;
@@ -24,34 +23,42 @@ public class ObjectMagnet : MonoBehaviour
     private bool _isInstantiate;
 
     private List<Detail> _allDetails;
-    private List<Point> connectionPoints;
+    private List<Detail> _availableDetails;
+    private List<Point> _connectionPoints;
+    private List<GameObject> _connectionObjects;
     private List<Detail> _installedDetails;
     private List<PointParentConnector> _allPoints;
     //private GameObject _instObject;
     private Detail _instDetail;
     private Material _mainMaterial;
     private MeshRenderer meshRenderer;
+    private Color _grayNearColor = new Color32(255, 255, 255, 150);
+    private Color _grayFarColor = new Color32(255, 255, 255, 0);
+    private float _lerp = 0;
+
+    
+    private GameObject _currentConnObject;
     
 
     private void Start()
     {
-        Reset(detailsList);
-        connectionPoints = new List<Point>();
+        _allDetails = levelContainer.Reset();
+        //_allDetails = levelContainer._currentLevel;
+        Debug.Log(_allDetails[0].name);
+        //Reset(detailsList);
+        _connectionPoints = new List<Point>();
+        _connectionObjects = new List<GameObject>();
         _installedDetails = new List<Detail>();
+        _availableDetails = new List<Detail>();
         _installedDetails.Add(ground);
-
-        
-        //uiSpawnListItems.spawnListEvent.AddListener(InstantiateObject);
-        //uiSpawnListItems.dropDetailEvent.AddListener(InstalOrDropObject);
+        _availableDetails.AddRange(GetOpenDetails(ground));
     }
 
     private Vector3 GetMouseAsWorldPoint()
     {
         // Pixel coordinates of mouse (x,y)
-        Vector3 mousePoint = Input.mousePosition;
-        //Debug.Log(mousePoint);
+        Vector3 mousePoint = Input.mousePosition + objectOffset;
         // z coordinate of game object on screen
-        //mousePoint = mousePoint;
         mousePoint.z = mZCoord;
         // Convert it to world points
         return cam.ScreenToWorldPoint(mousePoint);
@@ -70,20 +77,14 @@ public class ObjectMagnet : MonoBehaviour
         }*/
         //_instObject = instObject;
         //instObject.
-        connectionPoints.Clear();
+        _connectionPoints.Clear();
+        _connectionObjects.Clear();
 
+        _instObject.transform.position = Vector3.zero;
         mZCoord = cam.WorldToScreenPoint(_instObject.transform.position).z;
-        //Debug.Log(mZCoord);
-        mOffset = _instObject.transform.position - GetMouseAsWorldPoint();
 
-        
-        //GameObject childGO = _instObject.transform.GetChild(0).gameObject;
         target = Instantiate(_instObject, GetMouseAsWorldPoint(), Quaternion.identity);
-        meshRenderer = target.GetComponent<MeshRenderer>();
-        _mainMaterial = meshRenderer.material;
-        meshRenderer.material = grayMaterial;
 
-        //_allPoints = target.GetComponent<Detail>().GetPoints;
         _allPoints = _instDetail.GetPoints;
         
 
@@ -105,7 +106,7 @@ public class ObjectMagnet : MonoBehaviour
                                     if(parentPoint.Position == instalDetailPoint.point.Position &&
                                         parentPoint.Rotation == instalDetailPoint.point.Rotation)
                                     {
-                                        connectionPoints.Add(point.point);
+                                        _connectionPoints.Add(point.point);
 
                                     }
                                 }
@@ -118,54 +119,55 @@ public class ObjectMagnet : MonoBehaviour
             }
             
         }
+        foreach(Point connectionPoint in _connectionPoints)
+        {
+            GameObject connectionObject = Instantiate(_instObject, connectionPoint.Position, Quaternion.Euler(connectionPoint.Rotation));
+            _connectionObjects.Add(connectionObject);
+            meshRenderer = connectionObject.GetComponent<MeshRenderer>();
+            meshRenderer.material = grayMaterial;
+            connectionObject.SetActive(false);
+        }
         //connectionPoints = target.GetComponent<SimpleDetail>().GetPoints;
         //Debug.Log(connectionPoints.Count);
         _isInstantiate = true;
         //target.transform.position = GetMouseAsWorldPoint();
     }
 
-/*
-    public bool InstalOrDropObject()
-    {
-        if (_isInstantiate)
-        {
-            if (_isConnect)
-            {
-                target = null;
-                return true;
-            }
-            else
-            {
-                Destroy(target);
-                return false;
-            }
-            _isInstantiate = false;
-        }
-    }
-    */
     public bool InstalOrDropObject()
     {
         bool isDetailInstalled = false;
         _isInstantiate = false;
+
+        foreach(GameObject connectionObject in _connectionObjects)
+        {
+            Destroy(connectionObject);
+        }
         if (_isConnect)
         {
-            foreach(Detail installedDetail in _installedDetails){
-                if(_instDetail == installedDetail){
+            foreach(Detail installedDetail in _installedDetails)
+            {
+                if(_instDetail == installedDetail)
+                {
                     isDetailInstalled = true;
                     break;
                 }
             }
-            if(!isDetailInstalled){
+            if(!isDetailInstalled)
+            {
                 _installedDetails.Add(_instDetail);
+                //_availableDetails.
+                _availableDetails.AddRange(GetOpenDetails(_instDetail));
             }
             Transform targetTransform = target.GetComponent<Transform>();
 
             //TODO Connection point instead targetTransform
-            foreach(PointParentConnector pointParConn in _instDetail.points){
+            foreach(PointParentConnector pointParConn in _instDetail.points)
+            {
                 if(targetTransform.position == pointParConn.point.Position &&
                     targetTransform.rotation.eulerAngles == pointParConn.point.Rotation)
                 {
                     pointParConn.Install();
+                    _availableDetails.Remove(_instDetail);
                 }
             }
 
@@ -192,22 +194,19 @@ public class ObjectMagnet : MonoBehaviour
 
     public bool IsLastDetail()
     {
-        bool isInstall = InstalOrDropObject();
-        if(isInstall){
-            bool isLastDetail = _instDetail.IsLastDetail();
-            if(isLastDetail){
-                _allDetails.Remove(_instDetail);
-                
-                Debug.Log(IsEnd());
-                return true;
-            }
-            else{
-                return false;
-            }
+        bool isLastDetail = _instDetail.IsLastDetail();
+        if(isLastDetail)
+        {
+            _allDetails.Remove(_instDetail);
+            _availableDetails.Remove(_instDetail);
+            Debug.Log(IsEnd());
+            return true;
         }
-        else{
+        else
+        {
             return false;
         }
+        
     }
 
     public bool IsEnd(){
@@ -219,6 +218,37 @@ public class ObjectMagnet : MonoBehaviour
         {
             return false;
         }
+    }
+
+    private List<Detail> GetOpenDetails(Detail detail)
+    {
+        List<Detail> list = new List<Detail>();
+        foreach(var det in _allDetails)
+        {
+            foreach(var pointParConn in det.points)
+            {
+                /* if(pointParConn.IsInstalled == false)
+                { */
+                    foreach(var parentDet in pointParConn.parentList)
+                    {
+                        if(parentDet.parentDetail == detail)
+                        {
+                            list.Add(det);
+                        }
+                    }
+                /* } */
+            }
+        }
+        return list;
+    }
+
+    public List<Detail> GetAvailableDetails()
+    {
+        return _availableDetails;
+    }
+    public List<PointParentConnector> GetAllPoints()
+    {
+        return _allPoints;
     }
     
     private void Update()
@@ -254,7 +284,7 @@ public class ObjectMagnet : MonoBehaviour
         Vector3 Yposition = Vector3.zero;
         float tempDist = Single.MaxValue, dist = 0;
 
-        if(connectionPoints.Count == 0)
+        if(_connectionPoints.Count == 0)
         {
             _isConnect = false;
             Yposition =  mousePosition;
@@ -262,32 +292,41 @@ public class ObjectMagnet : MonoBehaviour
             {
                 Yposition.y = 0f;
             }
-            target.transform.position = Yposition + objectOffset;
+            target.transform.position = Yposition /* + objectOffset */;
         }
         else
         {
-            foreach (var point in connectionPoints)
+            for(int i = 0; i < _connectionPoints.Count; i++)
             {
-                dist = Vector3.Distance (targetPosition, point.Position);
+                dist = Vector3.Distance (targetPosition, _connectionPoints[i].Position);
                 if (dist < tempDist)
                 {
                     tempDist = dist;
-                    bestPoint = point.Position;
-                    bestRotation = point.Rotation;
+                    bestPoint = _connectionPoints[i].Position;
+                    bestRotation = _connectionPoints[i].Rotation;
+
+                    _currentConnObject =_connectionObjects[i];
+                    _currentConnObject.SetActive(false);
                 }
             }
+
+            _currentConnObject.SetActive(true);
+
+            float distanceApart = GetSqrDistance(bestPoint, mousePosition);
+            //Debug.Log(distanceApart);
+            _lerp = MapValue(distanceApart, 0f, 50f, 0f, 1f);
+
+            grayMaterial.color = Color.Lerp(_grayNearColor, _grayFarColor, _lerp);
+            //grayMaterial.color = _grayColor;
             
             Debug.DrawLine(targetPosition, bestPoint);
     
+            mZCoord = cam.WorldToScreenPoint(bestPoint).z;
             target.transform.rotation = Quaternion.Euler(bestRotation);
-            //TODO WTF???
-            /*if ((Math.Abs(mousePosition.x) <= distance) &&
-                (Math.Abs(mousePosition.y) <= distance) &&
-                (Math.Abs(mousePosition.z) <= distance))*/
-            if(((Math.Abs(mousePosition.x) - (Math.Abs(bestPoint.x))) <= distance) &&
-                ((Math.Abs(mousePosition.y) - (Math.Abs(bestPoint.y))) <= distance) &&
-                ((Math.Abs(mousePosition.z) - (Math.Abs(bestPoint.z) )) <= distance))
+
+            if(distanceApart <= distance)
             {
+                _currentConnObject.SetActive(false);
                 _isConnect = true;
                 target.transform.position = bestPoint;
             }
@@ -295,15 +334,19 @@ public class ObjectMagnet : MonoBehaviour
             {
                 _isConnect = false;
                 Yposition =  mousePosition;
-                /*
-                if((Yposition.y - off.y) < 0)
-                {
-                    Yposition.y = 0f;
-                }
-                */
-                target.transform.position = Yposition + objectOffset;
+                target.transform.position = Yposition;
             }
         }
+    }
+
+    private float GetSqrDistance(Vector3 v1, Vector3 v2)
+    {
+        return (v1 - v2).sqrMagnitude;
+    }
+
+    private float MapValue(float mainValue, float inValueMin, float inValueMax, float outValueMin, float outValueMax)
+    {
+        return (mainValue - inValueMin) * (outValueMax - outValueMin) / (inValueMax - inValueMin) + outValueMin;
     }
 }
 
