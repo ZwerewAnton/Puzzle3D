@@ -6,9 +6,9 @@ using System;
 [Serializable]
 public class Level
 {
+    //public static Level current;
     public List<DetailSaver> detailList = new List<DetailSaver>();
     public float percent;
-
 }
 
 [Serializable]
@@ -36,7 +36,7 @@ public class PointParentConnectorSaver
 public class DetailSaver
 {
     public string detailName;
-    public float _count;
+    public int _currentCount;
     private bool _installed;
     public List<PointParentConnectorSaver> parentList = new List<PointParentConnectorSaver>();
 }

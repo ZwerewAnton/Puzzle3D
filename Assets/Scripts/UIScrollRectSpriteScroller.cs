@@ -26,7 +26,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
     private ListItem _listItem;
     private GameObject _myObject;
 
-    private List<Detail> _detailsList;
+    private List<Detail> _allDetails;
     private List<ListItem> _listItemList;
 
     private Color32 _enableColor = new Color32(255, 255, 255, 255);
@@ -37,32 +37,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
 
     private void Start() 
     {
-        if(objectMagnet != null)
-        {
-            _listItemList = new List<ListItem>();
-            //_detailsList = objectMagnet.detailsList;
-            _detailsList = levelContainer._currentLevel;
-
-            foreach(Detail detail in _detailsList)
-            {
-                GameObject itemList = Instantiate(listItemPrefab, contentPanel.transform, false);
-                ListItem listItem = itemList.GetComponent<ListItem>();
-                listItem.detail = detail;
-                listItem.count = detail.count;
-                if(listItem.count == 1)
-                {
-                    listItem.countText.enabled = false;
-                }
-                else
-                {
-                    listItem.countText.text = listItem.count.ToString();
-                }
-                itemList.GetComponent<Image>().sprite = detail.icon;
-                _listItemList.Add(listItem);
-            }
-            
-            ScrollRectUpdate(objectMagnet.ground);
-        }
+        InstantiateListItems();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -74,7 +49,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(_listItem != null)
+        if(_listItem != null && _listItem.isInteractable)
         {
             scrollRect.vertical = false;
         }
@@ -87,7 +62,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
         {
             _isInstantiate = true;
             //_rectTransform.localScale = _originScale;
-            if (_isInstantiate && (_listItem != null))
+            if (_listItem != null)
             {
                 objectMagnet.InstantiateObject(_listItem.detail);
 
@@ -116,10 +91,6 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
     public void OnEndDrag(PointerEventData eventData)
     {
         scrollRect.vertical = true;
-
-        
-
-
         if(_isInstantiate)
         {
             _isInstantiate = false;
@@ -157,20 +128,67 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
         rotateCameraOnEvent.Invoke();
     }
 
+    private void InstantiateListItems()
+    {
+        if(objectMagnet != null)
+        {
+            _listItemList = new List<ListItem>();
+            _allDetails = objectMagnet.GetALlDetails();
+
+            foreach(Detail detail in _allDetails)
+            {
+                bool isInstalled = true;
+                foreach(PointParentConnector pPC in detail.points){
+                    if(pPC.IsInstalled == false){
+                        isInstalled = false;
+                        break;
+                    }
+                }
+                if(!isInstalled)
+                {
+                    GameObject itemList = Instantiate(listItemPrefab, contentPanel.transform, false);
+                    ListItem listItem = itemList.GetComponent<ListItem>();
+                    listItem.detail = detail;
+                    listItem.count = detail.CurrentCount;
+                    if(listItem.count == 1)
+                    {
+                        listItem.countText.enabled = false;
+                    }
+                    else
+                    {
+                        listItem.countText.text = listItem.count.ToString();
+                    }
+                    itemList.GetComponent<Image>().sprite = detail.icon;
+                    _listItemList.Add(listItem);
+                    ScrollRectUpdate(detail);
+                }
+            }
+        }
+    }
+    public void Restart()
+    {
+        for(int i =0; i < _listItemList.Count; i++)
+        {
+            Destroy(_listItemList[i].gameObject);
+        }
+        _listItemList.Clear();
+        InstantiateListItems();
+    }
+
     public void ScrollRectUpdate(Detail detail)
     {
-        List<Detail> openDetailList = objectMagnet.GetAvailableDetails();
+        List<Detail> _availableDetails = objectMagnet.GetAvailableDetails();
         List<ListItem> openListItem = new List<ListItem>();
 
-        foreach (Detail openDetail in openDetailList)
+        foreach (Detail availableDetail in _availableDetails)
         {
             foreach(ListItem listItem in _listItemList)
             {   
-                listItem.enabled = false;
+                listItem.isInteractable = false;
                 listItem.image.color = _disableColor;
                 listItem.countText.color = _disableColor;
                 
-                if(openDetail == listItem.detail)
+                if(availableDetail == listItem.detail)
                 {
                     openListItem.Add(listItem);
                 }
@@ -178,7 +196,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
         }
         foreach(ListItem listItem in openListItem)
         {
-            listItem.enabled = true;
+            listItem.isInteractable = true;
             listItem.image.color = _enableColor;
             listItem.countText.color = _enableColor;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
+
 [Serializable]
 public class Detail : MonoBehaviour
 {
@@ -10,19 +11,32 @@ public class Detail : MonoBehaviour
     public List<bool> showPointList = new List<bool>();  
     public List<bool> showParentsList = new List<bool>();  
     #endif
-    public float count = 1;
+    
+    public int count = 1;
     public GameObject _prefab;
     public Sprite icon;
+    public bool isRoot;
 
-    private float _count = 0;
+    private int _currentCount = 0;
     private bool _installed;
 
     private void Awake()
     {
-        _count = count;
+        //_currentCount = count;
     }
     //TODO Make a integer field in inspector
 
+    public int CurrentCount
+    {
+        get
+        {
+            return _currentCount;
+        }
+        set
+        {
+            _currentCount = value;
+        }
+    }
 
     public List<PointParentConnector> points = new List<PointParentConnector>();
 
@@ -37,29 +51,31 @@ public class Detail : MonoBehaviour
         get => points;
     }
 
-    public void Reset(){
-        _count = count;
+    public void Reset()
+    {
+        _currentCount = count;
         foreach(PointParentConnector pointParConn in points)
         {
             pointParConn.Uninstall();
         }
     }
-    
 
-    public bool IsLastDetail(){
-        if(_count == 0)
+    public bool IsLastDetail()
+    {
+        if(_currentCount == 0)
         {
-            _count = count;
+            _currentCount = count;
         }
-        if(_count == 1)
+        if(_currentCount == 1)
         {
-            _count = _count - 1;
+            _currentCount = _currentCount - 1;
             return true;
         }
         else
         {
-            _count = _count - 1;
+            _currentCount = _currentCount - 1;
             return false;
         }
     }
+
 }

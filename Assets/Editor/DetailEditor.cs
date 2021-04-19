@@ -1,7 +1,6 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-
 using UnityEngine;
 
 [CustomEditor(typeof(Detail))]
@@ -17,6 +16,7 @@ public class DetailEditor : Editor
     }       
     public override void OnInspectorGUI()
     {
+    
         serializedObject.Update();
         Detail detail = (Detail) target;
         showPointList = detail.showPointList;
@@ -246,7 +246,7 @@ public class DetailEditor : Editor
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Count");
-        detail.count = EditorGUILayout.FloatField(detail.count);
+        detail.count = EditorGUILayout.IntField(detail.count);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
@@ -258,6 +258,12 @@ public class DetailEditor : Editor
         EditorGUILayout.LabelField("Icon");
         detail.icon = (Sprite)EditorGUILayout.ObjectField(detail.icon, typeof(Sprite), true);
         EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Is Root");
+        detail.isRoot = EditorGUILayout.Toggle(detail.isRoot);
+        EditorGUILayout.EndHorizontal();
+
         if( EditorGUI.EndChangeCheck() ) {
             EditorUtility.SetDirty(detail);
         }

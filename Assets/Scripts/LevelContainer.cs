@@ -6,25 +6,46 @@ public class LevelContainer : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]
-    private List<Detail> level;    
-    public List<Detail> _currentLevel;
+    private List<Detail> _level;    
+    [HideInInspector]
+    //public List<Detail> _currentLevel;
 
-    private void Start() 
+    public static LevelContainer currentLevelContainer;
+
+    private void Awake() 
     {
-        if(_currentLevel == null)
+        //_currentLevel = new List<Detail>(_level);
+/*         foreach(Detail detail in _currentLevel)
         {
-            _currentLevel = new List<Detail>(level);
-        }
+            detail.CurrentCount = detail.count;
+        } */
+        currentLevelContainer = this;
     }
+    
 
     public List<Detail> Reset()
     {
-            _currentLevel = new List<Detail>(level);
-            foreach(Detail detail in _currentLevel)
-            {
-                detail.Reset();
-            }
-            return _currentLevel;
-        
+        foreach(Detail detail in _level)
+        {
+            detail.Reset();
+        }
+        return new List<Detail>(_level);
+    }
+
+    public List<Detail> GetLoadLevel()
+    {
+        if(SaveLevel.LoadGame())
+        {
+            return GetCurrentLevel();
+        }
+        else
+        {
+            return Reset();
+        }
+    }
+
+    public List<Detail> GetCurrentLevel()
+    {
+        return new List<Detail>(_level);
     }
 }

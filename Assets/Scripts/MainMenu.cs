@@ -5,8 +5,30 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-
-    public void Play(){
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    public GameObject tapToPlayGO;
+    public GameObject playButton;
+    public GameObject scrollRect;
+    public GameObject miniHouse;
+    public void FirstTap()
+    {
+        tapToPlayGO.SetActive(false);
+        miniHouse.SetActive(false);
+        playButton.SetActive(true);
+        scrollRect.SetActive(true);
     }
+    public void Play(){
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        StartCoroutine(LoadAsync());
+    }
+
+    IEnumerator LoadAsync(){
+        AsyncOperation asyncLoadOperation  = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        //asyncLoadOperation.allowSceneActivation = false;
+        while(!asyncLoadOperation.isDone){
+            yield return null;
+        }
+        
+    }
+
+
 }

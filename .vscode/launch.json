@@ -4,10 +4,12 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+        
         {
             "name": "Unity Editor",
             "type": "unity",
-            "path": "/c:/Users/Антон/PingTown(test)/Library/EditorInstance.json",
+            "path": "/c:/Users/Anton/PingTown(test)/Library/EditorInstance.json",
             "request": "launch"
         },
         {

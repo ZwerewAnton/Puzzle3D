@@ -126,10 +126,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showPointList: 01
-  showParentsList: 00
+  showParentsList: 01
   count: 1
   _prefab: {fileID: 5291858792870022000}
   icon: {fileID: 0}
+  isRoot: 1
   points:
   - showParentDetailList: 
     point:

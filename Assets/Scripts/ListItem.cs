@@ -13,8 +13,8 @@ public class ListItem : MonoBehaviour
      public Detail detail;
      public TMP_Text countText;
      public Image image;
-
-     bool isInteractable = false;
+     [HideInInspector]
+     public bool isInteractable = false;
      
 
 

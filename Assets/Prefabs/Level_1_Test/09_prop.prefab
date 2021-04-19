@@ -171,6 +171,7 @@ MonoBehaviour:
   count: 4
   _prefab: {fileID: 5442263602904640269}
   icon: {fileID: 982040766770604714, guid: 0f62dc69e644a2f40a46e693628b6fc6, type: 3}
+  isRoot: 0
   points:
   - showParentDetailList: 01
     point:
@@ -210,7 +211,7 @@ MonoBehaviour:
         Rotation: {x: 0, y: 0, z: 0}
       - Position: {x: 0.85, y: 5.65, z: -3.35}
         Rotation: {x: -0, y: -0, z: -0}
-  - showParentDetailList: 01
+  - showParentDetailList: 0101
     point:
       Position: {x: 2.95, y: 1, z: -8.9}
       Rotation: {x: -0, y: 180, z: -0}
@@ -223,4 +224,11 @@ MonoBehaviour:
       - Position: {x: 0, y: 0, z: 0}
         Rotation: {x: 0, y: 0, z: 0}
       - Position: {x: 0.85, y: 5.65, z: -3.35}
+        Rotation: {x: -0, y: -0, z: -0}
+    - checkToogleList: 01
+      showParentPointList: 01
+      parentDetail: {fileID: -8516924141718755286, guid: e00fca25d7746254e8be2b55b4818e56,
+        type: 3}
+      parentPointList:
+      - Position: {x: 0.85, y: 4.9, z: -3.55}
         Rotation: {x: -0, y: -0, z: -0}
