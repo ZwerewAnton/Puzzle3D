@@ -88,4 +88,7 @@ public class UIMainMenuScrollRectController : MonoBehaviour
             scrollRect.inertia = true;
         }
     }
+    public int GetLevelID(){
+        return _selectedPanID;
+    }
 }

@@ -18,18 +18,21 @@ public static class SaveLevel
         loadDetailList  = new List<Detail>(levelContainer._currentLevel);
     } */
     //public static LevelContainer savedGame = new LevelContainer();
-
+    public static int levelID;
     private static string folderPath = Path.Combine(Application.persistentDataPath, "saves");
-    private static string savePath = Path.Combine(folderPath + "gamesave.save");
 
-    private static Level CreateSaveObject(List <Detail> _allDetails)
+    private static string saveFile = levelID.ToString() + "_gamesave.save";
+    private static string savePath = Path.Combine(folderPath + saveFile);
+
+    private static LevelSaver CreateSaveObject(List <Detail> _allDetails)
     {
-        Level level = new Level();
-        //List<Detail> _allDetails = objectMagnet.detailsList;
-        
-
-        foreach(var detail in _allDetails)
+        LevelSaver level = new LevelSaver();
+        bool isInstalled;
+        float installedDetailsCount = 0;
+        //level.percent = _allDetails
+        foreach(Detail detail in _allDetails)
         {
+            isInstalled = true;
             DetailSaver detailSav = new DetailSaver();
 
             detailSav.detailName = detail.name;
@@ -43,13 +46,20 @@ public static class SaveLevel
                 PointParentConnectorSaver pPCSaver = new PointParentConnectorSaver();
 
                 pPCSaver._isInstalled = pointPC.IsInstalled;
+                if(!pointPC.IsInstalled || !detail.isRoot)
+                {
+                    isInstalled = false;
+                }
 
                 pPCSaverList.Add(pPCSaver);
             }
-            
+            if(isInstalled)
+            {
+                installedDetailsCount++;
+            }
             level.detailList.Add(detailSav);
         }
-
+        level.percent = Mathf.Round((installedDetailsCount/_allDetails.Count)*100);
         return level;
     }
 
@@ -57,7 +67,7 @@ public static class SaveLevel
     {
         //savedGames.Add(Game.current);
         //Debug.Log(LevelContainer.currentLevel);
-        Level level = CreateSaveObject(LevelContainer.currentLevelContainer.GetCurrentLevel());
+        LevelSaver level = CreateSaveObject(LevelContainer.currentLevelContainer.GetCurrentLevel());
         BinaryFormatter bf = new BinaryFormatter();
         if(!Directory.Exists(folderPath))
         {
@@ -75,7 +85,7 @@ public static class SaveLevel
             List<Detail> loadDetailList  = LevelContainer.currentLevelContainer.GetCurrentLevel();
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(savePath, FileMode.Open);
-            Level save = (Level)bf.Deserialize(file);
+            LevelSaver save = (LevelSaver)bf.Deserialize(file);
             file.Close();
 
             foreach(var detail in save.detailList)

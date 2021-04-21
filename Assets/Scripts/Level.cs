@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Level
+public class LevelSaver
 {
     //public static Level current;
     public List<DetailSaver> detailList = new List<DetailSaver>();

@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class LevelContainer : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]
     private List<Detail> _level;    
-    [HideInInspector]
-    //public List<Detail> _currentLevel;
+    [SerializeField]
+    private List<Level> _level1;
 
     public static LevelContainer currentLevelContainer;
 
     private void Awake() 
     {
+        _level = _level1[SaveLevel.levelID].details;
         //_currentLevel = new List<Detail>(_level);
 /*         foreach(Detail detail in _currentLevel)
         {
@@ -48,4 +50,11 @@ public class LevelContainer : MonoBehaviour
     {
         return new List<Detail>(_level);
     }
+}
+
+[Serializable]
+public class Level
+{
+    public float percent = 0f;
+    public List<Detail> details = new List<Detail>();
 }

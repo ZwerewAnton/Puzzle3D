@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     public GameObject playButton;
     public GameObject scrollRect;
     public GameObject miniHouse;
+    public UIMainMenuScrollRectController scrollController;
     public void FirstTap()
     {
         tapToPlayGO.SetActive(false);
@@ -18,6 +19,7 @@ public class MainMenu : MonoBehaviour
     }
     public void Play(){
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SaveLevel.levelID = scrollController.GetLevelID();
         StartCoroutine(LoadAsync());
     }
 
@@ -28,6 +30,10 @@ public class MainMenu : MonoBehaviour
             yield return null;
         }
         
+    }
+    public void LoadAnimation()
+    {
+
     }
 
 
