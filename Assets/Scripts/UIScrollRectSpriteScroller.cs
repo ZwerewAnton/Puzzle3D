@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public float pointerScale = 1.1f;
     public float dragDistance = 70f;
@@ -15,11 +15,6 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
     public GameObject listItemPrefab;
 
     public LevelContainer levelContainer;
-    
-    [SerializeField] 
-    private UnityEvent rotateCameraOffEvent;
-    [SerializeField] 
-    private UnityEvent rotateCameraOnEvent;
 
     private Vector2 _startClickPosition;
     private bool _isInstantiate;
@@ -44,7 +39,6 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
     {
         _myObject = eventData.pointerCurrentRaycast.gameObject;
         _listItem = eventData.pointerCurrentRaycast.gameObject.GetComponent<ListItem>();
-        rotateCameraOffEvent.Invoke();
     }
     
     public void OnBeginDrag(PointerEventData eventData)
@@ -123,10 +117,6 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerUpHandler, IPoi
         //dropDetailEvent.Invoke();
     }
 
-    public void OnPointerUp(PointerEventData eventData)
-    { 
-        rotateCameraOnEvent.Invoke();
-    }
 
     private void InstantiateListItems()
     {

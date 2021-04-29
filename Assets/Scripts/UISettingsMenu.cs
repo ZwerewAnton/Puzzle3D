@@ -32,6 +32,7 @@ public class UISettingsMenu : MonoBehaviour
     public AudioSource gearSound;
 
     private Button settingButton;
+    private SceneLoader sceneLoader;
     public UISettingsMenuItem[] menuItems;
     private bool isExpanded;
 
@@ -41,6 +42,7 @@ public class UISettingsMenu : MonoBehaviour
 
     void Start()
     {
+        sceneLoader = GameObject.FindObjectOfType<SceneLoader>();
         itemsCount = transform.childCount - 1;/* 
         menuItems = new UISettingsMenuItem[itemsCount];
         for(int i = 0; i < itemsCount; i++){
@@ -85,23 +87,12 @@ public class UISettingsMenu : MonoBehaviour
             .From(Vector3.zero)
             .SetEase(rotationEase);
         
-        /* 
-        for(int i = 0; i < itemsCount; i++){
-            if(isExpanded){
-                menuItems[i].trans.position = settingButtonPosition + _spacing * (i+1);
-            }
-            else{
-                menuItems[i].trans.position = settingButtonPosition;
-            }
-        } */
     }
 
     public void Music(){
         
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void Home(){
+        sceneLoader.LoadScene();
     }
 }

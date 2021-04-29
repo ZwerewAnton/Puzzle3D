@@ -74,6 +74,16 @@ public class ObjectMagnet : MonoBehaviour
         // Convert it to world points
         return cam.ScreenToWorldPoint(mousePoint);
     }
+    private Vector3 GetTouchAsWorldPoint()
+    {
+        Touch touch = Input.GetTouch(0);
+        //touch.fingerId;
+        Vector3 touchData = Input.GetTouch(0).position;
+        
+        Vector3 touchPoint = touchData + objectOffset;
+        touchPoint.z = mZCoord;
+        return cam.ScreenToWorldPoint(touchPoint);
+    }
 
     public void InstantiateObject(Detail instDetail)
     {
@@ -86,7 +96,8 @@ public class ObjectMagnet : MonoBehaviour
         _instObject.transform.position = Vector3.zero;
         mZCoord = cam.WorldToScreenPoint(_instObject.transform.position).z;
 
-        target = Instantiate(_instObject, GetMouseAsWorldPoint(), Quaternion.identity);
+        //target = Instantiate(_instObject, GetMouseAsWorldPoint(), Quaternion.identity);
+        target = Instantiate(_instObject, GetTouchAsWorldPoint(), Quaternion.identity);
 
         _allPoints = _instDetail.GetPoints;
         
@@ -138,6 +149,8 @@ public class ObjectMagnet : MonoBehaviour
 
     public bool InstalOrDropObject()
     {
+        
+        //Input.multiTouchEnabled = true;
         bool isDetailInstalled = false;
         _isInstantiate = false;
 
@@ -334,8 +347,10 @@ public class ObjectMagnet : MonoBehaviour
         } 
         //TODO Invert or check another thing
         if (_isInstantiate)
-        {
-            TransformPosition(target.transform.position, GetMouseAsWorldPoint(), magnDist);
+        {   
+            //Input.multiTouchEnabled = false;
+            //TransformPosition(target.transform.position, GetMouseAsWorldPoint(), magnDist);
+            TransformPosition(target.transform.position, GetTouchAsWorldPoint(), magnDist);
             if (Input.GetMouseButton(1))
             {
                 if (_isConnect)

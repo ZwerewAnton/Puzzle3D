@@ -10,6 +10,12 @@ public class MainMenu : MonoBehaviour
     public GameObject scrollRect;
     public GameObject miniHouse;
     public UIMainMenuScrollRectController scrollController;
+    private SceneLoader sceneLoader;
+    
+    private void Start()
+    {
+        sceneLoader = GameObject.FindObjectOfType<SceneLoader>();
+    }
     public void FirstTap()
     {
         tapToPlayGO.SetActive(false);
@@ -17,23 +23,10 @@ public class MainMenu : MonoBehaviour
         playButton.SetActive(true);
         scrollRect.SetActive(true);
     }
-    public void Play(){
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        SaveLevel.levelID = scrollController.GetLevelID();
-        StartCoroutine(LoadAsync());
-    }
-
-    IEnumerator LoadAsync(){
-        AsyncOperation asyncLoadOperation  = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
-        //asyncLoadOperation.allowSceneActivation = false;
-        while(!asyncLoadOperation.isDone){
-            yield return null;
-        }
-        
-    }
-    public void LoadAnimation()
+    public void Play()
     {
-
+        SaveLevel.levelID = scrollController.GetLevelID();
+        sceneLoader.LoadScene();
     }
 
 
