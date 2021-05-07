@@ -8,21 +8,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 [Serializable]
 public static class SaveLevel
 {
-    //public ObjectMagnet objectMagnet;
-    //public LevelContainer levelContainer;
-    //List<Detail> loadDetailList;
-    //byte Progress;
-    //public List<Level> levelList = new List<Level>();
-/*     private void Awake() {
-        
-        loadDetailList  = new List<Detail>(levelContainer._currentLevel);
-    } */
-    //public static LevelContainer savedGame = new LevelContainer();
     public static int levelID;
-    private static string folderPath = Path.Combine(Application.persistentDataPath, "saves");
-
-    private static string saveFile = levelID.ToString() + "_gamesave.save";
-    private static string savePath = Path.Combine(folderPath + saveFile);
+    private static string _folderPath = Path.Combine(Application.persistentDataPath, "saves");
+    private static string _saveFile = levelID.ToString() + "_gamesave.save";
+    private static string _savePath = Path.Combine(_folderPath + _saveFile);
 
     private static LevelSaver CreateSaveObject(List <Detail> _allDetails)
     {
@@ -69,22 +58,22 @@ public static class SaveLevel
         //Debug.Log(LevelContainer.currentLevel);
         LevelSaver level = CreateSaveObject(LevelContainer.currentLevelContainer.GetCurrentLevel());
         BinaryFormatter bf = new BinaryFormatter();
-        if(!Directory.Exists(folderPath))
+        if(!Directory.Exists(_folderPath))
         {
-            Directory.CreateDirectory(folderPath);
+            Directory.CreateDirectory(_folderPath);
         }
-        FileStream file = File.Create(savePath);
+        FileStream file = File.Create(_savePath);
         bf.Serialize(file, level);
         file.Close();
     }
 
     public static bool LoadGame()
     { 
-        if (Directory.Exists(folderPath) && File.Exists(savePath))
+        if (Directory.Exists(_folderPath) && File.Exists(_savePath))
         {
             List<Detail> loadDetailList  = LevelContainer.currentLevelContainer.GetCurrentLevel();
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(savePath, FileMode.Open);
+            FileStream file = File.Open(_savePath, FileMode.Open);
             LevelSaver save = (LevelSaver)bf.Deserialize(file);
             file.Close();
 
@@ -108,8 +97,6 @@ public static class SaveLevel
             Debug.Log("Game Loaded");
             Debug.Log(loadDetailList.Count);
             return true;
-            //Debug.Log(SaveLevel.savedGame.GetLevel().Count);
-            //SaveLevel.savedGame._currentLevel = loadDetailList;
         }
         else
         {
@@ -120,20 +107,10 @@ public static class SaveLevel
 
     public static void DeleteSaveFile()
     {
-        //string path = Application.persistentDataPath + "/saves/";
-        //DirectoryInfo directory = new DirectoryInfo(folderPath);
-        //directory.Delete(true);
-        //Directory.CreateDirectory(folderPath);
-        if (Directory.Exists(folderPath) && File.Exists(savePath))
+        if (Directory.Exists(_folderPath) && File.Exists(_savePath))
         {
-            File.Delete(savePath);
+            File.Delete(_savePath);
         }
     }
-    
-/*     public static List<Detail> GetLoadDetailList()
-    {
-        LoadGame();
-        return loadDetailList;
-    } */
-    
+
 }

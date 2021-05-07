@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -12,23 +13,31 @@ public class SceneLoader : MonoBehaviour
     private const float MIN_TIME_TO_SHOW = 1f;
     private AsyncOperation currentLoadingOperation;
     private float timeElapsed;
-    private int nextSceneIndex;
+    private int _nextSceneIndex;
+    [SerializeField] private UnityEvent _onStartLoading;
+    [SerializeField] private UnityEvent _onCompleteLoading;
+    private bool _isSecondLaunch;
     // Start is called before the first frame update
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-        
     }
-    public void LoadScene()
+    public void LoadNextScene()
     {
         if(SceneManager.GetActiveScene().buildIndex == 1)
         {
-            nextSceneIndex = 0;
+            _nextSceneIndex = 0;
+            _isSecondLaunch = true;
         }
         else
         {
-            nextSceneIndex = 1;
+            _nextSceneIndex = 1;
         }
+        progressBar.value = 0;
+        StartCoroutine(StartLoad());
+    }
+    public void LoadMenuScene(){
+        
         progressBar.value = 0;
         StartCoroutine(StartLoad());
     }
@@ -36,10 +45,11 @@ public class SceneLoader : MonoBehaviour
 
     IEnumerator StartLoad()
     {
+        _onStartLoading.Invoke();
         loadingScreen.SetActive(true);
         yield return StartCoroutine(FadeLoadingScreen(1, 1));
         timeElapsed += Time.deltaTime;
-        currentLoadingOperation = SceneManager.LoadSceneAsync(nextSceneIndex);
+        currentLoadingOperation = SceneManager.LoadSceneAsync(_nextSceneIndex);
         while (!currentLoadingOperation.isDone && timeElapsed <= MIN_TIME_TO_SHOW)
         {
             progressBar.value = Mathf.Clamp01(currentLoadingOperation.progress / 0.9f);
@@ -48,6 +58,7 @@ public class SceneLoader : MonoBehaviour
 
         yield return StartCoroutine(FadeLoadingScreen(0, 1));
         loadingScreen.SetActive(false);
+        _onCompleteLoading.Invoke();
     }
 
     IEnumerator FadeLoadingScreen(float targetValue, float duration)
@@ -62,5 +73,9 @@ public class SceneLoader : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = targetValue;
+    }
+
+    public bool IsSecondLauch(){
+        return _isSecondLaunch;
     }
 }

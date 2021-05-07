@@ -16,6 +16,7 @@ public class CameraMovement : MonoBehaviour
     public int yMaxLimit = 80;
     public float zoomRate = 10.0f;
     public float zoomDampening = 5.0f;
+    public float doubleTapTime = 0.5f;
  
     private float _xDeg = 0.0f;
     private float _yDeg = 0.0f;
@@ -28,6 +29,8 @@ public class CameraMovement : MonoBehaviour
     private Vector3 _downClickPosition;
     private bool _isClicked;
     private int currentFingerId;
+    private int _tapCount;
+    private float _newTime;
  
  
     void Start() { Init(); }
@@ -54,6 +57,7 @@ public class CameraMovement : MonoBehaviour
         _rotation = cam.transform.rotation;
         _currentRotation = cam.transform.rotation;
         _desiredRotation = cam.transform.rotation;
+        _tapCount = 0;
  
         _xDeg = Vector3.Angle(Vector3.right, cam.transform.right);
         _yDeg = Vector3.Angle(Vector3.up, cam.transform.up);
@@ -88,14 +92,17 @@ public class CameraMovement : MonoBehaviour
             _isClicked = false;
         }
         #endif
-        if(Input.touchSupported)
+        if(true || Input.touchSupported)
         {
+            
+
+            
             if(Input.touchCount == 1){
                 if(!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
                 {
                     Touch touch = Input.GetTouch(0);
-                    if(touch.phase == TouchPhase.Began){
-                            
+                    if(touch.phase == TouchPhase.Began)
+                    {        
                         _isClicked = true;
                         _downClickPosition = cam.ScreenToViewportPoint(touch.position);
                         currentFingerId = touch.fingerId;
@@ -107,29 +114,62 @@ public class CameraMovement : MonoBehaviour
                         _yDeg += pos.y * ySpeed;
                         _yDeg = ClampAngle(_yDeg, yMinLimit, yMaxLimit);
                     }
+                    else if (touch.phase == TouchPhase.Ended)
+                    {
+                        _tapCount += 1;
+                    }
+
+                    if (_tapCount == 1)
+                    {
+                        _newTime = Time.time + doubleTapTime;
+                    }
+                    else if(_tapCount == 2 && Time.time <= _newTime)
+                    {
+                        _tapCount = 0;
+                    }
                 }
-                else{
+                else
+                {
                     _isClicked = false;
                 }
-
-
+                
+                _downClickPosition = cam.ScreenToViewportPoint(Input.GetTouch(0).position);
             }
             else if(Input.touchCount == 2)
             {
                 Debug.Log("2");
-                Touch tFirst = Input.GetTouch(0);
-                Touch tSecond = Input.GetTouch(1);
-                
-                Vector2 tZeroPrevious = tFirst.position - tFirst.deltaPosition;
-                Vector2 tOnePrevious = tSecond.position - tSecond.deltaPosition;
-                
-                float oldTouchDistance = Vector2.Distance (tZeroPrevious, tOnePrevious);
-                float currentTouchDistance = Vector2.Distance (tFirst.position, tSecond.position);
+                Touch tZero = Input.GetTouch(0);
+                Touch tOne = Input.GetTouch(1);
+                if(!EventSystem.current.IsPointerOverGameObject(tZero.fingerId) && 
+                    !EventSystem.current.IsPointerOverGameObject(tOne.fingerId))
+                    {
+                        Vector2 tZeroPrevious = tZero.position - tZero.deltaPosition;
+                        Vector2 tOnePrevious = tOne.position - tOne.deltaPosition;
+                        
+                        //float oldTouchDistance = Vector2.Distance (tZeroPrevious, tOnePrevious);
+                        //float currentTouchDistance = Vector2.Distance (tZero.position, tOne.position);
 
-                // get offset value
-                float deltaDistance = oldTouchDistance - currentTouchDistance;
-                _desiredDistance -= deltaDistance * zoomRate;
+                        // get offset value
+                        //float deltaDistance = oldTouchDistance - currentTouchDistance;
+                        //_desiredDistance = deltaDistance * zoomRate;
 
+                        float prevTouchDeltaMag = (tZeroPrevious - tOnePrevious).magnitude;
+        
+                        float TouchDeltaMag = (tZero.position - tOne.position).magnitude;
+            
+            
+            
+                        float deltaMagDiff = prevTouchDeltaMag - TouchDeltaMag;
+        
+                        _desiredDistance += deltaMagDiff * Time.deltaTime * zoomRate * 0.0025f * Mathf.Abs(_desiredDistance);
+                    }
+                
+
+            }
+            
+            if (Time.time > _newTime) 
+            {
+                _tapCount = 0;
             }
             _desiredRotation = Quaternion.Euler(_yDeg, _xDeg, 0);
             _currentRotation = cam.transform.rotation;
@@ -142,7 +182,6 @@ public class CameraMovement : MonoBehaviour
             _position = target.position - (_rotation * Vector3.forward * _currentDistance)  - targetOffset;
             cam.transform.position = _position;
             
-            _downClickPosition = cam.ScreenToViewportPoint(Input.GetTouch(0).position);
 
         }
 
@@ -170,4 +209,5 @@ public class CameraMovement : MonoBehaviour
             angle -= 360;
         return Mathf.Clamp(angle, min, max);
     }
+
 }

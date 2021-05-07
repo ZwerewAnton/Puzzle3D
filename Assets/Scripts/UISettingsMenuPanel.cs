@@ -5,15 +5,13 @@ using UnityEngine.UI;
 using UnityEngine.Audio;
 using DG.Tweening;
 
-public class UISettingsMenu : MonoBehaviour
+public class UISettingsMenuPanel : MonoBehaviour
 {
     [Header ("space between menu items")]
     [SerializeField] 
     private Vector2 _spacing;
     [SerializeField] 
     private Vector2 _offset;
-    private const float AUDIOOFFVALUE = -80f;
-    private const float AUDIOONVALUE = 0f;
 
     [Space]
     [Header ("Setting button rotation")]
@@ -38,15 +36,12 @@ public class UISettingsMenu : MonoBehaviour
 
 
     [SerializeField] private Button settingButton;
-    [SerializeField] private Button musicButton;
-    [SerializeField] private Button soundButton;
-    [SerializeField] private Button backButton;
-    [SerializeField] private Sprite musicOnSprite;
-    [SerializeField] private Sprite musicOffSprite;
-    [SerializeField] private Sprite soundOnSprite;
-    [SerializeField] private Sprite soundOffSprite;
     private SceneLoader sceneLoader;
-    public UISettingsMenuItem[] menuItems;
+    //public UISettingsMenuItem[] menuItems;
+    public Button[] menuButtons;
+    private RectTransform[] _buttonsTransform;
+    private Image[] _buttonsImage;
+
     private bool _isExpanded;
 
     private Vector2 settingButtonPosition;
@@ -62,11 +57,17 @@ public class UISettingsMenu : MonoBehaviour
     
     private void Awake()
     {
-        _musicButtonTransform = musicButton.gameObject.GetComponent<RectTransform>();
-        _soundButtonTransform = musicButton.gameObject.GetComponent<RectTransform>();
-        _backButtonTransform = musicButton.gameObject.GetComponent<RectTransform>();
+        _buttonsTransform = new RectTransform[menuButtons.Length];
+        _buttonsImage = new Image[menuButtons.Length];
+
+        for (int i = 0; i < menuButtons.Length; i++)
+        {
+            _buttonsTransform[i] = menuButtons[i].gameObject.GetComponent<RectTransform>();
+            _buttonsImage[i] = menuButtons[i].gameObject.GetComponent<Image>();
+        }
+
         //PlayerPrefs.DeleteAll();
-        for (int i = 0; i < playerPrefsKey.Length; i++)
+/*         for (int i = 0; i < playerPrefsKey.Length; i++)
         {
             if (!PlayerPrefs.HasKey(playerPrefsKey[i]))
             {
@@ -89,7 +90,7 @@ public class UISettingsMenu : MonoBehaviour
                     isAudioOn[i] = true;
                 }
             }
-        }
+        } */
     }
 
     void Start()
@@ -104,9 +105,11 @@ public class UISettingsMenu : MonoBehaviour
         ResetPosition();
     }
     
-    private void ResetPosition(){
-        for(int i = 0; i < itemsCount; i++){
-            menuItems[i].trans.localPosition =  settingButtonPosition;
+    private void ResetPosition()
+    {
+        for(int i = 0; i < itemsCount; i++)
+        {
+            _buttonsTransform[i].transform.localPosition =  settingButtonPosition;
         }
     }
 
@@ -117,16 +120,16 @@ public class UISettingsMenu : MonoBehaviour
         {
             for(int i = 0; i < itemsCount; i++)
             {
-                menuItems[i].trans.DOLocalMove(settingButtonPosition, collapseDuration).SetEase(collapseEase);   
-                menuItems[i].img.DOFade(0f, collapseFadeDuration);
+                _buttonsTransform[i].transform.DOLocalMove(settingButtonPosition, collapseDuration).SetEase(collapseEase);   
+                _buttonsImage[i].DOFade(0f, collapseFadeDuration);
             }
         }
         else
         {
             for(int i = 0; i < itemsCount; i++)
             {
-                menuItems[i].trans.DOLocalMove(settingButtonPosition + _spacing * (i+1), expandDuration).SetEase(expandeEase);
-                menuItems[i].img.DOFade(1f, expandFadeDuration).From(0f);
+                _buttonsTransform[i].transform.DOLocalMove(settingButtonPosition + _spacing * (i+1), expandDuration).SetEase(expandeEase);
+                _buttonsImage[i].DOFade(1f, expandFadeDuration).From(0f);
             }
         }
         settingButton.transform
@@ -137,7 +140,7 @@ public class UISettingsMenu : MonoBehaviour
         _isExpanded = !_isExpanded;
     }
 
-    public void ToggleMusic()
+/*     public void ToggleMusic()
     {
         ToggleAudio(0);
     }
@@ -161,9 +164,10 @@ public class UISettingsMenu : MonoBehaviour
             isAudioOn[i] = true;
         }
         PlayerPrefs.Save ();
-    }
+    } */
 
-    public void Home(){
+    public void Home()
+    {
         sceneLoader.LoadNextScene();
     }
 }

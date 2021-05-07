@@ -10,14 +10,12 @@ public class UISettingsMenuItem : MonoBehaviour
     public Sprite offImg;
     public Sprite onImg;
     bool isOn;
-    [HideInInspector]
     public RectTransform trans;
 
     void Awake()
     {
         img = GetComponent<Image>();
         trans = (RectTransform)transform;
-        isOn = true;
     }
     public void Click(){
         if(isOn){
@@ -29,4 +27,6 @@ public class UISettingsMenuItem : MonoBehaviour
             isOn = true;
         }
     }
+    
+    
 }

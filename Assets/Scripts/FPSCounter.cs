@@ -26,8 +26,6 @@ public class FPSCounter : MonoBehaviour
         if(Input.touchCount > 0){
 
             _eventText.text = Input.GetTouch(0).deltaPosition.ToString() + " " + Input.GetTouch(0).phase.ToString();
-            Debug.Log(Input.GetTouch(0).deltaPosition);
-            Debug.Log(Input.GetTouch(0).deltaPosition.magnitude);
         }
         if (Time.unscaledTime > _timer)
         {
