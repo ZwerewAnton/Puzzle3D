@@ -75,7 +75,8 @@ public class SceneLoader : MonoBehaviour
         canvasGroup.alpha = targetValue;
     }
 
-    public bool IsSecondLauch(){
+    public bool IsSecondLauch()
+    {
         return _isSecondLaunch;
     }
 }

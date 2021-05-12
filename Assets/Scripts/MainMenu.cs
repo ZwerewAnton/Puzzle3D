@@ -12,6 +12,9 @@ public class MainMenu : MonoBehaviour
     public GameObject miniHouse;
     public GameObject settingsPanel;
     public UIMainMenuScrollRectController scrollController;
+    public AudioSource audioSource;
+    public AudioClip tapToPlayClip;
+    public AudioClip playClip;
     private SceneLoader sceneLoader;
     [SerializeField] private UnityEvent _onFirstTap;
     private MusicPlayer musicPlayer;
@@ -22,23 +25,35 @@ public class MainMenu : MonoBehaviour
         musicPlayer = GameObject.FindGameObjectWithTag("MusicPlayer").GetComponent<MusicPlayer>();
         if(sceneLoader.IsSecondLauch())
         {
-            FirstTap();
+            HideStartScreen();
         }
     }
     public void FirstTap()
     {
-        _onFirstTap.Invoke();
+        HideStartScreen();
+        PlayTapToPlayClip();
         musicPlayer.Play();
+    }
+    public void Play()
+    {
+        SaveLevel.levelID = scrollController.GetLevelID();
+        PlayStartGameClip();
+        sceneLoader.LoadNextScene();
+    }
+    private void HideStartScreen()
+    {
+        _onFirstTap.Invoke();
         tapToPlayGO.SetActive(false);
         miniHouse.SetActive(false);
         playButton.SetActive(true);
         scrollRect.SetActive(true);
         settingsPanel.SetActive(true);
     }
-    public void Play()
-    {
-        SaveLevel.levelID = scrollController.GetLevelID();
-        sceneLoader.LoadNextScene();
+    private void PlayTapToPlayClip(){
+        audioSource.PlayOneShot(tapToPlayClip);
+    }
+    private void PlayStartGameClip(){
+        audioSource.PlayOneShot(playClip);
     }
 
 

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 212887144956966305}
-  - component: {fileID: 396011959869592148}
+  - component: {fileID: 1347395661565718522}
   m_Layer: 0
-  m_Name: un2345titled-18
+  m_Name: 21_wing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702424199131066139}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.6, y: 5.25, z: -4.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &396011959869592148
+--- !u!114 &1347395661565718522
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,17 +41,616 @@ MonoBehaviour:
   m_GameObject: {fileID: 702424199131066139}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22fe0a9e3c4a4686a3e578db4b24ae88, type: 3}
+  m_Script: {fileID: 11500000, guid: bdabf2c9950e2414ca76ece2b6dd22b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _count: 1
-  _prefab: {fileID: 0}
-  icon: {fileID: 0}
+  showPointList: 00000101
+  showParentsList: 01010101
+  count: 2
+  _prefab: {fileID: 702424199131066139}
+  icon: {fileID: 755354218021896732, guid: 9e073231c8e859248b29398317c01481, type: 3}
+  isRoot: 0
   points:
-  - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
-    BaseList: []
-    BaseList1: []
+  - showParentDetailList: 01
+    point:
+      Position: {x: -6.6, y: 5.25, z: -4.15}
+      Rotation: {x: -0, y: -0, z: -0}
+    parentList:
+    - checkToogleList: 0101
+      showParentPointList: 0101
+      parentDetail: {fileID: 420921390005867431, guid: 333f099c527d6444aafdf7889ccb5d4d,
+        type: 3}
+      parentPointList:
+      - Position: {x: -5.42, y: 5.35, z: 0.5}
+        Rotation: {x: 0, y: 0, z: 0}
+      - Position: {x: -7.85, y: 5.35, z: 0.5}
+        Rotation: {x: -0, y: -0, z: -0}
+      parentPPCList: []
+  - showParentDetailList: 01
+    point:
+      Position: {x: -6.6, y: 10, z: 0.3499999}
+      Rotation: {x: 90, y: 0, z: 0}
+    parentList:
+    - checkToogleList: 0101
+      showParentPointList: 0101
+      parentDetail: {fileID: 420921390005867431, guid: 333f099c527d6444aafdf7889ccb5d4d,
+        type: 3}
+      parentPointList:
+      - Position: {x: -7.85, y: 5.35, z: 0.5}
+        Rotation: {x: -0, y: -0, z: -0}
+      - Position: {x: -5.42, y: 5.35, z: 0.5}
+        Rotation: {x: 0, y: 0, z: 0}
+      parentPPCList: []
+  - showParentDetailList: 01
+    point:
+      Position: {x: -6.6, y: 5.25, z: 5.1}
+      Rotation: {x: 180, y: 0, z: 0}
+    parentList:
+    - checkToogleList: 0101
+      showParentPointList: 0101
+      parentDetail: {fileID: 420921390005867431, guid: 333f099c527d6444aafdf7889ccb5d4d,
+        type: 3}
+      parentPointList:
+      - Position: {x: -7.85, y: 5.35, z: 0.5}
+        Rotation: {x: -0, y: -0, z: -0}
+      - Position: {x: -5.42, y: 5.35, z: 0.5}
+        Rotation: {x: 0, y: 0, z: 0}
+      - Position: {x: -7.85, y: 5.35, z: 0.5}
+        Rotation: {x: -0, y: -0, z: -0}
+      - Position: {x: -5.42, y: 5.35, z: 0.5}
+        Rotation: {x: 0, y: 0, z: 0}
+      parentPPCList:
+      - showParentDetailList: 01
+        point:
+          Position: {x: -7.85, y: 5.35, z: 0.5}
+          Rotation: {x: -0, y: -0, z: -0}
+        parentList:
+        - checkToogleList: 0000000001010101
+          showParentPointList: 0101010101010101
+          parentDetail: {fileID: 5296542806498421796, guid: 1289ed481081b634bbeb8625283a4ac4,
+            type: 3}
+          parentPointList:
+          - Position: {x: -7.7, y: 5.25, z: -2.4}
+            Rotation: {x: 0, y: 0, z: 0}
+          - Position: {x: -7.7, y: 8.25, z: 0.5}
+            Rotation: {x: 90, y: 0, z: 0}
+          - Position: {x: -7.7, y: 5.25, z: 3.3}
+            Rotation: {x: 180, y: 0, z: 0}
+          - Position: {x: -7.8, y: 2.45, z: 0.5}
+            Rotation: {x: -90, y: 0, z: 0}
+          - Position: {x: -7.8, y: 2.45, z: 0.5}
+            Rotation: {x: -90, y: 0, z: 0}
+          - Position: {x: -7.7, y: 5.25, z: 3.3}
+            Rotation: {x: 180, y: 0, z: 0}
+          - Position: {x: -7.7, y: 8.25, z: 0.5}
+            Rotation: {x: 90, y: 0, z: 0}
+          - Position: {x: -7.7, y: 5.25, z: -2.4}
+            Rotation: {x: 0, y: 0, z: 0}
+          parentPPCList:
+          - showParentDetailList: 01
+            point:
+              Position: {x: -7.8, y: 2.45, z: 0.5}
+              Rotation: {x: -90, y: 0, z: 0}
+            parentList:
+            - checkToogleList: 0001
+              showParentPointList: 0001
+              parentDetail: {fileID: 3055728268977500131, guid: f7f25d3d90525b944a7d3fb010151484,
+                type: 3}
+              parentPointList:
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              parentPPCList:
+              - showParentDetailList: 01
+                point:
+                  Position: {x: -7.75, y: 5.35, z: 0.45}
+                  Rotation: {x: 0, y: 0, z: 0}
+                parentList:
+                - checkToogleList: 01
+                  showParentPointList: 01
+                  parentDetail: {fileID: 3589374700149960009, guid: e09111dc8830e5649a7241858a65ecdb,
+                    type: 3}
+                  parentPointList:
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  parentPPCList:
+                  - showParentDetailList: 0101
+                    point:
+                      Position: {x: -6.7, y: 5.4, z: 0.45}
+                      Rotation: {x: -0, y: -0, z: -0}
+                    parentList:
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 1438883964882160279, guid: b55245fb808dda24d98b168499b429e5,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 7758408161884143510, guid: 1b914daa1cf23824e8778a57f3a64708,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+          - showParentDetailList: 01
+            point:
+              Position: {x: -7.7, y: 5.25, z: 3.3}
+              Rotation: {x: 180, y: 0, z: 0}
+            parentList:
+            - checkToogleList: 0001
+              showParentPointList: 0001
+              parentDetail: {fileID: 3055728268977500131, guid: f7f25d3d90525b944a7d3fb010151484,
+                type: 3}
+              parentPointList:
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              parentPPCList:
+              - showParentDetailList: 01
+                point:
+                  Position: {x: -7.75, y: 5.35, z: 0.45}
+                  Rotation: {x: 0, y: 0, z: 0}
+                parentList:
+                - checkToogleList: 01
+                  showParentPointList: 01
+                  parentDetail: {fileID: 3589374700149960009, guid: e09111dc8830e5649a7241858a65ecdb,
+                    type: 3}
+                  parentPointList:
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  parentPPCList:
+                  - showParentDetailList: 0101
+                    point:
+                      Position: {x: -6.7, y: 5.4, z: 0.45}
+                      Rotation: {x: -0, y: -0, z: -0}
+                    parentList:
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 1438883964882160279, guid: b55245fb808dda24d98b168499b429e5,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 7758408161884143510, guid: 1b914daa1cf23824e8778a57f3a64708,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+          - showParentDetailList: 01
+            point:
+              Position: {x: -7.7, y: 8.25, z: 0.5}
+              Rotation: {x: 90, y: 0, z: 0}
+            parentList:
+            - checkToogleList: 0001
+              showParentPointList: 0001
+              parentDetail: {fileID: 3055728268977500131, guid: f7f25d3d90525b944a7d3fb010151484,
+                type: 3}
+              parentPointList:
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              parentPPCList:
+              - showParentDetailList: 01
+                point:
+                  Position: {x: -7.75, y: 5.35, z: 0.45}
+                  Rotation: {x: 0, y: 0, z: 0}
+                parentList:
+                - checkToogleList: 01
+                  showParentPointList: 01
+                  parentDetail: {fileID: 3589374700149960009, guid: e09111dc8830e5649a7241858a65ecdb,
+                    type: 3}
+                  parentPointList:
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  parentPPCList:
+                  - showParentDetailList: 0101
+                    point:
+                      Position: {x: -6.7, y: 5.4, z: 0.45}
+                      Rotation: {x: -0, y: -0, z: -0}
+                    parentList:
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 1438883964882160279, guid: b55245fb808dda24d98b168499b429e5,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 7758408161884143510, guid: 1b914daa1cf23824e8778a57f3a64708,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+          - showParentDetailList: 01
+            point:
+              Position: {x: -7.7, y: 5.25, z: -2.4}
+              Rotation: {x: 0, y: 0, z: 0}
+            parentList:
+            - checkToogleList: 0001
+              showParentPointList: 0101
+              parentDetail: {fileID: 3055728268977500131, guid: f7f25d3d90525b944a7d3fb010151484,
+                type: 3}
+              parentPointList:
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              parentPPCList:
+              - showParentDetailList: 01
+                point:
+                  Position: {x: -7.75, y: 5.35, z: 0.45}
+                  Rotation: {x: 0, y: 0, z: 0}
+                parentList:
+                - checkToogleList: 01
+                  showParentPointList: 01
+                  parentDetail: {fileID: 3589374700149960009, guid: e09111dc8830e5649a7241858a65ecdb,
+                    type: 3}
+                  parentPointList:
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  parentPPCList:
+                  - showParentDetailList: 0101
+                    point:
+                      Position: {x: -6.7, y: 5.4, z: 0.45}
+                      Rotation: {x: -0, y: -0, z: -0}
+                    parentList:
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 1438883964882160279, guid: b55245fb808dda24d98b168499b429e5,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 7758408161884143510, guid: 1b914daa1cf23824e8778a57f3a64708,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+      - showParentDetailList: 01
+        point:
+          Position: {x: -5.42, y: 5.35, z: 0.5}
+          Rotation: {x: 0, y: 0, z: 0}
+        parentList:
+        - checkToogleList: 0101010100000000
+          showParentPointList: 0101010101010101
+          parentDetail: {fileID: 5296542806498421796, guid: 1289ed481081b634bbeb8625283a4ac4,
+            type: 3}
+          parentPointList:
+          - Position: {x: -5.27, y: 5.25, z: -2.4}
+            Rotation: {x: -0, y: 0, z: 0}
+          - Position: {x: -5.27, y: 8.25, z: 0.5}
+            Rotation: {x: 90, y: 0, z: 0}
+          - Position: {x: -5.38, y: 5.25, z: 3.3}
+            Rotation: {x: 180, y: 0, z: 0}
+          - Position: {x: -5.48, y: 2.45, z: 0.5}
+            Rotation: {x: -90, y: 0, z: 0}
+          parentPPCList: []
+  - showParentDetailList: 01
+    point:
+      Position: {x: -6.6, y: 0.627, z: 0.35}
+      Rotation: {x: -90, y: 0, z: 0}
+    parentList:
+    - checkToogleList: 0101
+      showParentPointList: 0101
+      parentDetail: {fileID: 420921390005867431, guid: 333f099c527d6444aafdf7889ccb5d4d,
+        type: 3}
+      parentPointList:
+      - Position: {x: -7.85, y: 5.35, z: 0.5}
+        Rotation: {x: -0, y: -0, z: -0}
+      - Position: {x: -5.42, y: 5.35, z: 0.5}
+        Rotation: {x: 0, y: 0, z: 0}
+      - Position: {x: -5.42, y: 5.35, z: 0.5}
+        Rotation: {x: 0, y: 0, z: 0}
+      - Position: {x: -7.85, y: 5.35, z: 0.5}
+        Rotation: {x: -0, y: -0, z: -0}
+      parentPPCList:
+      - showParentDetailList: 01
+        point:
+          Position: {x: -5.42, y: 5.35, z: 0.5}
+          Rotation: {x: 0, y: 0, z: 0}
+        parentList:
+        - checkToogleList: 0101010100000000
+          showParentPointList: 0101010101010101
+          parentDetail: {fileID: 5296542806498421796, guid: 1289ed481081b634bbeb8625283a4ac4,
+            type: 3}
+          parentPointList:
+          - Position: {x: -5.27, y: 5.25, z: -2.4}
+            Rotation: {x: -0, y: 0, z: 0}
+          - Position: {x: -5.27, y: 8.25, z: 0.5}
+            Rotation: {x: 90, y: 0, z: 0}
+          - Position: {x: -5.38, y: 5.25, z: 3.3}
+            Rotation: {x: 180, y: 0, z: 0}
+          - Position: {x: -5.48, y: 2.45, z: 0.5}
+            Rotation: {x: -90, y: 0, z: 0}
+          parentPPCList: []
+      - showParentDetailList: 01
+        point:
+          Position: {x: -7.85, y: 5.35, z: 0.5}
+          Rotation: {x: -0, y: -0, z: -0}
+        parentList:
+        - checkToogleList: 0000000001010101
+          showParentPointList: 0101010101010101
+          parentDetail: {fileID: 5296542806498421796, guid: 1289ed481081b634bbeb8625283a4ac4,
+            type: 3}
+          parentPointList:
+          - Position: {x: -7.7, y: 5.25, z: -2.4}
+            Rotation: {x: 0, y: 0, z: 0}
+          - Position: {x: -7.7, y: 8.25, z: 0.5}
+            Rotation: {x: 90, y: 0, z: 0}
+          - Position: {x: -7.7, y: 5.25, z: 3.3}
+            Rotation: {x: 180, y: 0, z: 0}
+          - Position: {x: -7.8, y: 2.45, z: 0.5}
+            Rotation: {x: -90, y: 0, z: 0}
+          - Position: {x: -7.8, y: 2.45, z: 0.5}
+            Rotation: {x: -90, y: 0, z: 0}
+          - Position: {x: -7.7, y: 5.25, z: 3.3}
+            Rotation: {x: 180, y: 0, z: 0}
+          - Position: {x: -7.7, y: 8.25, z: 0.5}
+            Rotation: {x: 90, y: 0, z: 0}
+          - Position: {x: -7.7, y: 5.25, z: -2.4}
+            Rotation: {x: 0, y: 0, z: 0}
+          parentPPCList:
+          - showParentDetailList: 01
+            point:
+              Position: {x: -7.8, y: 2.45, z: 0.5}
+              Rotation: {x: -90, y: 0, z: 0}
+            parentList:
+            - checkToogleList: 0001
+              showParentPointList: 0001
+              parentDetail: {fileID: 3055728268977500131, guid: f7f25d3d90525b944a7d3fb010151484,
+                type: 3}
+              parentPointList:
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              parentPPCList:
+              - showParentDetailList: 01
+                point:
+                  Position: {x: -7.75, y: 5.35, z: 0.45}
+                  Rotation: {x: 0, y: 0, z: 0}
+                parentList:
+                - checkToogleList: 01
+                  showParentPointList: 01
+                  parentDetail: {fileID: 3589374700149960009, guid: e09111dc8830e5649a7241858a65ecdb,
+                    type: 3}
+                  parentPointList:
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  parentPPCList:
+                  - showParentDetailList: 0101
+                    point:
+                      Position: {x: -6.7, y: 5.4, z: 0.45}
+                      Rotation: {x: -0, y: -0, z: -0}
+                    parentList:
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 1438883964882160279, guid: b55245fb808dda24d98b168499b429e5,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 7758408161884143510, guid: 1b914daa1cf23824e8778a57f3a64708,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+          - showParentDetailList: 01
+            point:
+              Position: {x: -7.7, y: 5.25, z: 3.3}
+              Rotation: {x: 180, y: 0, z: 0}
+            parentList:
+            - checkToogleList: 0001
+              showParentPointList: 0001
+              parentDetail: {fileID: 3055728268977500131, guid: f7f25d3d90525b944a7d3fb010151484,
+                type: 3}
+              parentPointList:
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              parentPPCList:
+              - showParentDetailList: 01
+                point:
+                  Position: {x: -7.75, y: 5.35, z: 0.45}
+                  Rotation: {x: 0, y: 0, z: 0}
+                parentList:
+                - checkToogleList: 01
+                  showParentPointList: 01
+                  parentDetail: {fileID: 3589374700149960009, guid: e09111dc8830e5649a7241858a65ecdb,
+                    type: 3}
+                  parentPointList:
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  parentPPCList:
+                  - showParentDetailList: 0101
+                    point:
+                      Position: {x: -6.7, y: 5.4, z: 0.45}
+                      Rotation: {x: -0, y: -0, z: -0}
+                    parentList:
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 1438883964882160279, guid: b55245fb808dda24d98b168499b429e5,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 7758408161884143510, guid: 1b914daa1cf23824e8778a57f3a64708,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+          - showParentDetailList: 01
+            point:
+              Position: {x: -7.7, y: 8.25, z: 0.5}
+              Rotation: {x: 90, y: 0, z: 0}
+            parentList:
+            - checkToogleList: 0001
+              showParentPointList: 0001
+              parentDetail: {fileID: 3055728268977500131, guid: f7f25d3d90525b944a7d3fb010151484,
+                type: 3}
+              parentPointList:
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              parentPPCList:
+              - showParentDetailList: 01
+                point:
+                  Position: {x: -7.75, y: 5.35, z: 0.45}
+                  Rotation: {x: 0, y: 0, z: 0}
+                parentList:
+                - checkToogleList: 01
+                  showParentPointList: 01
+                  parentDetail: {fileID: 3589374700149960009, guid: e09111dc8830e5649a7241858a65ecdb,
+                    type: 3}
+                  parentPointList:
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  parentPPCList:
+                  - showParentDetailList: 0101
+                    point:
+                      Position: {x: -6.7, y: 5.4, z: 0.45}
+                      Rotation: {x: -0, y: -0, z: -0}
+                    parentList:
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 1438883964882160279, guid: b55245fb808dda24d98b168499b429e5,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 7758408161884143510, guid: 1b914daa1cf23824e8778a57f3a64708,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+          - showParentDetailList: 01
+            point:
+              Position: {x: -7.7, y: 5.25, z: -2.4}
+              Rotation: {x: 0, y: 0, z: 0}
+            parentList:
+            - checkToogleList: 0001
+              showParentPointList: 0101
+              parentDetail: {fileID: 3055728268977500131, guid: f7f25d3d90525b944a7d3fb010151484,
+                type: 3}
+              parentPointList:
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              - Position: {x: -7.75, y: 5.35, z: 0.45}
+                Rotation: {x: 0, y: 0, z: 0}
+              parentPPCList:
+              - showParentDetailList: 01
+                point:
+                  Position: {x: -7.75, y: 5.35, z: 0.45}
+                  Rotation: {x: 0, y: 0, z: 0}
+                parentList:
+                - checkToogleList: 01
+                  showParentPointList: 01
+                  parentDetail: {fileID: 3589374700149960009, guid: e09111dc8830e5649a7241858a65ecdb,
+                    type: 3}
+                  parentPointList:
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  - Position: {x: -6.7, y: 5.4, z: 0.45}
+                    Rotation: {x: -0, y: -0, z: -0}
+                  parentPPCList:
+                  - showParentDetailList: 0101
+                    point:
+                      Position: {x: -6.7, y: 5.4, z: 0.45}
+                      Rotation: {x: -0, y: -0, z: -0}
+                    parentList:
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 1438883964882160279, guid: b55245fb808dda24d98b168499b429e5,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -9.95, y: 3.35, z: 0.35}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
+                    - checkToogleList: 01
+                      showParentPointList: 01
+                      parentDetail: {fileID: 7758408161884143510, guid: 1b914daa1cf23824e8778a57f3a64708,
+                        type: 3}
+                      parentPointList:
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      - Position: {x: -3.35, y: 3.35, z: 0.4}
+                        Rotation: {x: -0, y: -0, z: -0}
+                      parentPPCList: []
 --- !u!1 &8372834879426729922
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,6 +706,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -131,3 +731,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

@@ -49,6 +49,7 @@ MonoBehaviour:
   count: 1
   _prefab: {fileID: 2772496453772796692}
   icon: {fileID: -2293559303108314877, guid: a6e755c5808ed894aa521ab324706540, type: 3}
+  isRoot: 0
   points:
   - showParentDetailList: 01
     point:
@@ -64,6 +65,29 @@ MonoBehaviour:
         Rotation: {x: 0, y: 0, z: 0}
       - Position: {x: 0.8, y: 2.2, z: 0.05}
         Rotation: {x: -0, y: 0, z: 0}
+      - Position: {x: 0.8, y: 2.2, z: 0.05}
+        Rotation: {x: -0, y: 0, z: 0}
+      parentPPCList:
+      - showParentDetailList: 01
+        point:
+          Position: {x: 0.8, y: 2.2, z: 0.05}
+          Rotation: {x: -0, y: 0, z: 0}
+        parentList:
+        - checkToogleList: 01
+          showParentPointList: 01
+          parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+            type: 3}
+          parentPointList:
+          - Position: {x: 0, y: 0, z: 0}
+            Rotation: {x: 0, y: 0, z: 0}
+          - Position: {x: 0, y: 0, z: 0}
+            Rotation: {x: 0, y: 0, z: 0}
+          parentPPCList:
+          - showParentDetailList: 
+            point:
+              Position: {x: 0, y: 0, z: 0}
+              Rotation: {x: 0, y: 0, z: 0}
+            parentList: []
 --- !u!1 &6625966261891963853
 GameObject:
   m_ObjectHideFlags: 0

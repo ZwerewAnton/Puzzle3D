@@ -13,6 +13,9 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
     public ObjectMagnet objectMagnet;
     public GameObject contentPanel;
     public GameObject listItemPrefab;
+    public AudioSource audioSource;
+    public AudioClip instantiateDetailClip;
+    public AudioClip installDetailClip;
 
     public LevelContainer levelContainer;
 
@@ -59,7 +62,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
             if (_listItem != null)
             {
                 objectMagnet.InstantiateObject(_listItem.detail);
-
+                PlayInstantiateDetailSound();
 
                 _listItem.count--;
                 _listItem.countText.text = _listItem.count.ToString();
@@ -90,6 +93,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
             _isInstantiate = false;
             if(objectMagnet.InstalOrDropObject())
             {
+                PlayInstallDetailSound();
                 ScrollRectUpdate(_listItem.detail);
                 if(objectMagnet.IsLastDetail())
                 {
@@ -190,5 +194,14 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
             listItem.image.color = _enableColor;
             listItem.countText.color = _enableColor;
         }
+    }
+
+    private void PlayInstantiateDetailSound()
+    {
+        audioSource.PlayOneShot(instantiateDetailClip);
+    }    
+    private void PlayInstallDetailSound()
+    {
+        audioSource.PlayOneShot(installDetailClip);
     }
 }

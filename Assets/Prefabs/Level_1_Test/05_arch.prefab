@@ -49,6 +49,7 @@ MonoBehaviour:
   count: 1
   _prefab: {fileID: 276251595243970370}
   icon: {fileID: 3874062672193952588, guid: f2820f713b0b6ff4a9178d686e823561, type: 3}
+  isRoot: 0
   points:
   - showParentDetailList: 01
     point:
@@ -62,6 +63,44 @@ MonoBehaviour:
       parentPointList:
       - Position: {x: 0.85, y: 5.65, z: -3.35}
         Rotation: {x: -0, y: -0, z: -0}
+      - Position: {x: 0.85, y: 5.65, z: -3.35}
+        Rotation: {x: -0, y: -0, z: -0}
+      parentPPCList:
+      - showParentDetailList: 01
+        point:
+          Position: {x: 0.85, y: 5.65, z: -3.35}
+          Rotation: {x: -0, y: -0, z: -0}
+        parentList:
+        - checkToogleList: 01
+          showParentPointList: 01
+          parentDetail: {fileID: -2747106471576355175, guid: 972fd0714ce8d97438d11c6fc3aa7b2c,
+            type: 3}
+          parentPointList:
+          - Position: {x: 0.8, y: 2.2, z: 0.05}
+            Rotation: {x: -0, y: 0, z: 0}
+          - Position: {x: 0.8, y: 2.2, z: 0.05}
+            Rotation: {x: -0, y: 0, z: 0}
+          parentPPCList:
+          - showParentDetailList: 01
+            point:
+              Position: {x: 0.8, y: 2.2, z: 0.05}
+              Rotation: {x: -0, y: 0, z: 0}
+            parentList:
+            - checkToogleList: 01
+              showParentPointList: 01
+              parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+                type: 3}
+              parentPointList:
+              - Position: {x: 0, y: 0, z: 0}
+                Rotation: {x: 0, y: 0, z: 0}
+              - Position: {x: 0, y: 0, z: 0}
+                Rotation: {x: 0, y: 0, z: 0}
+              parentPPCList:
+              - showParentDetailList: 
+                point:
+                  Position: {x: 0, y: 0, z: 0}
+                  Rotation: {x: 0, y: 0, z: 0}
+                parentList: []
 --- !u!1 &9104231967419115419
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,11 +20,6 @@ public class Detail : MonoBehaviour
     private int _currentCount = 0;
     private bool _installed;
 
-    private void Awake()
-    {
-        //_currentCount = count;
-    }
-    //TODO Make a integer field in inspector
 
     public int CurrentCount
     {
@@ -50,7 +45,6 @@ public class Detail : MonoBehaviour
     {
         get => points;
     }
-
     public void Reset()
     {
         _currentCount = count;

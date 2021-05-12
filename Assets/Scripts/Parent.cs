@@ -13,4 +13,5 @@ public class Parent
     
     public Detail parentDetail;
     public List<Point> parentPointList = new List<Point>(); 
+    public List<PointParentConnector> parentPPCList = new List<PointParentConnector>(); 
 }

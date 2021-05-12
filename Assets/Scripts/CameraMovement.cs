@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CameraMovement : MonoBehaviour
@@ -94,10 +94,61 @@ public class CameraMovement : MonoBehaviour
         #endif
         if(true || Input.touchSupported)
         {
-            
+            if(Input.touchCount == 1)
+            {
+                Touch touch = Input.GetTouch(0);
+                if(touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                {        
+                    _isClicked = true;
+                    _downClickPosition = cam.ScreenToViewportPoint(touch.position);
+                    currentFingerId = touch.fingerId;
+                }
+                else if (touch.fingerId == currentFingerId && touch.phase == TouchPhase.Moved && _isClicked/*  && touch.deltaPosition.magnitude >= 2f */) 
+                {
+                    Vector2 pos = _downClickPosition - cam.ScreenToViewportPoint(touch.position);
+                    _xDeg -= pos.x * xSpeed;
+                    _yDeg += pos.y * ySpeed;
+                    _yDeg = ClampAngle(_yDeg, yMinLimit, yMaxLimit);
+                }
+                else if (touch.phase == TouchPhase.Ended)
+                {
+                    _isClicked = false;
+                    _tapCount += 1;
+                }
 
-            
-            if(Input.touchCount == 1){
+                if (_tapCount == 1)
+                {
+                    _newTime = Time.time + doubleTapTime;
+                }
+                else if(_tapCount == 2 && Time.time <= _newTime)
+                {
+                    _tapCount = 0;
+                }
+                
+                _downClickPosition = cam.ScreenToViewportPoint(Input.GetTouch(0).position);
+            }
+            else if(Input.touchCount == 2)
+            {
+                Debug.Log("2");
+                Touch touchZero = Input.GetTouch(0);
+                Touch touchOne = Input.GetTouch(1);
+                if(!EventSystem.current.IsPointerOverGameObject(touchZero.fingerId) && 
+                    !EventSystem.current.IsPointerOverGameObject(touchOne.fingerId))
+                {
+                        Vector2 tZeroPrevious = touchZero.position - touchZero.deltaPosition;
+                        Vector2 tOnePrevious = touchOne.position - touchOne.deltaPosition;
+
+                        float prevTouchDeltaMag = (tZeroPrevious - tOnePrevious).magnitude;
+                        float TouchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+                        float deltaMagDiff = prevTouchDeltaMag - TouchDeltaMag;
+        
+                        _desiredDistance += deltaMagDiff * Time.deltaTime * zoomRate * 0.0025f * Mathf.Abs(_desiredDistance);
+                }
+                
+
+            }
+
+/*             if(Input.touchCount == 1){
                 if(!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
                 {
                     Touch touch = Input.GetTouch(0);
@@ -107,7 +158,7 @@ public class CameraMovement : MonoBehaviour
                         _downClickPosition = cam.ScreenToViewportPoint(touch.position);
                         currentFingerId = touch.fingerId;
                     }
-                    else if (touch.fingerId == currentFingerId && touch.phase == TouchPhase.Moved && _isClicked/*  && touch.deltaPosition.magnitude >= 2f */) 
+                    else if (touch.fingerId == currentFingerId && touch.phase == TouchPhase.Moved && _isClicked) 
                     {
                         Vector2 pos = _downClickPosition - cam.ScreenToViewportPoint(touch.position);
                         _xDeg -= pos.x * xSpeed;
@@ -146,12 +197,6 @@ public class CameraMovement : MonoBehaviour
                         Vector2 tZeroPrevious = tZero.position - tZero.deltaPosition;
                         Vector2 tOnePrevious = tOne.position - tOne.deltaPosition;
                         
-                        //float oldTouchDistance = Vector2.Distance (tZeroPrevious, tOnePrevious);
-                        //float currentTouchDistance = Vector2.Distance (tZero.position, tOne.position);
-
-                        // get offset value
-                        //float deltaDistance = oldTouchDistance - currentTouchDistance;
-                        //_desiredDistance = deltaDistance * zoomRate;
 
                         float prevTouchDeltaMag = (tZeroPrevious - tOnePrevious).magnitude;
         
@@ -165,7 +210,7 @@ public class CameraMovement : MonoBehaviour
                     }
                 
 
-            }
+            } */
             
             if (Time.time > _newTime) 
             {

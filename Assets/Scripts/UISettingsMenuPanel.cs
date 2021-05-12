@@ -30,7 +30,9 @@ public class UISettingsMenuPanel : MonoBehaviour
     [SerializeField] private float expandFadeDuration;
     [SerializeField] private float collapseFadeDuration;
 
-    public AudioSource gearSound;
+    public AudioSource audioSource;
+    public AudioClip toggleMenuClip;
+    public AudioClip toggleButtonClip;
     //public AudioMixerGroup uiMixerGroup;
     //public AudioMixerGroup musicMixerGroup;
 
@@ -46,9 +48,6 @@ public class UISettingsMenuPanel : MonoBehaviour
 
     private Vector2 settingButtonPosition;
     private int itemsCount;
-    private RectTransform _musicButtonTransform;
-    private RectTransform _soundButtonTransform;
-    private RectTransform _backButtonTransform;
     private string[] playerPrefsKey = new string[2] {"music", "sound"};
     private string[] mixerVolumeParameters = new string[2] {"MusicVolume", "SoundVolume"};
     private bool[] isAudioOn = new bool[2] {true, true};
@@ -93,7 +92,7 @@ public class UISettingsMenuPanel : MonoBehaviour
         } */
     }
 
-    void Start()
+    private void Start()
     {
         sceneLoader = GameObject.FindObjectOfType<SceneLoader>();
         itemsCount = transform.childCount - 1;
@@ -115,7 +114,7 @@ public class UISettingsMenuPanel : MonoBehaviour
 
     public void ToggleMenu()
     {
-        gearSound.Play();
+        PlayToggleMenuClip();
         if(_isExpanded)
         {
             for(int i = 0; i < itemsCount; i++)
@@ -168,6 +167,13 @@ public class UISettingsMenuPanel : MonoBehaviour
 
     public void Home()
     {
+        PlayButtonClip();
         sceneLoader.LoadNextScene();
+    }
+    private void PlayToggleMenuClip(){
+        audioSource.PlayOneShot(toggleMenuClip);
+    }
+    public void PlayButtonClip(){
+        audioSource.PlayOneShot(toggleButtonClip);
     }
 }

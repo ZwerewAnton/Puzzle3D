@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 56248870297182289}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.35, y: -5.4500003, z: 1.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8503303248332423730}
@@ -90,8 +90,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8503303248332423730}
-  - component: {fileID: 9125626400723260168}
-  - component: {fileID: 8431087949005253478}
+  - component: {fileID: 7930795041874250706}
   m_Layer: 0
   m_Name: 12_bake
   m_TagString: Untagged
@@ -114,7 +113,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9125626400723260168
+--- !u!114 &7930795041874250706
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,33 +122,116 @@ MonoBehaviour:
   m_GameObject: {fileID: 9028061306308515976}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22fe0a9e3c4a4686a3e578db4b24ae88, type: 3}
+  m_Script: {fileID: 11500000, guid: bdabf2c9950e2414ca76ece2b6dd22b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _count: 1
+  showPointList: 01
+  showParentsList: 01
+  count: 1
   _prefab: {fileID: 9028061306308515976}
-  icon: {fileID: 0}
+  icon: {fileID: 4858501350703172509, guid: c1e38d1795c16fb4cb3dc1264f1cd3ae, type: 3}
+  isRoot: 0
   points:
-  - Position: {x: 5.35, y: 5.45, z: -1.15}
-    Rotation: {x: 0, y: 0, z: 0}
-    BaseList:
-    - {fileID: 2772496453772796692, guid: 9e666343443ec4f4ba551ea33f21aebc, type: 3}
-    BaseList1: []
---- !u!114 &8431087949005253478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9028061306308515976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec2c164867dd6d649b82f19feb032f1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pPC:
-    showParentDetailList: 
+  - showParentDetailList: 0101
     point:
-      Position: {x: 0, y: 0, z: 0}
-      Rotation: {x: 0, y: 0, z: 0}
-    parentList: []
+      Position: {x: 5.35, y: 5.4500003, z: -1.15}
+      Rotation: {x: -0, y: 0, z: 0}
+    parentList:
+    - checkToogleList: 01
+      showParentPointList: 01
+      parentDetail: {fileID: -3010759309813145039, guid: 9e666343443ec4f4ba551ea33f21aebc,
+        type: 3}
+      parentPointList:
+      - Position: {x: 4.1, y: 5.65, z: -0.15}
+        Rotation: {x: -0, y: -0, z: -0}
+      - Position: {x: 4.1, y: 5.65, z: -0.15}
+        Rotation: {x: -0, y: -0, z: -0}
+      parentPPCList:
+      - showParentDetailList: 01
+        point:
+          Position: {x: 4.1, y: 5.65, z: -0.15}
+          Rotation: {x: -0, y: -0, z: -0}
+        parentList:
+        - checkToogleList: 0100
+          showParentPointList: 01
+          parentDetail: {fileID: -2747106471576355175, guid: 972fd0714ce8d97438d11c6fc3aa7b2c,
+            type: 3}
+          parentPointList:
+          - Position: {x: 0, y: 0, z: 0}
+            Rotation: {x: 0, y: 0, z: 0}
+          - Position: {x: 0.8, y: 2.2, z: 0.05}
+            Rotation: {x: -0, y: 0, z: 0}
+          - Position: {x: 0.8, y: 2.2, z: 0.05}
+            Rotation: {x: -0, y: 0, z: 0}
+          parentPPCList:
+          - showParentDetailList: 01
+            point:
+              Position: {x: 0.8, y: 2.2, z: 0.05}
+              Rotation: {x: -0, y: 0, z: 0}
+            parentList:
+            - checkToogleList: 01
+              showParentPointList: 01
+              parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+                type: 3}
+              parentPointList:
+              - Position: {x: 0, y: 0, z: 0}
+                Rotation: {x: 0, y: 0, z: 0}
+              - Position: {x: 0, y: 0, z: 0}
+                Rotation: {x: 0, y: 0, z: 0}
+              parentPPCList:
+              - showParentDetailList: 
+                point:
+                  Position: {x: 0, y: 0, z: 0}
+                  Rotation: {x: 0, y: 0, z: 0}
+                parentList: []
+    - checkToogleList: 01
+      showParentPointList: 01
+      parentDetail: {fileID: 8349918186436645255, guid: b7295585704e5e04e917c2083c9d8412,
+        type: 3}
+      parentPointList:
+      - Position: {x: 3.65, y: 2.2, z: -0.7}
+        Rotation: {x: -0, y: -0, z: -0}
+      - Position: {x: 3.65, y: 2.2, z: -0.7}
+        Rotation: {x: -0, y: -0, z: -0}
+      parentPPCList:
+      - showParentDetailList: 010101
+        point:
+          Position: {x: 3.65, y: 2.2, z: -0.7}
+          Rotation: {x: -0, y: -0, z: -0}
+        parentList:
+        - checkToogleList: 01010101
+          showParentPointList: 01010101
+          parentDetail: {fileID: -2568987449474118557, guid: e41b59ec1f3481b4686fc698343afee4,
+            type: 3}
+          parentPointList:
+          - Position: {x: -1.75, y: 1, z: -5.5}
+            Rotation: {x: -0, y: -0, z: -0}
+          - Position: {x: 2.95, y: 1, z: -5.5}
+            Rotation: {x: -0, y: 180, z: -0}
+          - Position: {x: -1.75, y: 1, z: -8.9}
+            Rotation: {x: -0, y: -0, z: -0}
+          - Position: {x: 2.95, y: 1, z: -8.9}
+            Rotation: {x: -0, y: 180, z: -0}
+          - Position: {x: 2.95, y: 1, z: -5.5}
+            Rotation: {x: -0, y: 180, z: -0}
+          - Position: {x: -1.75, y: 1, z: -8.9}
+            Rotation: {x: -0, y: -0, z: -0}
+          - Position: {x: 2.95, y: 1, z: -8.9}
+            Rotation: {x: -0, y: 180, z: -0}
+          parentPPCList: []
+        - checkToogleList: 01
+          showParentPointList: 01
+          parentDetail: {fileID: 2851255487610710820, guid: bc9f0a7a58e97264981e3c254292c0b7,
+            type: 3}
+          parentPointList:
+          - Position: {x: 0.79999995, y: 1, z: -10.85}
+            Rotation: {x: -0, y: -0, z: -0}
+          parentPPCList: []
+        - checkToogleList: 01
+          showParentPointList: 01
+          parentDetail: {fileID: 4285896707210913678, guid: 8e9e1e29d333f9a4abf3ca24820f48e2,
+            type: 3}
+          parentPointList:
+          - Position: {x: -1.95, y: 1, z: -11.15}
+            Rotation: {x: -0, y: -0, z: -0}
+          parentPPCList: []

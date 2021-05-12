@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4122133301660780268}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 6.7, y: -5.4, z: -0.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5760905643630240911}
@@ -55,6 +55,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -79,6 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4951999734583655989
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,7 +90,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5760905643630240911}
-  - component: {fileID: 5222029683836765030}
+  - component: {fileID: 3589374700149960009}
   m_Layer: 0
   m_Name: 17_shaft
   m_TagString: Untagged
@@ -103,7 +105,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4951999734583655989}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.7, y: 5.4, z: 0.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -111,7 +113,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5222029683836765030
+--- !u!114 &3589374700149960009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,15 +122,78 @@ MonoBehaviour:
   m_GameObject: {fileID: 4951999734583655989}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22fe0a9e3c4a4686a3e578db4b24ae88, type: 3}
+  m_Script: {fileID: 11500000, guid: bdabf2c9950e2414ca76ece2b6dd22b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _count: 1
+  showPointList: 01
+  showParentsList: 01
+  count: 1
   _prefab: {fileID: 4951999734583655989}
-  icon: {fileID: 0}
+  icon: {fileID: 4970350164578359935, guid: 855e09b3396e53f4cb3c7788edb19f76, type: 3}
+  isRoot: 0
   points:
-  - Position: {x: -6.7, y: 5.4, z: 0.45}
-    Rotation: {x: 0, y: 0, z: 0}
-    BaseList:
-    - {fileID: 3179383388172641928, guid: b55245fb808dda24d98b168499b429e5, type: 3}
-    - {fileID: 4528224398456130256, guid: 1b914daa1cf23824e8778a57f3a64708, type: 3}
+  - showParentDetailList: 0101
+    point:
+      Position: {x: -6.7, y: 5.4, z: 0.45}
+      Rotation: {x: -0, y: -0, z: -0}
+    parentList:
+    - checkToogleList: 01
+      showParentPointList: 01
+      parentDetail: {fileID: 1438883964882160279, guid: b55245fb808dda24d98b168499b429e5,
+        type: 3}
+      parentPointList:
+      - Position: {x: -9.95, y: 3.35, z: 0.35}
+        Rotation: {x: -0, y: -0, z: -0}
+      - Position: {x: -9.95, y: 3.35, z: 0.35}
+        Rotation: {x: -0, y: -0, z: -0}
+      parentPPCList:
+      - showParentDetailList: 01
+        point:
+          Position: {x: -9.95, y: 3.35, z: 0.35}
+          Rotation: {x: -0, y: -0, z: -0}
+        parentList:
+        - checkToogleList: 01
+          showParentPointList: 01
+          parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+            type: 3}
+          parentPointList:
+          - Position: {x: 0, y: 0, z: 0}
+            Rotation: {x: 0, y: 0, z: 0}
+          - Position: {x: 0, y: 0, z: 0}
+            Rotation: {x: 0, y: 0, z: 0}
+          parentPPCList:
+          - showParentDetailList: 
+            point:
+              Position: {x: 0, y: 0, z: 0}
+              Rotation: {x: 0, y: 0, z: 0}
+            parentList: []
+    - checkToogleList: 01
+      showParentPointList: 01
+      parentDetail: {fileID: 7758408161884143510, guid: 1b914daa1cf23824e8778a57f3a64708,
+        type: 3}
+      parentPointList:
+      - Position: {x: -3.35, y: 3.35, z: 0.4}
+        Rotation: {x: -0, y: -0, z: -0}
+      - Position: {x: -3.35, y: 3.35, z: 0.4}
+        Rotation: {x: -0, y: -0, z: -0}
+      parentPPCList:
+      - showParentDetailList: 01
+        point:
+          Position: {x: -3.35, y: 3.35, z: 0.4}
+          Rotation: {x: -0, y: -0, z: -0}
+        parentList:
+        - checkToogleList: 01
+          showParentPointList: 01
+          parentDetail: {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c,
+            type: 3}
+          parentPointList:
+          - Position: {x: 0, y: 0, z: 0}
+            Rotation: {x: 0, y: 0, z: 0}
+          - Position: {x: 0, y: 0, z: 0}
+            Rotation: {x: 0, y: 0, z: 0}
+          parentPPCList:
+          - showParentDetailList: 
+            point:
+              Position: {x: 0, y: 0, z: 0}
+              Rotation: {x: 0, y: 0, z: 0}
+            parentList: []

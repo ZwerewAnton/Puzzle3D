@@ -39,7 +39,6 @@ public class UISettingsAudioButton : MonoBehaviour
     public void ToggleAudio()
     {
         ChangeIcon(_isOn);
-        
         if(_dropDown == PLAYERPREFSKEY.Music)
         {
             _audioPlayer.ToggleMusic();

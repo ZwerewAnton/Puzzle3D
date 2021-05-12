@@ -39,6 +39,8 @@ public class ObjectMagnet : MonoBehaviour
     private float _lerp = 0;
     
     private GameObject _currentConnObject;
+    private int _bestIndex;
+    private Transform _targetTransform;
     
     private void Awake() 
     {
@@ -97,13 +99,17 @@ public class ObjectMagnet : MonoBehaviour
         mZCoord = cam.WorldToScreenPoint(_instObject.transform.position).z;
 
         //target = Instantiate(_instObject, GetMouseAsWorldPoint(), Quaternion.identity);
-        target = Instantiate(_instObject, GetTouchAsWorldPoint(), Quaternion.identity);
+        if(Input.touchSupported){
+            target = Instantiate(_instObject, GetTouchAsWorldPoint(), Quaternion.identity);
+        }
+        else{
+            target = Instantiate(_instObject, GetMouseAsWorldPoint(), Quaternion.identity);
+        }
+        _targetTransform = target.GetComponent<Transform>();
 
         _allPoints = _instDetail.GetPoints;
         
         bool isCon = true;
-
-
         foreach(var targetPPC in _allPoints)
         {
             if(!targetPPC.IsInstalled)
@@ -149,8 +155,6 @@ public class ObjectMagnet : MonoBehaviour
 
     public bool InstalOrDropObject()
     {
-        
-        //Input.multiTouchEnabled = true;
         bool isDetailInstalled = false;
         _isInstantiate = false;
 
@@ -158,6 +162,33 @@ public class ObjectMagnet : MonoBehaviour
         {
             Destroy(connectionObject);
         }
+
+        if(_isConnect)
+        {
+            foreach(Detail installedDetail in _installedDetails)
+            {
+                if(_instDetail == installedDetail)
+                {
+                    isDetailInstalled = true;
+                    break;
+                }
+            }
+            if(!isDetailInstalled)
+            {
+                _installedDetails.Add(_instDetail);
+                _availableDetails.AddRange(GetOpenDetails(_instDetail));
+            }
+        }
+        else
+        {
+            Destroy(target);
+            return false;
+        }
+
+
+
+
+        
         if (_isConnect)
         {
             foreach(Detail installedDetail in _installedDetails)
@@ -209,6 +240,18 @@ public class ObjectMagnet : MonoBehaviour
         }
     }
 
+    private void InstallDetail(Detail detail, Vector3 position, Vector3 rotation)
+    {   
+        foreach(PointParentConnector pointParConn in detail.points)
+        {
+            if(position == pointParConn.point.Position &&
+                rotation == pointParConn.point.Rotation)
+            {
+                pointParConn.Install();
+            }
+        }
+    }
+
     public bool IsLastDetail()
     {
         bool isLastDetail = _instDetail.IsLastDetail();
@@ -243,6 +286,60 @@ public class ObjectMagnet : MonoBehaviour
         List<Detail> list = new List<Detail>();
         foreach(Detail allDetail in _allDetails)
         {
+            foreach(PointParentConnector allDetailPPC in allDetail.points)
+            {
+                if(!allDetailPPC.IsInstalled)
+                {
+                    bool isOpen = true;
+                    foreach(Parent allDetailParent in allDetailPPC.parentList)
+                    {
+                        foreach(PointParentConnector allDetailParentPPC in allDetailParent.parentPPCList)
+                        {
+                            if(!allDetailParentPPC.IsInstalled){
+                                isOpen = false;
+                            }
+                        }
+                    }
+                    if(isOpen)
+                    {
+                        list.Add(allDetail);
+                    }
+                }
+            }
+        }
+        return list;
+/* 
+
+
+        foreach(Detail allDetail in _allDetails){
+            foreach(PointParentConnector allDetailPPC in allDetail.points){
+                if(!allDetailPPC.IsInstalled){
+                    if(allDetailPPC.parentList.Count == 1)
+                    {
+                        foreach(Parent allDetailParent in allDetailPPC.parentList)
+                        {
+                            if(allDetailParent.parentDetail == detail)
+                            {
+                                list.Add(allDetail);
+                            }
+                        }
+                    }
+                    else if(allDetailPPC.parentList.Count > 1)
+                    {
+                        foreach(Parent allDetailParent in allDetailPPC.parentList)
+                        {
+                            foreach(PointParentConnector allDetailParentPPC in allDetailParent.parentPPCList){
+                                if(allDetailParentPPC.IsInstalled)
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        }
+ 
+        foreach(Detail allDetail in _allDetails)
+        {
             foreach(PointParentConnector allPointParConn in allDetail.points)
             {
 
@@ -260,31 +357,90 @@ public class ObjectMagnet : MonoBehaviour
                     }
                     else if(allPointParConn.parentList.Count > 1)
                     {
-                        bool isOpen = true;
-                        foreach(Detail installDetail in _installedDetails)
-                        {
-                            foreach(Parent allParentDetail in allPointParConn.parentList)
-                            {
-                                if(allParentDetail.parentDetail != detail &&
-                                     allParentDetail.parentDetail != installDetail)
+                        bool[] isOpens = new bool[allPointParConn.parentList.Count];
+						bool isDetailOpen = true;
+                        for(int i = 0; i < allPointParConn.parentList.Count; i++){
+                            for(int j = 0; j < _installedDetails.Count; j++){
+                                if(allPointParConn.parentList[i].parentDetail == detail ||
+                                     allPointParConn.parentList[i].parentDetail == _installedDetails[j])
                                 {
-                                    isOpen = false;
+                                    isOpens[i] = true;
                                     break;
                                 }
                             }
-                            if(isOpen)
+                        }
+						foreach(bool isOpen in isOpens)
+                        {
+							if(!isOpen)
+                            {
+								isDetailOpen = false;
+								break;
+							}
+						}
+                        if(isDetailOpen)
+                        {
+                            list.Add(allDetail);
+                        }
+                    }
+                }
+            }
+        }
+        return list; */
+    }
+
+
+    /* private List<Detail> GetOpenDetails(Detail detail)
+    {
+        List<Detail> list = new List<Detail>();
+        foreach(Detail allDetail in _allDetails)
+        {
+            foreach(PointParentConnector allPointParConn in allDetail.points)
+            {
+
+                if(!allPointParConn.IsInstalled)
+                {
+                    if(allPointParConn.parentList.Count == 1)
+                    {
+                        foreach(Parent allParentDetail in allPointParConn.parentList)
+                        {
+                            if(allParentDetail.parentDetail == detail)
                             {
                                 list.Add(allDetail);
                             }
                         }
                     }
-
-
+                    else if(allPointParConn.parentList.Count > 1)
+                    {
+                        bool[] isOpens = new bool[allPointParConn.parentList.Count];
+						bool isDetailOpen = true;
+                        for(int i = 0; i < allPointParConn.parentList.Count; i++){
+                            for(int j = 0; j < _installedDetails.Count; j++){
+                                if(allPointParConn.parentList[i].parentDetail == detail ||
+                                     allPointParConn.parentList[i].parentDetail == _installedDetails[j])
+                                {
+                                    isOpens[i] = true;
+                                    break;
+                                }
+                            }
+                        }
+						foreach(bool isOpen in isOpens)
+                        {
+							if(!isOpen)
+                            {
+								isDetailOpen = false;
+								break;
+							}
+						}
+                        if(isDetailOpen)
+                        {
+                            list.Add(allDetail);
+                        }
+                    }
                 }
             }
         }
         return list;
-    }
+    } */
 
     public void StartDetailInstance()
     {
@@ -342,7 +498,7 @@ public class ObjectMagnet : MonoBehaviour
         //Debug.Log(_availableDetails.Count);
         if(Input.GetKeyDown("space"))
         {
-            Debug.Log(target.transform.position);
+            Debug.Log(_connectionObjects);
             //InstantiateObject();
         } 
         //TODO Invert or check another thing
@@ -350,7 +506,12 @@ public class ObjectMagnet : MonoBehaviour
         {   
             //Input.multiTouchEnabled = false;
             //TransformPosition(target.transform.position, GetMouseAsWorldPoint(), magnDist);
-            TransformPosition(target.transform.position, GetTouchAsWorldPoint(), magnDist);
+            if(Input.touchSupported){
+                TransformPosition(target.transform.position, GetTouchAsWorldPoint(), magnDist);
+            }
+            else{
+                TransformPosition(target.transform.position, GetMouseAsWorldPoint(), magnDist);
+            }
             if (Input.GetMouseButton(1))
             {
                 if (_isConnect)
@@ -386,25 +547,21 @@ public class ObjectMagnet : MonoBehaviour
             for(int i = 0; i < _connectionPoints.Count; i++)
             {
                 dist = Vector3.Distance (targetPosition, _connectionPoints[i].Position);
+                _connectionObjects[i].SetActive(false);
+
                 if (dist < tempDist)
                 {
                     tempDist = dist;
                     bestPoint = _connectionPoints[i].Position;
                     bestRotation = _connectionPoints[i].Rotation;
-
                     _currentConnObject =_connectionObjects[i];
-                    _currentConnObject.SetActive(false);
                 }
             }
-
             _currentConnObject.SetActive(true);
 
             float distanceApart = GetSqrDistance(bestPoint, mousePosition);
-            //Debug.Log(distanceApart);
             _lerp = MapValue(distanceApart, 0f, 50f, 0f, 1f);
-
             grayMaterial.color = Color.Lerp(_grayNearColor, _grayFarColor, _lerp);
-            //grayMaterial.color = _grayColor;
             
             Debug.DrawLine(targetPosition, bestPoint);
     
