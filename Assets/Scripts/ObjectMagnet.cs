@@ -25,8 +25,8 @@ public class ObjectMagnet : MonoBehaviour
 
     private List<GameObject> instantiateDetailObjects;
     private List<Detail> _allDetails;
-    private List<Detail> _availableDetails;
-    private List<Detail> _installedDetails;
+    //private List<Detail> _availableDetails;
+    //private List<Detail> _installedDetails;
     private List<Point> _connectionPoints;
     private List<GameObject> _connectionObjects;
     private List<PointParentConnector> _allPoints;
@@ -56,10 +56,6 @@ public class ObjectMagnet : MonoBehaviour
         instantiateDetailObjects = new List<GameObject>();
         _connectionPoints = new List<Point>();
         _connectionObjects = new List<GameObject>();
-        _installedDetails = new List<Detail>();
-        _availableDetails = new List<Detail>();
-
-        //Debug.Log(_allDetails.Count);
         StartDetailInstance();
     }
 
@@ -98,46 +94,17 @@ public class ObjectMagnet : MonoBehaviour
         _instObject.transform.position = Vector3.zero;
         mZCoord = cam.WorldToScreenPoint(_instObject.transform.position).z;
 
-        //target = Instantiate(_instObject, GetMouseAsWorldPoint(), Quaternion.identity);
-        if(Input.touchSupported){
+        if(Input.touchSupported)
+        {
             target = Instantiate(_instObject, GetTouchAsWorldPoint(), Quaternion.identity);
         }
-        else{
+        else
+        {
             target = Instantiate(_instObject, GetMouseAsWorldPoint(), Quaternion.identity);
         }
         _targetTransform = target.GetComponent<Transform>();
 
-        _allPoints = _instDetail.GetPoints;
-        
-        bool isCon = true;
-        foreach(var targetPPC in _allPoints)
-        {
-            if(!targetPPC.IsInstalled)
-            {
-                isCon = true;
-                foreach(var targetParent in targetPPC.parentList)
-                {
-                    foreach(var targetParentPoint in targetParent.parentPointList)
-                    {
-                        foreach(var parentPPC in targetParent.parentDetail.points)
-                        {
-                            if(targetParentPoint.Position == parentPPC.point.Position &&
-                                targetParentPoint.Rotation == parentPPC.point.Rotation)
-                                {
-                                    if(!parentPPC.IsInstalled && !targetParent.parentDetail.isRoot)
-                                    {
-                                        isCon = false;
-                                    }
-                                }
-                        }
-                    }
-                }
-                if(isCon)
-                {
-                    _connectionPoints.Add(targetPPC.point);
-                }
-            }
-        }
+        _connectionPoints = _instDetail.GetAvaiablePoints();
 
         foreach(Point connectionPoint in _connectionPoints)
         {
@@ -147,15 +114,11 @@ public class ObjectMagnet : MonoBehaviour
             meshRenderer.material = grayMaterial;
             connectionObject.SetActive(false);
         }
-        //connectionPoints = target.GetComponent<SimpleDetail>().GetPoints;
-        //Debug.Log(connectionPoints.Count);
         _isInstantiate = true;
-        //target.transform.position = GetMouseAsWorldPoint();
     }
 
     public bool InstalOrDropObject()
     {
-        bool isDetailInstalled = false;
         _isInstantiate = false;
 
         foreach(GameObject connectionObject in _connectionObjects)
@@ -163,66 +126,21 @@ public class ObjectMagnet : MonoBehaviour
             Destroy(connectionObject);
         }
 
-        if(_isConnect)
-        {
-            foreach(Detail installedDetail in _installedDetails)
-            {
-                if(_instDetail == installedDetail)
-                {
-                    isDetailInstalled = true;
-                    break;
-                }
-            }
-            if(!isDetailInstalled)
-            {
-                _installedDetails.Add(_instDetail);
-                _availableDetails.AddRange(GetOpenDetails(_instDetail));
-            }
-        }
-        else
-        {
-            Destroy(target);
-            return false;
-        }
-
-
-
-
-        
         if (_isConnect)
         {
-            foreach(Detail installedDetail in _installedDetails)
-            {
-                if(_instDetail == installedDetail)
-                {
-                    isDetailInstalled = true;
-                    break;
-                }
-            }
-            if(!isDetailInstalled)
-            {
-                _installedDetails.Add(_instDetail);
-                //_availableDetails.
-                _availableDetails.AddRange(GetOpenDetails(_instDetail));
-            }
             Transform targetTransform = target.GetComponent<Transform>();
-
             //TODO Connection point instead targetTransform
             foreach(PointParentConnector pointParConn in _instDetail.points)
             {
-                if(targetTransform.position == pointParConn.point.Position &&
-                    targetTransform.rotation.eulerAngles == pointParConn.point.Rotation)
+                float angle = Quaternion.Angle (targetTransform.rotation, Quaternion.Euler(pointParConn.point.Rotation));
+                if(targetTransform.position == pointParConn.point.Position && angle == 0)
                 {
                     pointParConn.Install();
-                    _availableDetails.Remove(_instDetail);
                 }
             }
-
             meshRenderer.material = _mainMaterial;
-
             instantiateDetailObjects.Add(target);
             target = null;
-
             return true;
         }
         else
@@ -258,8 +176,6 @@ public class ObjectMagnet : MonoBehaviour
         if(isLastDetail)
         {
             _allDetails.Remove(_instDetail);
-            _availableDetails.Remove(_instDetail);
-            //Debug.Log(IsEnd());
             return true;
         }
         else
@@ -281,7 +197,7 @@ public class ObjectMagnet : MonoBehaviour
         }
     }
 
-    private List<Detail> GetOpenDetails(Detail detail)
+    private List<Detail> GetOpenDetails()
     {
         List<Detail> list = new List<Detail>();
         foreach(Detail allDetail in _allDetails)
@@ -293,7 +209,7 @@ public class ObjectMagnet : MonoBehaviour
                     bool isOpen = true;
                     foreach(Parent allDetailParent in allDetailPPC.parentList)
                     {
-                        foreach(PointParentConnector allDetailParentPPC in allDetailParent.parentPPCList)
+                        foreach(PointParentConnector allDetailParentPPC in allDetailParent.GetAllPPC())
                         {
                             if(!allDetailParentPPC.IsInstalled){
                                 isOpen = false;
@@ -308,171 +224,21 @@ public class ObjectMagnet : MonoBehaviour
             }
         }
         return list;
-/* 
-
-
-        foreach(Detail allDetail in _allDetails){
-            foreach(PointParentConnector allDetailPPC in allDetail.points){
-                if(!allDetailPPC.IsInstalled){
-                    if(allDetailPPC.parentList.Count == 1)
-                    {
-                        foreach(Parent allDetailParent in allDetailPPC.parentList)
-                        {
-                            if(allDetailParent.parentDetail == detail)
-                            {
-                                list.Add(allDetail);
-                            }
-                        }
-                    }
-                    else if(allDetailPPC.parentList.Count > 1)
-                    {
-                        foreach(Parent allDetailParent in allDetailPPC.parentList)
-                        {
-                            foreach(PointParentConnector allDetailParentPPC in allDetailParent.parentPPCList){
-                                if(allDetailParentPPC.IsInstalled)
-                            }
-                        }
-                    }
-                    
-                }
-            }
-        }
- 
-        foreach(Detail allDetail in _allDetails)
-        {
-            foreach(PointParentConnector allPointParConn in allDetail.points)
-            {
-
-                if(!allPointParConn.IsInstalled)
-                {
-                    if(allPointParConn.parentList.Count == 1)
-                    {
-                        foreach(Parent allParentDetail in allPointParConn.parentList)
-                        {
-                            if(allParentDetail.parentDetail == detail)
-                            {
-                                list.Add(allDetail);
-                            }
-                        }
-                    }
-                    else if(allPointParConn.parentList.Count > 1)
-                    {
-                        bool[] isOpens = new bool[allPointParConn.parentList.Count];
-						bool isDetailOpen = true;
-                        for(int i = 0; i < allPointParConn.parentList.Count; i++){
-                            for(int j = 0; j < _installedDetails.Count; j++){
-                                if(allPointParConn.parentList[i].parentDetail == detail ||
-                                     allPointParConn.parentList[i].parentDetail == _installedDetails[j])
-                                {
-                                    isOpens[i] = true;
-                                    break;
-                                }
-                            }
-                        }
-						foreach(bool isOpen in isOpens)
-                        {
-							if(!isOpen)
-                            {
-								isDetailOpen = false;
-								break;
-							}
-						}
-                        if(isDetailOpen)
-                        {
-                            list.Add(allDetail);
-                        }
-                    }
-                }
-            }
-        }
-        return list; */
     }
-
-
-    /* private List<Detail> GetOpenDetails(Detail detail)
-    {
-        List<Detail> list = new List<Detail>();
-        foreach(Detail allDetail in _allDetails)
-        {
-            foreach(PointParentConnector allPointParConn in allDetail.points)
-            {
-
-                if(!allPointParConn.IsInstalled)
-                {
-                    if(allPointParConn.parentList.Count == 1)
-                    {
-                        foreach(Parent allParentDetail in allPointParConn.parentList)
-                        {
-                            if(allParentDetail.parentDetail == detail)
-                            {
-                                list.Add(allDetail);
-                            }
-                        }
-                    }
-                    else if(allPointParConn.parentList.Count > 1)
-                    {
-                        bool[] isOpens = new bool[allPointParConn.parentList.Count];
-						bool isDetailOpen = true;
-                        for(int i = 0; i < allPointParConn.parentList.Count; i++){
-                            for(int j = 0; j < _installedDetails.Count; j++){
-                                if(allPointParConn.parentList[i].parentDetail == detail ||
-                                     allPointParConn.parentList[i].parentDetail == _installedDetails[j])
-                                {
-                                    isOpens[i] = true;
-                                    break;
-                                }
-                            }
-                        }
-						foreach(bool isOpen in isOpens)
-                        {
-							if(!isOpen)
-                            {
-								isDetailOpen = false;
-								break;
-							}
-						}
-                        if(isDetailOpen)
-                        {
-                            list.Add(allDetail);
-                        }
-                    }
-                }
-            }
-        }
-        return list;
-    } */
 
     public void StartDetailInstance()
     {
         GameObject _instObject;
-        bool isDetailInstalled;
-        
-        _installedDetails.Add(ground);
-        _availableDetails.AddRange(GetOpenDetails(ground));
-
-        foreach(var detail in _allDetails)
+        ground.points[0].Install();
+        foreach(Detail detail in _allDetails)
         {
-            foreach(var pPC in detail.points)
+            foreach(PointParentConnector pointParentConnector in detail.points)
             {
-                isDetailInstalled = false;
-                if(pPC.IsInstalled)
+                if(pointParentConnector.IsInstalled)
                 {
                     _instObject = detail._prefab.transform.GetChild(0).gameObject;
-                    _instObject = Instantiate(_instObject, pPC.point.Position, Quaternion.Euler(pPC.point.Rotation));
+                    _instObject = Instantiate(_instObject, pointParentConnector.point.Position, Quaternion.Euler(pointParentConnector.point.Rotation));
                     instantiateDetailObjects.Add(_instObject);
-                    foreach(Detail installedDetail in _installedDetails)
-                    {
-                        if(detail == installedDetail)
-                        {
-                            isDetailInstalled = true;
-                            break;
-                        }
-                    }
-                    if(!isDetailInstalled)
-                    {
-                        _installedDetails.Add(detail);
-                        _availableDetails.AddRange(GetOpenDetails(detail));
-                    }
                 }
             }
         }
@@ -484,7 +250,7 @@ public class ObjectMagnet : MonoBehaviour
     }
     public List<Detail> GetAvailableDetails()
     {
-        return _availableDetails;
+        return GetOpenDetails();
     }
     public List<PointParentConnector> GetAllPoints()
     {
@@ -493,23 +259,19 @@ public class ObjectMagnet : MonoBehaviour
     
     private void Update()
     {
-        //Debug.Log(GetMouseAsWorldPoint());
-        
-        //Debug.Log(_availableDetails.Count);
         if(Input.GetKeyDown("space"))
         {
             Debug.Log(_connectionObjects);
-            //InstantiateObject();
         } 
         //TODO Invert or check another thing
         if (_isInstantiate)
         {   
-            //Input.multiTouchEnabled = false;
-            //TransformPosition(target.transform.position, GetMouseAsWorldPoint(), magnDist);
-            if(Input.touchSupported){
+            if(Input.touchSupported)
+            {
                 TransformPosition(target.transform.position, GetTouchAsWorldPoint(), magnDist);
             }
-            else{
+            else
+            {
                 TransformPosition(target.transform.position, GetMouseAsWorldPoint(), magnDist);
             }
             if (Input.GetMouseButton(1))
@@ -520,14 +282,11 @@ public class ObjectMagnet : MonoBehaviour
                 }   
             }
         }
-
-
     }
+
     //TODO Add a camera transform position
     private void TransformPosition(Vector3 targetPosition, Vector3 mousePosition, float distance)
     {
-        //Хрень
-        //mousePosition = mousePosition;
         Vector3 bestPoint = Vector3.zero, bestRotation = Vector3.zero;
         Vector3 Yposition = Vector3.zero;
         float tempDist = Single.MaxValue, dist = 0;
@@ -593,10 +352,12 @@ public class ObjectMagnet : MonoBehaviour
         return (mainValue - inValueMin) * (outValueMax - outValueMin) / (inValueMax - inValueMin) + outValueMin;
     }
 
-    public void Save(){
+    public void Save()
+    {
         SaveLevel.SaveGame();
     }
-    public void Load(){
+    public void Load()
+    {
         SaveLevel.LoadGame();
     }
     public void Restart()
@@ -606,17 +367,13 @@ public class ObjectMagnet : MonoBehaviour
         _allDetails = levelContainer.Reset();
         _connectionPoints.Clear();
         _connectionObjects.Clear();
-        _installedDetails.Clear();
-        _availableDetails.Clear();
         for(int i = 0; i < instantiateDetailObjects.Count; i++)
         {
             Destroy(instantiateDetailObjects[i]);
         }
         instantiateDetailObjects.Clear();
-
         StartDetailInstance();
         restartEvent.Invoke();
-        Debug.Log(_availableDetails.Count);
     }
 }
 

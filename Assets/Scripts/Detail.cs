@@ -45,6 +45,19 @@ public class Detail : MonoBehaviour
     {
         get => points;
     }
+    public List<Point> GetAvaiablePoints()
+    {
+        List<Point> list = new List<Point>();
+        foreach(PointParentConnector pointParentConnector in points)
+        {
+            if(pointParentConnector.IsReady() && !pointParentConnector.IsInstalled)
+            {
+                list.Add(pointParentConnector.point);
+            }
+        }
+        return list;
+
+    }
     public void Reset()
     {
         _currentCount = count;

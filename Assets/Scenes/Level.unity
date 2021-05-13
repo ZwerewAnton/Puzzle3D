@@ -6704,7 +6704,7 @@ MonoBehaviour:
   _prefab: {fileID: 0}
   icon: {fileID: 0}
   isRoot: 0
-  pointParentConnectors: []
+  points: []
 --- !u!1 &1223429154
 GameObject:
   m_ObjectHideFlags: 0
@@ -10974,7 +10974,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -8814403927345269871, guid: 9c257b3cc9aad8941bac37c189f9d19c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9c257b3cc9aad8941bac37c189f9d19c, type: 3}
 --- !u!1001 &5222029682580100693
 PrefabInstance:

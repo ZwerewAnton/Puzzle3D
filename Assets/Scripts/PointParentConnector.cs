@@ -31,5 +31,16 @@ public class PointParentConnector
     {
         _isInstalled = false;
     }
+    
+    public bool IsReady()
+    {
+        foreach(Parent parent in parentList)
+        {
+            if(!parent.IsParentInstall()){
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

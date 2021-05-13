@@ -26,6 +26,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
 
     private List<Detail> _allDetails;
     private List<ListItem> _listItemList;
+    private int _currentPointerId = 0;
 
     private Color32 _enableColor = new Color32(255, 255, 255, 255);
     private Color32 _disableColor = new Color32(255, 255, 255, 100);
@@ -40,12 +41,16 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        _myObject = eventData.pointerCurrentRaycast.gameObject;
-        _listItem = eventData.pointerCurrentRaycast.gameObject.GetComponent<ListItem>();
+        if(_currentPointerId == 0){
+            _currentPointerId = eventData.pointerId;
+            _myObject = eventData.pointerCurrentRaycast.gameObject;
+            _listItem = eventData.pointerCurrentRaycast.gameObject.GetComponent<ListItem>();
+        }
     }
     
     public void OnBeginDrag(PointerEventData eventData)
     {
+        //_currentPointerId = eventData.pointerId;
         if(_listItem != null && _listItem.isInteractable)
         {
             scrollRect.vertical = false;
@@ -87,6 +92,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
  
     public void OnEndDrag(PointerEventData eventData)
     {
+        _currentPointerId = 0;
         scrollRect.vertical = true;
         if(_isInstantiate)
         {
@@ -132,7 +138,8 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
             foreach(Detail detail in _allDetails)
             {
                 bool isInstalled = true;
-                foreach(PointParentConnector pPC in detail.points){
+                foreach(PointParentConnector pPC in detail.points)
+                {
                     if(pPC.IsInstalled == false){
                         isInstalled = false;
                         break;
