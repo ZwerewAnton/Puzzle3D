@@ -7,9 +7,9 @@ using UnityEngine.Audio;
 public class MusicPlayer : MonoBehaviour
 {
     private const float MAXVOLUME = 1f;
-    private const float MINVOLUME = 0f;
+    private const float MINVOLUME = -20f;
     private const float AUDIOOFFVALUE = -80f;
-    private const float AUDIOONVALUE = 0f;
+    private const float AUDIOONVALUE = -20f;
     [SerializeField] private AudioMixer _audioMixer;
     private AudioSource _audioSource;
     [SerializeField] private AudioClip _menuMusicClip;
@@ -19,10 +19,20 @@ public class MusicPlayer : MonoBehaviour
     private bool _isSoundOn, _isMusicOn;
     private string musicKey, soundKey, musicMixerParameter, soundMixerParameter;
     private int sceneIndex = 0;
-
+    public static MusicPlayer musicPlayer;
+    
 
     private void Awake()
     {
+        if (musicPlayer == null) 
+        {
+            musicPlayer = this;
+        } 
+        else 
+        {
+            Destroy(gameObject);
+        }
+
         musicKey = PropertiesStorage.GetMusicKey();
         soundKey = PropertiesStorage.GetSoundKey();
         musicMixerParameter = PropertiesStorage.GetMusicVolumeMixerParameter();
@@ -33,6 +43,7 @@ public class MusicPlayer : MonoBehaviour
     }
     private void Start()
     {
+        Play();
         _isSoundOn = GetPlayerPrefsVolumeState(soundKey, soundMixerParameter);
         _isMusicOn = GetPlayerPrefsVolumeState(musicKey, musicMixerParameter);
 
@@ -41,6 +52,7 @@ public class MusicPlayer : MonoBehaviour
 
     public void Play()
     {
+        sceneIndex = SceneLoader.sceneLoader.GetSceneIndex();
         if(_isMusicOn)
         {
             if(sceneIndex == 0)
@@ -90,13 +102,13 @@ public class MusicPlayer : MonoBehaviour
     {
         if(_isMusicOn)
         {
-            PlayerPrefs.SetFloat (PropertiesStorage.GetMusicKey(), AUDIOOFFVALUE);
+            PlayerPrefs.SetFloat(PropertiesStorage.GetMusicKey(), AUDIOOFFVALUE);
             _isMusicOn = false;
             Pause();
         }
         else
         {
-            PlayerPrefs.SetFloat (PropertiesStorage.GetMusicKey(), AUDIOONVALUE);
+            PlayerPrefs.SetFloat(PropertiesStorage.GetMusicKey(), AUDIOONVALUE);
             _isMusicOn = true;
             FadeIn();
         }
@@ -144,7 +156,8 @@ public class MusicPlayer : MonoBehaviour
     private void FadeIn()
     {
         //_audioSource.volume = MINVOLUME;
-        SetMusicMixerVolume(AUDIOOFFVALUE);
+        //SetMusicMixerVolume(AUDIOOFFVALUE);
+        volume = AUDIOOFFVALUE;
         _audioSource.Play();
         DOTween
             .To(() => volume, x => volume = x, AUDIOONVALUE, _fadeTime);

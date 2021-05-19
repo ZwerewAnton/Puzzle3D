@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class UIMainMenuScrollRectController : MonoBehaviour
 {
-    [Range(1, 50)]
-    [Header("Controllers")]
-    public int panCount;
+    private int _panCount;
     [Range(0, 500)]
     public int panOffset;
     [Range(0f, 20f)]
@@ -17,34 +15,42 @@ public class UIMainMenuScrollRectController : MonoBehaviour
     [Range(0f, 50f)]
     public float scaleOffset;
     [Header("Other Objects")]
-    public GameObject panPrefab;
+    public UIMainMenuListItem panPrefab;
     public ScrollRect scrollRect;
 
-    private GameObject[] _instPans;
+    private UIMainMenuListItem[] _instPans;
     private Vector2[] _panPos;
-    private Vector2[] _panScales;
-    private RectTransform _contentRect;
+    private Vector3[] _panScales;
+    [SerializeField] private RectTransform _contentRect;
     private int _selectedPanID;
     private bool isScrolling;
     private Vector2 _contentVector;
 
     private void Start() 
     {
-        _contentRect = GetComponent<RectTransform>();
-        _instPans = new GameObject[panCount];
-        _panPos = new Vector2[panCount];
-        _panScales = new Vector2[panCount];
+        _panCount = LevelContainer.currentLevelContainer.GetLevelCount();
+        Sprite[] sprites = LevelContainer.currentLevelContainer.GetLevelIcons();
+        string[] names = LevelContainer.currentLevelContainer.GetLevelNames();
+        _instPans = new UIMainMenuListItem[_panCount];
+        _panPos = new Vector2[_panCount];
+        _panScales = new Vector3[_panCount];
 
-        for(int i = 0; i < panCount; i++)
+        for(int i = 0; i < _panCount; i++)
         {
-            _instPans[i] = Instantiate(panPrefab, transform, false);
+            _instPans[i] = Instantiate(panPrefab, transform, false);                
+            _instPans[i].SetIcon(sprites[i]);
+            _instPans[i].SetName(names[i]);
+            _instPans[i].SetPercent(GetPercent(i));
             if(i > 0)
             {
-                _instPans[i].transform.localPosition = new Vector2(_instPans[i-1].transform.localPosition.x + 
-                    panPrefab.GetComponent<RectTransform>().sizeDelta.x + panOffset, _instPans[i].transform.localPosition.y);
+                _instPans[i].SetLocalPosition(new Vector2(_instPans[i-1].GetLocalPosition().x + 
+                    panPrefab.GetComponent<RectTransform>().sizeDelta.x + panOffset, _instPans[i].GetLocalPosition().y));
+
                 
             }
-            _panPos[i] = -_instPans[i].transform.localPosition;
+            
+            //_panPos[i] = -_instPans[i].transform.localPosition;
+            _panPos[i] = -_instPans[i].GetLocalPosition();
         }
     }
 
@@ -54,18 +60,17 @@ public class UIMainMenuScrollRectController : MonoBehaviour
             scrollRect.inertia = false;
         }
         float nearestPos = float.MaxValue;
-        for(int i = 0; i < panCount; i++){
+        for(int i = 0; i < _panCount; i++){
             float distance = Mathf.Abs(_contentRect.anchoredPosition.x - _panPos[i].x);
             if(distance<nearestPos){
                 nearestPos =distance;
                 _selectedPanID = i;
             }
             float scale = Mathf.Clamp(1 / (distance / panOffset) * scaleOffset, 0.5f, 1f);
-            _panScales[i].x = Mathf.SmoothStep(_instPans[i].transform.localScale.x, scale, scaleSpeed * Time.fixedDeltaTime);
-            _panScales[i].y = Mathf.SmoothStep(_instPans[i].transform.localScale.y, scale, scaleSpeed * Time.fixedDeltaTime);
-            _instPans[i].transform.localScale = _panScales[i];
-
-
+            _panScales[i].x = Mathf.SmoothStep(_instPans[i].GetLocalScale().x, scale, scaleSpeed * Time.fixedDeltaTime);
+            _panScales[i].y = Mathf.SmoothStep(_instPans[i].GetLocalScale().y, scale, scaleSpeed * Time.fixedDeltaTime);
+            _panScales[i].z = Mathf.SmoothStep(_instPans[i].GetLocalScale().z, scale, scaleSpeed * Time.fixedDeltaTime);
+            _instPans[i].SetLocalScale(_panScales[i]);
         }
         float scrollVelocity = Mathf.Abs(scrollRect.velocity.x);
         if(scrollVelocity < 400 && !isScrolling)
@@ -90,5 +95,24 @@ public class UIMainMenuScrollRectController : MonoBehaviour
     }
     public int GetLevelID(){
         return _selectedPanID;
+    }
+    private float GetPercent(int levelID)
+    {
+        string key = PropertiesStorage.GetPercentKey() + levelID.ToString();
+        if(PlayerPrefs.HasKey(key))
+        {
+            return PlayerPrefs.GetFloat(key);
+        }
+        else
+        {
+            return 0f;
+        }
+    }
+    public void UpdapePercents()
+    {
+        for(int i = 0; i < _panCount; i++)
+        {
+            _instPans[i].SetPercent(GetPercent(i));
+        }
     }
 }

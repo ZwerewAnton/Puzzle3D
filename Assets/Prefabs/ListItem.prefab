@@ -68,7 +68,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 0495e4c9fd81c704285fa7e2779661ad, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -92,6 +92,7 @@ MonoBehaviour:
   detail: {fileID: 0}
   countText: {fileID: 2831495892483638763}
   image: {fileID: 1775881065355688194}
+  isInteractable: 0
   count: 0
 --- !u!1 &5477210244032312448
 GameObject:

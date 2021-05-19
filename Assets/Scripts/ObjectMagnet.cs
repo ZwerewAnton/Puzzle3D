@@ -6,16 +6,14 @@ using UnityEngine.Events;
 
 public class ObjectMagnet : MonoBehaviour
 {
-    //public UISpawnListItems uiSpawnListItems;
-    //public LevelContainer levelContainer;
     public List<Detail> detailsList;
     public Camera cam;
     public float magnDist = 0.5f;
-    public Detail ground;
+    //public Detail ground;
     public Material grayMaterial;
     public Vector3 objectOffset;
 /*     public SaveLevel saveLevel; */
-    public LevelContainer levelContainer;
+    //public LevelContainer levelContainer;
     public UnityEvent restartEvent;
     
     private GameObject target;
@@ -25,8 +23,6 @@ public class ObjectMagnet : MonoBehaviour
 
     private List<GameObject> instantiateDetailObjects;
     private List<Detail> _allDetails;
-    //private List<Detail> _availableDetails;
-    //private List<Detail> _installedDetails;
     private List<Point> _connectionPoints;
     private List<GameObject> _connectionObjects;
     private List<PointParentConnector> _allPoints;
@@ -41,35 +37,43 @@ public class ObjectMagnet : MonoBehaviour
     private GameObject _currentConnObject;
     private int _bestIndex;
     private Transform _targetTransform;
+    private Detail _ground;
+    [SerializeField] private UnityEvent<Transform> _onInstantiateGround;
+    [SerializeField] private ParticlePlayer particlePlayer;
+    [SerializeField] private UILevelMenu levelMenu;
     
     private void Awake() 
     {
-        
         //_allDetails = levelContainer.Reset();
  
         //Debug.Log(_allDetails[0].name);
         //Reset(detailsList);
         //_allDetails = saveLevel.GetLoadDetailList();
         //SaveLevel.LoadGame();
-        _allDetails = levelContainer.GetLoadLevel();
+        //_allDetails = LevelContainer.currentLevelContainer.GetLoadLevel();
+        _allDetails = LevelContainer.currentLevelContainer.GetLoadLevel();
+/*         List<Detail> list = 
+        foreach(Detail det in list){
+            if(!det.IsInstalled()){
+                _allDetails.Add(det);
+            }
+        } */
+        _ground = LevelContainer.currentLevelContainer.GetCurrentLevelGround();
         
         instantiateDetailObjects = new List<GameObject>();
         _connectionPoints = new List<Point>();
         _connectionObjects = new List<GameObject>();
         StartDetailInstance();
-    }
-
-    private void Start()
-    {
+        if(IsEnd())
+        {
+            levelMenu.ShowHomeButton();
+        }
     }
 
     private Vector3 GetMouseAsWorldPoint()
     {
-        // Pixel coordinates of mouse (x,y)
         Vector3 mousePoint = Input.mousePosition + objectOffset;
-        // z coordinate of game object on screen
         mousePoint.z = mZCoord;
-        // Convert it to world points
         return cam.ScreenToWorldPoint(mousePoint);
     }
     private Vector3 GetTouchAsWorldPoint()
@@ -129,10 +133,9 @@ public class ObjectMagnet : MonoBehaviour
         if (_isConnect)
         {
             Transform targetTransform = target.GetComponent<Transform>();
-            //TODO Connection point instead targetTransform
             foreach(PointParentConnector pointParConn in _instDetail.points)
             {
-                float angle = Quaternion.Angle (targetTransform.rotation, Quaternion.Euler(pointParConn.point.Rotation));
+                float angle = Quaternion.Angle(targetTransform.rotation, Quaternion.Euler(pointParConn.point.Rotation));
                 if(targetTransform.position == pointParConn.point.Position && angle == 0)
                 {
                     pointParConn.Install();
@@ -176,6 +179,13 @@ public class ObjectMagnet : MonoBehaviour
         if(isLastDetail)
         {
             _allDetails.Remove(_instDetail);
+            
+            if(IsEnd())
+            {
+                particlePlayer.Play();
+                levelMenu.PlayEndClip();
+                levelMenu.ShowHomeButton();
+            }
             return true;
         }
         else
@@ -229,9 +239,12 @@ public class ObjectMagnet : MonoBehaviour
     public void StartDetailInstance()
     {
         GameObject _instObject;
-        ground.points[0].Install();
+        List<Detail> clearDetailList = new List<Detail>();
+        //ground.points[0].Install();
+        InstantiateGround(_ground);
         foreach(Detail detail in _allDetails)
         {
+            bool isInstalled = true;
             foreach(PointParentConnector pointParentConnector in detail.points)
             {
                 if(pointParentConnector.IsInstalled)
@@ -240,8 +253,16 @@ public class ObjectMagnet : MonoBehaviour
                     _instObject = Instantiate(_instObject, pointParentConnector.point.Position, Quaternion.Euler(pointParentConnector.point.Rotation));
                     instantiateDetailObjects.Add(_instObject);
                 }
+                else{
+                    isInstalled = false;
+                }
+            }
+            if(!isInstalled)
+            {
+                clearDetailList.Add(detail);
             }
         }
+        _allDetails = clearDetailList;
     }
 
     public List<Detail> GetALlDetails()
@@ -263,6 +284,10 @@ public class ObjectMagnet : MonoBehaviour
         {
             Debug.Log(_connectionObjects);
         } 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneLoader.sceneLoader.LoadNextScene();
+        }
         //TODO Invert or check another thing
         if (_isInstantiate)
         {   
@@ -282,6 +307,15 @@ public class ObjectMagnet : MonoBehaviour
                 }   
             }
         }
+    }
+
+    private void InstantiateGround(Detail ground)
+    {
+        ground.points[0].Install();
+        //ground._prefab.transform.GetChild(0).gameObject;
+        GameObject instObject = Instantiate(ground._prefab.transform.GetChild(0).gameObject, ground.points[0].point.Position, Quaternion.Euler(ground.points[0].point.Rotation));
+        _onInstantiateGround.Invoke((Transform)instObject.transform);
+
     }
 
     //TODO Add a camera transform position
@@ -364,7 +398,7 @@ public class ObjectMagnet : MonoBehaviour
     {
         SaveLevel.DeleteSaveFile();
 
-        _allDetails = levelContainer.Reset();
+        _allDetails = LevelContainer.currentLevelContainer.Reset();
         _connectionPoints.Clear();
         _connectionObjects.Clear();
         for(int i = 0; i < instantiateDetailObjects.Count; i++)

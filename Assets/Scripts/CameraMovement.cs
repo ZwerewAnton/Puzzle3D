@@ -62,11 +62,14 @@ public class CameraMovement : MonoBehaviour
         _xDeg = Vector3.Angle(Vector3.right, cam.transform.right);
         _yDeg = Vector3.Angle(Vector3.up, cam.transform.up);
     }
+
+    public void SetTargetTransform(Transform transform)
+    {
+        target = transform;
+    }
  
     private void LateUpdate()
     {
-        //TODO Make a touch control.
-        //Scroll
         #if UNITY_EDITOR    
         if(!EventSystem.current.IsPointerOverGameObject())
         {

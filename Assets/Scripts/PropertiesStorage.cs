@@ -8,6 +8,7 @@ public static class PropertiesStorage
     private static string _soundPlayerPrefsKey = "sound";
     private static string _musicVolumeMixerProperty = "MusicVolume";
     private static string _soundVolumeMixerProperty = "SoundVolume";
+    private static string _percent = "percentLevel";
 
     public static string GetMusicKey()
     {
@@ -24,5 +25,9 @@ public static class PropertiesStorage
     public static string GetSoundVolumeMixerParameter()
     {
         return _soundVolumeMixerProperty;
+    }    
+    public static string GetPercentKey()
+    {
+        return _percent;
     }
 }

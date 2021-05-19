@@ -17,8 +17,8 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
     public AudioClip instantiateDetailClip;
     public AudioClip installDetailClip;
 
-    public LevelContainer levelContainer;
 
+    private  const int DEFAULTPOINTERID = -10;
     private Vector2 _startClickPosition;
     private bool _isInstantiate;
     private ListItem _listItem;
@@ -26,7 +26,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
 
     private List<Detail> _allDetails;
     private List<ListItem> _listItemList;
-    private int _currentPointerId = 0;
+    private int _currentPointerId = DEFAULTPOINTERID;
 
     private Color32 _enableColor = new Color32(255, 255, 255, 255);
     private Color32 _disableColor = new Color32(255, 255, 255, 100);
@@ -41,7 +41,8 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(_currentPointerId == 0){
+        Debug.Log(eventData.pointerId);
+        if(_currentPointerId == DEFAULTPOINTERID){
             _currentPointerId = eventData.pointerId;
             _myObject = eventData.pointerCurrentRaycast.gameObject;
             _listItem = eventData.pointerCurrentRaycast.gameObject.GetComponent<ListItem>();
@@ -92,7 +93,7 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
  
     public void OnEndDrag(PointerEventData eventData)
     {
-        _currentPointerId = 0;
+        _currentPointerId = DEFAULTPOINTERID;
         scrollRect.vertical = true;
         if(_isInstantiate)
         {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public Detail ground;
-    public LevelContainer levelContainer;
+    //public LevelContainer levelContainer;
     private bool _isInstantiate;
     private List<Detail> _allDetails;
     private List<Detail> _availableDetails;
@@ -17,7 +17,7 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        _allDetails = levelContainer.GetLoadLevel();
+        //_allDetails = levelContainer.GetLoadLevel();
         
 
         _connectionPoints = new List<Point>();

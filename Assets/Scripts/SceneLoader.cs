@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,7 +16,19 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private UnityEvent _onStartLoading;
     [SerializeField] private UnityEvent _onCompleteLoading;
     private bool _isSecondLaunch;
-    // Start is called before the first frame update
+    public static SceneLoader sceneLoader;
+
+    private void Awake() 
+    {
+        if (sceneLoader == null) 
+        {
+            sceneLoader = this;
+        } 
+        else 
+        {
+            Destroy(gameObject);
+        }
+    }
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -27,6 +38,7 @@ public class SceneLoader : MonoBehaviour
         if(SceneManager.GetActiveScene().buildIndex == 1)
         {
             _nextSceneIndex = 0;
+            SaveLevel.SaveGame();
             _isSecondLaunch = true;
         }
         else
@@ -74,9 +86,16 @@ public class SceneLoader : MonoBehaviour
         }
         canvasGroup.alpha = targetValue;
     }
-
+    public int GetSceneIndex()
+    {
+        return SceneManager.GetActiveScene().buildIndex;
+    }
     public bool IsSecondLauch()
     {
         return _isSecondLaunch;
+    }
+    private void OnDestroy()
+    {
+        SaveLevel.SaveGame();
     }
 }
