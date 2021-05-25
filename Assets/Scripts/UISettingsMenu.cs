@@ -17,8 +17,8 @@ public class UISettingsMenu : MonoBehaviour
 
     [Space]
     [Header ("Setting button rotation")]
-    [SerializeField] float rotationDuration;
-    [SerializeField] Ease rotationEase;
+    [SerializeField] private float rotationDuration;
+    [SerializeField] private Ease rotationEase;
 
     [Space]
     [Header ("Animation")]
@@ -33,9 +33,6 @@ public class UISettingsMenu : MonoBehaviour
     [SerializeField] private float collapseFadeDuration;
 
     public AudioSource gearSound;
-    //public AudioMixerGroup uiMixerGroup;
-    //public AudioMixerGroup musicMixerGroup;
-
 
     [SerializeField] private Button settingButton;
     [SerializeField] private Button musicButton;
@@ -57,15 +54,14 @@ public class UISettingsMenu : MonoBehaviour
     private string[] playerPrefsKey = new string[2] {"music", "sound"};
     private string[] mixerVolumeParameters = new string[2] {"MusicVolume", "SoundVolume"};
     private bool[] isAudioOn = new bool[2] {true, true};
-    [SerializeField]
-    private AudioMixer audioMixer;
+    [SerializeField] private AudioMixer audioMixer;
     
     private void Awake()
     {
         _musicButtonTransform = musicButton.gameObject.GetComponent<RectTransform>();
         _soundButtonTransform = musicButton.gameObject.GetComponent<RectTransform>();
         _backButtonTransform = musicButton.gameObject.GetComponent<RectTransform>();
-        //PlayerPrefs.DeleteAll();
+
         for (int i = 0; i < playerPrefsKey.Length; i++)
         {
             if (!PlayerPrefs.HasKey(playerPrefsKey[i]))
@@ -92,15 +88,13 @@ public class UISettingsMenu : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         sceneLoader = GameObject.FindObjectOfType<SceneLoader>();
         itemsCount = transform.childCount - 1;
         settingButton = transform.GetChild(0).GetComponent<Button>();
         settingButton.transform.SetAsLastSibling();
-
         settingButtonPosition = settingButton.GetComponent<RectTransform>().localPosition;
-        
         ResetPosition();
     }
     
@@ -163,7 +157,8 @@ public class UISettingsMenu : MonoBehaviour
         PlayerPrefs.Save ();
     }
 
-    public void Home(){
+    public void Home()
+    {
         sceneLoader.LoadNextScene();
     }
 }

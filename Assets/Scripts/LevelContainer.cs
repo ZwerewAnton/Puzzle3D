@@ -96,7 +96,6 @@ public class Level
     [SerializeField] private Sprite _icon;
     [SerializeField] private Detail _ground;
     [SerializeField] private List<Detail> _details = new List<Detail>();
-    private float _percent = 0;
 
     public List<Detail> Details
     {

@@ -20,7 +20,6 @@ public class Detail : MonoBehaviour
     private int _currentCount = 0;
     private bool _installed;
 
-
     public int CurrentCount
     {
         get
@@ -84,5 +83,4 @@ public class Detail : MonoBehaviour
             return false;
         }
     }
-
 }

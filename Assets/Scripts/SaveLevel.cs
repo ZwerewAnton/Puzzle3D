@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -8,24 +7,21 @@ using System.Runtime.Serialization.Formatters.Binary;
 [Serializable]
 public static class SaveLevel
 {
-    
     private static string _folderPath = Path.Combine(Application.persistentDataPath, "saves");
     public static int levelID;
-
 
     private static LevelSaver CreateSaveObject(List <Detail> _allDetails)
     {
         LevelSaver level = new LevelSaver();
         bool isInstalled;
         float installedDetailsCount = 0;
-        //level.percent = _allDetails
         foreach(Detail detail in _allDetails)
         {
             isInstalled = true;
             DetailSaver detailSav = new DetailSaver();
 
             detailSav.detailName = detail.name;
-            detailSav._currentCount = detail.CurrentCount;
+            detailSav.currentCount = detail.CurrentCount;
 
             List<PointParentConnectorSaver> pPCSaverList = new List<PointParentConnectorSaver>();
             detailSav.parentList = pPCSaverList;
@@ -82,7 +78,7 @@ public static class SaveLevel
                 {
                     if(detailContainer.name == detail.detailName)
                     {
-                        detailContainer.CurrentCount = detail._currentCount;
+                        detailContainer.CurrentCount = detail.currentCount;
                         for(int i = 0; i < detailContainer.points.Count; i++)
                         {
                             if( detail.parentList[i]._isInstalled)

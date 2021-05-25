@@ -8,14 +8,7 @@ public class LevelContainerSO : ScriptableObject
     public int count;
     [SerializeField]
     private List<Level> _levels;
-    private Level _level;    
-    public static LevelContainerSO lo;
-
-    private void Awake()
-    {
-        Debug.Log("SO awake");
-        lo = this;
-    }
+    private Level _level;
 
     public int GetLevelCount()
     {

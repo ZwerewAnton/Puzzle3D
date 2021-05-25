@@ -9,13 +9,9 @@ public class ObjectMagnet : MonoBehaviour
     public List<Detail> detailsList;
     public Camera cam;
     public float magnDist = 0.5f;
-    //public Detail ground;
     public Material grayMaterial;
     public Vector3 objectOffset;
-/*     public SaveLevel saveLevel; */
-    //public LevelContainer levelContainer;
     public UnityEvent restartEvent;
-    
     private GameObject target;
     private float mZCoord;
     private bool _isConnect;
@@ -26,7 +22,6 @@ public class ObjectMagnet : MonoBehaviour
     private List<Point> _connectionPoints;
     private List<GameObject> _connectionObjects;
     private List<PointParentConnector> _allPoints;
-    //private GameObject _instObject;
     private Detail _instDetail;
     private Material _mainMaterial;
     private MeshRenderer meshRenderer;
@@ -35,7 +30,6 @@ public class ObjectMagnet : MonoBehaviour
     private float _lerp = 0;
     
     private GameObject _currentConnObject;
-    private int _bestIndex;
     private Transform _targetTransform;
     private Detail _ground;
     [SerializeField] private UnityEvent<Transform> _onInstantiateGround;
@@ -44,20 +38,7 @@ public class ObjectMagnet : MonoBehaviour
     
     private void Awake() 
     {
-        //_allDetails = levelContainer.Reset();
- 
-        //Debug.Log(_allDetails[0].name);
-        //Reset(detailsList);
-        //_allDetails = saveLevel.GetLoadDetailList();
-        //SaveLevel.LoadGame();
-        //_allDetails = LevelContainer.currentLevelContainer.GetLoadLevel();
         _allDetails = LevelContainer.currentLevelContainer.GetLoadLevel();
-/*         List<Detail> list = 
-        foreach(Detail det in list){
-            if(!det.IsInstalled()){
-                _allDetails.Add(det);
-            }
-        } */
         _ground = LevelContainer.currentLevelContainer.GetCurrentLevelGround();
         
         instantiateDetailObjects = new List<GameObject>();
@@ -68,6 +49,8 @@ public class ObjectMagnet : MonoBehaviour
         {
             levelMenu.ShowHomeButton();
         }
+
+        objectOffset.y = Screen.height * 0.1f;
     }
 
     private Vector3 GetMouseAsWorldPoint()
@@ -240,7 +223,6 @@ public class ObjectMagnet : MonoBehaviour
     {
         GameObject _instObject;
         List<Detail> clearDetailList = new List<Detail>();
-        //ground.points[0].Install();
         InstantiateGround(_ground);
         foreach(Detail detail in _allDetails)
         {
@@ -280,15 +262,10 @@ public class ObjectMagnet : MonoBehaviour
     
     private void Update()
     {
-        if(Input.GetKeyDown("space"))
-        {
-            Debug.Log(_connectionObjects);
-        } 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SceneLoader.sceneLoader.LoadNextScene();
         }
-        //TODO Invert or check another thing
         if (_isInstantiate)
         {   
             if(Input.touchSupported)
@@ -299,26 +276,17 @@ public class ObjectMagnet : MonoBehaviour
             {
                 TransformPosition(target.transform.position, GetMouseAsWorldPoint(), magnDist);
             }
-            if (Input.GetMouseButton(1))
-            {
-                if (_isConnect)
-                {
-                    Debug.Log("!");
-                }   
-            }
         }
     }
 
     private void InstantiateGround(Detail ground)
     {
         ground.points[0].Install();
-        //ground._prefab.transform.GetChild(0).gameObject;
         GameObject instObject = Instantiate(ground._prefab.transform.GetChild(0).gameObject, ground.points[0].point.Position, Quaternion.Euler(ground.points[0].point.Rotation));
         _onInstantiateGround.Invoke((Transform)instObject.transform);
 
     }
 
-    //TODO Add a camera transform position
     private void TransformPosition(Vector3 targetPosition, Vector3 mousePosition, float distance)
     {
         Vector3 bestPoint = Vector3.zero, bestRotation = Vector3.zero;
@@ -333,7 +301,7 @@ public class ObjectMagnet : MonoBehaviour
             {
                 Yposition.y = 0f;
             }
-            target.transform.position = Yposition /* + objectOffset */;
+            target.transform.position = Yposition;
         }
         else
         {

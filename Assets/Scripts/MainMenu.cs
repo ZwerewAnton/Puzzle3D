@@ -75,7 +75,8 @@ public class MainMenu : MonoBehaviour
         scrollRect.SetActive(true);
         settingsPanel.SetActive(true);
     }
-    private void PlayTapToPlayClip(){
+    private void PlayTapToPlayClip()
+    {
         audioSource.PlayOneShot(tapToPlayClip);
     }
     private void PlayStartGameClip()

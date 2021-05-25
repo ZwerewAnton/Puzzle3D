@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public float pointerScale = 1.1f;
     public float dragDistance = 70f;
     public ScrollRect scrollRect;
     public ObjectMagnet objectMagnet;
@@ -17,22 +14,16 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
     public AudioClip instantiateDetailClip;
     public AudioClip installDetailClip;
 
-
     private  const int DEFAULTPOINTERID = -10;
     private Vector2 _startClickPosition;
     private bool _isInstantiate;
     private ListItem _listItem;
     private GameObject _myObject;
-
     private List<Detail> _allDetails;
     private List<ListItem> _listItemList;
     private int _currentPointerId = DEFAULTPOINTERID;
-
     private Color32 _enableColor = new Color32(255, 255, 255, 255);
     private Color32 _disableColor = new Color32(255, 255, 255, 100);
-
-
-
 
     private void Start() 
     {
@@ -41,8 +32,8 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log(eventData.pointerId);
-        if(_currentPointerId == DEFAULTPOINTERID){
+        if(_currentPointerId == DEFAULTPOINTERID)
+        {
             _currentPointerId = eventData.pointerId;
             _myObject = eventData.pointerCurrentRaycast.gameObject;
             _listItem = eventData.pointerCurrentRaycast.gameObject.GetComponent<ListItem>();
@@ -51,7 +42,6 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //_currentPointerId = eventData.pointerId;
         if(_listItem != null && _listItem.isInteractable)
         {
             scrollRect.vertical = false;
@@ -64,12 +54,10 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
         if (!scrollRect.vertical && !_isInstantiate && (eventData.position.x - _startClickPosition.x) > dragDistance)
         {
             _isInstantiate = true;
-            //_rectTransform.localScale = _originScale;
             if (_listItem != null)
             {
                 objectMagnet.InstantiateObject(_listItem.detail);
                 PlayInstantiateDetailSound();
-
                 _listItem.count--;
                 _listItem.countText.text = _listItem.count.ToString();
 
@@ -82,7 +70,6 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
                     _listItem.image.enabled = false;
                     _listItem.countText.enabled = false;
                 }
-                //instantiateDetailEvent.Invoke();
             }
         }
         else if (!_isInstantiate && (Mathf.Abs(eventData.position.y - _startClickPosition.y) > dragDistance))
@@ -104,7 +91,6 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
                 ScrollRectUpdate(_listItem.detail);
                 if(objectMagnet.IsLastDetail())
                 {
-                    //TODO Take this up 
                     _listItemList.Remove(_listItem);
                     _listItem.DeleteDelatil();
                 }
@@ -112,7 +98,6 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
             else
             {
                 _listItem.image.enabled = true;
-
                 _listItem.count++;
                 if(_listItem.count > 1)
                 {
@@ -125,7 +110,6 @@ public class UIScrollRectSpriteScroller : MonoBehaviour, IPointerDownHandler, IB
                 }
             }
         }
-        //dropDetailEvent.Invoke();
     }
 
 

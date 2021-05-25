@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,18 +43,15 @@ public class UIMainMenuScrollRectController : MonoBehaviour
             {
                 _instPans[i].SetLocalPosition(new Vector2(_instPans[i-1].GetLocalPosition().x + 
                     panPrefab.GetComponent<RectTransform>().sizeDelta.x + panOffset, _instPans[i].GetLocalPosition().y));
-
-                
             }
-            
-            //_panPos[i] = -_instPans[i].transform.localPosition;
             _panPos[i] = -_instPans[i].GetLocalPosition();
         }
     }
 
     private void FixedUpdate() 
     {
-        if(_contentRect.anchoredPosition.x >= _panPos[0].x && !isScrolling || _contentRect.anchoredPosition.x <= _panPos[_panPos.Length - 1].x){
+        if(_contentRect.anchoredPosition.x >= _panPos[0].x && !isScrolling || _contentRect.anchoredPosition.x <= _panPos[_panPos.Length - 1].x)
+        {
             scrollRect.inertia = false;
         }
         float nearestPos = float.MaxValue;
@@ -78,16 +73,16 @@ public class UIMainMenuScrollRectController : MonoBehaviour
             scrollRect.inertia = false;
         }
 
-        if(isScrolling || scrollVelocity > 400){
+        if(isScrolling || scrollVelocity > 400)
+        {
             return;
         }
-        
-            _contentVector.x = Mathf.SmoothStep(_contentRect.anchoredPosition.x, _panPos[_selectedPanID].x,
-                snapSpeed * Time.fixedDeltaTime);
-            _contentRect.anchoredPosition = _contentVector;
+        _contentVector.x = Mathf.SmoothStep(_contentRect.anchoredPosition.x, _panPos[_selectedPanID].x, snapSpeed * Time.fixedDeltaTime);
+        _contentRect.anchoredPosition = _contentVector;
         
     }
-    public void Scrolling(bool scroll){
+    public void Scrolling(bool scroll)
+    {
         isScrolling = scroll;
         if(scroll){
             scrollRect.inertia = true;

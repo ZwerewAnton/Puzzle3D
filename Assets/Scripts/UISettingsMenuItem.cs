@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +7,7 @@ public class UISettingsMenuItem : MonoBehaviour
     public Image img;
     public Sprite offImg;
     public Sprite onImg;
-    bool isOn;
+    private bool isOn;
     public RectTransform trans;
 
     void Awake()
@@ -17,7 +15,8 @@ public class UISettingsMenuItem : MonoBehaviour
         img = GetComponent<Image>();
         trans = (RectTransform)transform;
     }
-    public void Click(){
+    public void Click()
+    {
         if(isOn){
             img.sprite = offImg;
             isOn = false;

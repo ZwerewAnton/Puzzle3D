@@ -147,16 +147,12 @@ public class MusicPlayer : MonoBehaviour
         set
         {
             _volume = value;
-            //_audioSource.volume = _volume;
             SetMusicMixerVolume(_volume);
-            //_audioMixer.SetFloat(soundMixerParameter, _volume);
         }
     }
     
     private void FadeIn()
     {
-        //_audioSource.volume = MINVOLUME;
-        //SetMusicMixerVolume(AUDIOOFFVALUE);
         volume = AUDIOOFFVALUE;
         _audioSource.Play();
         DOTween

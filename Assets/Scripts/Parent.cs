@@ -9,11 +9,10 @@ public class Parent
     #if UNITY_EDITOR
     public List<bool> showParentPointList = new List<bool>();  
     #endif
-    
+
     public List<bool> checkToogleList = new List<bool>();
     public Detail parentDetail;
     public List<Point> parentPointList = new List<Point>(); 
-    //public List<PointParentConnector> parentPPCList = new List<PointParentConnector>(); 
 
     public List<PointParentConnector> GetAllPPC()
     {
@@ -31,7 +30,8 @@ public class Parent
     public bool IsParentInstall()
     {
         List<PointParentConnector> list = GetAllPPC();
-        foreach(PointParentConnector ppc in list){
+        foreach(PointParentConnector ppc in list)
+        {
             if(!ppc.IsInstalled)
             {
                 return false;

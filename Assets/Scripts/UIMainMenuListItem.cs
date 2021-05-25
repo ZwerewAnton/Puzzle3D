@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -22,12 +20,10 @@ public class UIMainMenuListItem : MonoBehaviour
     {
         _name.text = name;
     }
-
     public void SetLocalScale(Vector3 scale)
     {
         gameObject.transform.localScale = scale;
     }
-
     public void SetLocalPosition(Vector3 position)
     {
         gameObject.transform.localPosition = position;
