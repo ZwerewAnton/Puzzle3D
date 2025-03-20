@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -10,13 +10,17 @@ Material:
   m_Name: WaterMaterial
   m_Shader: {fileID: -6465566751694194690, guid: 71197454b442d0242b0dfbfe164f971e,
     type: 3}
-  m_ShaderKeywords: 
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -76,11 +80,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - Vector1_082a987b35e74919aeba1e1010e8bb5e: 1.37
     - Vector1_0ab246f60954436b949fd2bccf6396b8: 1.37
     - Vector1_12b8388047c7490b870e57a7c038d77d: 2
-    - Vector1_4bb6d28182e3465ea79225f3b052a0cc: 0.5
+    - Vector1_4bb6d28182e3465ea79225f3b052a0cc: 0.1
     - Vector1_5f314d5d7b5a4fe5af4c490dcc4bc81c: 1.51
     - Vector1_75705135971341c6b26e5c113c5351c2: 0.1
     - Vector1_b9622a5c0f1a4e828365df09db049058: 7
@@ -102,6 +107,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -134,4 +140,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 4
+  version: 7

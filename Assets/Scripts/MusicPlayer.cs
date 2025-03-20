@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 using UnityEngine.Audio;
 
 public class MusicPlayer : MonoBehaviour
@@ -21,7 +19,6 @@ public class MusicPlayer : MonoBehaviour
     private int sceneIndex = 0;
     public static MusicPlayer musicPlayer;
     
-
     private void Awake()
     {
         if (musicPlayer == null) 
@@ -41,11 +38,12 @@ public class MusicPlayer : MonoBehaviour
         DontDestroyOnLoad(transform.gameObject);
         _audioSource = GetComponent<AudioSource>();
     }
+    
     private void Start()
     {
-        Play();
         _isSoundOn = GetPlayerPrefsVolumeState(soundKey, soundMixerParameter);
         _isMusicOn = GetPlayerPrefsVolumeState(musicKey, musicMixerParameter);
+        Play();
 
         _audioSource.clip = _menuMusicClip;
     }
@@ -53,22 +51,20 @@ public class MusicPlayer : MonoBehaviour
     public void Play()
     {
         sceneIndex = SceneLoader.sceneLoader.GetSceneIndex();
-        if(_isMusicOn)
+        if (!_isMusicOn || _audioSource.isPlaying) return;
+        switch (sceneIndex)
         {
-            if(sceneIndex == 0)
-            {
+            case 0:
                 _audioSource.clip = _menuMusicClip;
                 FadeIn();
-            }
-            else if(sceneIndex == 1)
-            {
+                break;
+            case 1:
                 _audioSource.clip = _gameMusicClip;
                 FadeIn();
-            }
-            else
-            {
+                break;
+            default:
                 _audioSource.Stop();
-            }
+                break;
         }
     }    
 
@@ -153,6 +149,7 @@ public class MusicPlayer : MonoBehaviour
     
     private void FadeIn()
     {
+        
         volume = AUDIOOFFVALUE;
         _audioSource.Play();
         DOTween
@@ -175,5 +172,4 @@ public class MusicPlayer : MonoBehaviour
     {
         _audioMixer.SetFloat(musicMixerParameter, volume);
     }
-    
 }
