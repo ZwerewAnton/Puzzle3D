@@ -9,14 +9,14 @@ public class SceneLoader : MonoBehaviour
     public GameObject loadingScreen;
     public Slider progressBar;
     public CanvasGroup canvasGroup;
-    private const float MIN_TIME_TO_SHOW = 1f;
-    private AsyncOperation currentLoadingOperation;
-    private float timeElapsed;
-    private int _nextSceneIndex;
     [SerializeField] private UnityEvent _onStartLoading;
     [SerializeField] private UnityEvent _onCompleteLoading;
-    private bool _isSecondLaunch;
     public static SceneLoader sceneLoader;
+    private const float MIN_TIME_TO_SHOW = 1f;
+    private AsyncOperation _currentLoadingOperation;
+    private float _timeElapsed;
+    private int _nextSceneIndex;
+    private bool _isSecondLaunch;
 
     private void Awake() 
     {
@@ -29,10 +29,13 @@ public class SceneLoader : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
+        Application.targetFrameRate = 60;
     }
+    
     public void LoadNextScene()
     {
         if(SceneManager.GetActiveScene().buildIndex == 1)
@@ -48,23 +51,17 @@ public class SceneLoader : MonoBehaviour
         progressBar.value = 0;
         StartCoroutine(StartLoad());
     }
-    public void LoadMenuScene(){
-        
-        progressBar.value = 0;
-        StartCoroutine(StartLoad());
-    }
-    
 
-    IEnumerator StartLoad()
+    private IEnumerator StartLoad()
     {
         _onStartLoading.Invoke();
         loadingScreen.SetActive(true);
         yield return StartCoroutine(FadeLoadingScreen(1, 1));
-        timeElapsed += Time.deltaTime;
-        currentLoadingOperation = SceneManager.LoadSceneAsync(_nextSceneIndex);
-        while (!currentLoadingOperation.isDone && timeElapsed <= MIN_TIME_TO_SHOW)
+        _timeElapsed += Time.deltaTime;
+        _currentLoadingOperation = SceneManager.LoadSceneAsync(_nextSceneIndex);
+        while (_currentLoadingOperation is { isDone: false } && _timeElapsed <= MIN_TIME_TO_SHOW)
         {
-            progressBar.value = Mathf.Clamp01(currentLoadingOperation.progress / 0.9f);
+            progressBar.value = Mathf.Clamp01(_currentLoadingOperation.progress / 0.9f);
             yield return null;
         }
 
@@ -73,9 +70,9 @@ public class SceneLoader : MonoBehaviour
         _onCompleteLoading.Invoke();
     }
 
-    IEnumerator FadeLoadingScreen(float targetValue, float duration)
+    private IEnumerator FadeLoadingScreen(float targetValue, float duration)
     {
-        float startValue = canvasGroup.alpha;
+        var startValue = canvasGroup.alpha;
         float time = 0;
 
         while (time < duration)
@@ -86,14 +83,17 @@ public class SceneLoader : MonoBehaviour
         }
         canvasGroup.alpha = targetValue;
     }
-    public int GetSceneIndex()
+    
+    public static int GetSceneIndex()
     {
         return SceneManager.GetActiveScene().buildIndex;
     }
-    public bool IsSecondLauch()
+    
+    public bool IsSecondLaunch()
     {
         return _isSecondLaunch;
     }
+    
     private void OnDestroy()
     {
         SaveLevel.SaveGame();

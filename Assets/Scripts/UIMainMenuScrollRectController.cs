@@ -16,24 +16,24 @@ public class UIMainMenuScrollRectController : MonoBehaviour
     public UIMainMenuListItem panPrefab;
     public ScrollRect scrollRect;
 
+    [SerializeField] private RectTransform _contentRect;
     private UIMainMenuListItem[] _instPans;
     private Vector2[] _panPos;
     private Vector3[] _panScales;
-    [SerializeField] private RectTransform _contentRect;
     private int _selectedPanID;
-    private bool isScrolling;
+    private bool _isScrolling;
     private Vector2 _contentVector;
 
     private void Start() 
     {
         _panCount = LevelContainer.currentLevelContainer.GetLevelCount();
-        Sprite[] sprites = LevelContainer.currentLevelContainer.GetLevelIcons();
-        string[] names = LevelContainer.currentLevelContainer.GetLevelNames();
+        var sprites = LevelContainer.currentLevelContainer.GetLevelIcons();
+        var names = LevelContainer.currentLevelContainer.GetLevelNames();
         _instPans = new UIMainMenuListItem[_panCount];
         _panPos = new Vector2[_panCount];
         _panScales = new Vector3[_panCount];
 
-        for(int i = 0; i < _panCount; i++)
+        for(var i = 0; i < _panCount; i++)
         {
             _instPans[i] = Instantiate(panPrefab, transform, false);                
             _instPans[i].SetIcon(sprites[i]);
@@ -50,62 +50,63 @@ public class UIMainMenuScrollRectController : MonoBehaviour
 
     private void FixedUpdate() 
     {
-        if(_contentRect.anchoredPosition.x >= _panPos[0].x && !isScrolling || _contentRect.anchoredPosition.x <= _panPos[_panPos.Length - 1].x)
+        if(_contentRect.anchoredPosition.x >= _panPos[0].x && !_isScrolling || _contentRect.anchoredPosition.x <= _panPos[_panPos.Length - 1].x)
         {
             scrollRect.inertia = false;
         }
-        float nearestPos = float.MaxValue;
-        for(int i = 0; i < _panCount; i++){
-            float distance = Mathf.Abs(_contentRect.anchoredPosition.x - _panPos[i].x);
+        
+        var nearestPos = float.MaxValue;
+        var time = Time.fixedDeltaTime;
+        for(var i = 0; i < _panCount; i++)
+        {
+            var distance = Mathf.Abs(_contentRect.anchoredPosition.x - _panPos[i].x);
             if(distance<nearestPos){
                 nearestPos =distance;
                 _selectedPanID = i;
             }
-            float scale = Mathf.Clamp(1 / (distance / panOffset) * scaleOffset, 0.5f, 1f);
-            _panScales[i].x = Mathf.SmoothStep(_instPans[i].GetLocalScale().x, scale, scaleSpeed * Time.fixedDeltaTime);
-            _panScales[i].y = Mathf.SmoothStep(_instPans[i].GetLocalScale().y, scale, scaleSpeed * Time.fixedDeltaTime);
-            _panScales[i].z = Mathf.SmoothStep(_instPans[i].GetLocalScale().z, scale, scaleSpeed * Time.fixedDeltaTime);
+            var scale = Mathf.Clamp(1 / (distance / panOffset) * scaleOffset, 0.5f, 1f);
+            _panScales[i].x = Mathf.SmoothStep(_instPans[i].GetLocalScale().x, scale, scaleSpeed * time);
+            _panScales[i].y = Mathf.SmoothStep(_instPans[i].GetLocalScale().y, scale, scaleSpeed * time);
+            _panScales[i].z = Mathf.SmoothStep(_instPans[i].GetLocalScale().z, scale, scaleSpeed * time);
             _instPans[i].SetLocalScale(_panScales[i]);
         }
-        float scrollVelocity = Mathf.Abs(scrollRect.velocity.x);
-        if(scrollVelocity < 400 && !isScrolling)
+        var scrollVelocity = Mathf.Abs(scrollRect.velocity.x);
+        if(scrollVelocity < 400 && !_isScrolling)
         {
             scrollRect.inertia = false;
         }
 
-        if(isScrolling || scrollVelocity > 400)
+        if(_isScrolling || scrollVelocity > 400)
         {
             return;
         }
-        _contentVector.x = Mathf.SmoothStep(_contentRect.anchoredPosition.x, _panPos[_selectedPanID].x, snapSpeed * Time.fixedDeltaTime);
+        _contentVector.x = Mathf.SmoothStep(_contentRect.anchoredPosition.x, _panPos[_selectedPanID].x, snapSpeed * time);
         _contentRect.anchoredPosition = _contentVector;
-        
     }
+    
     public void Scrolling(bool scroll)
     {
-        isScrolling = scroll;
-        if(scroll){
+        _isScrolling = scroll;
+        if(scroll)
+        {
             scrollRect.inertia = true;
         }
     }
-    public int GetLevelID(){
+    
+    public int GetLevelID()
+    {
         return _selectedPanID;
     }
-    private float GetPercent(int levelID)
+    
+    private static float GetPercent(int levelID)
     {
-        string key = PropertiesStorage.GetPercentKey() + levelID.ToString();
-        if(PlayerPrefs.HasKey(key))
-        {
-            return PlayerPrefs.GetFloat(key);
-        }
-        else
-        {
-            return 0f;
-        }
+        var key = PropertiesStorage.GetPercentKey() + levelID;
+        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0f;
     }
-    public void UpdapePercents()
+    
+    public void UpdatePercents()
     {
-        for(int i = 0; i < _panCount; i++)
+        for(var i = 0; i < _panCount; i++)
         {
             _instPans[i].SetPercent(GetPercent(i));
         }

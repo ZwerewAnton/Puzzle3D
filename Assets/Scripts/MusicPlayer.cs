@@ -50,7 +50,7 @@ public class MusicPlayer : MonoBehaviour
 
     public void Play()
     {
-        sceneIndex = SceneLoader.sceneLoader.GetSceneIndex();
+        sceneIndex = SceneLoader.GetSceneIndex();
         if (!_isMusicOn || _audioSource.isPlaying) return;
         switch (sceneIndex)
         {

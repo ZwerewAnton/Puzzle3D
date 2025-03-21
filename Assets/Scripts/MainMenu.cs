@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -19,49 +15,51 @@ public class MainMenu : MonoBehaviour
 
     public GameObject disassembleWindow;
     public GameObject disassembleButton;
-    public Button disassembleWindowOK;
-    public Button disassembleWindowClose;
 
-    private SceneLoader sceneLoader;
+    private SceneLoader _sceneLoader;
+    private MusicPlayer _musicPlayer;
     [SerializeField] private UnityEvent _onFirstTap;
-    private MusicPlayer musicPlayer;
-    
     
     private void Start()
     {
-        sceneLoader = GameObject.FindObjectOfType<SceneLoader>();
-        musicPlayer = GameObject.FindGameObjectWithTag("MusicPlayer").GetComponent<MusicPlayer>();
-        if(sceneLoader.IsSecondLauch())
+        _sceneLoader = FindObjectOfType<SceneLoader>();
+        _musicPlayer = GameObject.FindGameObjectWithTag("MusicPlayer").GetComponent<MusicPlayer>();
+        if(_sceneLoader.IsSecondLaunch())
         {
             HideStartScreen();
         }
     }
+    
     public void FirstTap()
     {
         HideStartScreen();
         PlayTapToPlayClip();
-        musicPlayer.Play();
+        _musicPlayer.Play();
     }
+    
     public void Play()
     {
         SaveLevel.levelID = scrollController.GetLevelID();
         PlayStartGameClip();
-        sceneLoader.LoadNextScene();
+        _sceneLoader.LoadNextScene();
     }
+    
     public void ShowDisassembleWindow()
     {
         disassembleWindow.SetActive(true);
-    }    
+    }
+    
     public void CloseDisassembleWindow()
     {
         disassembleWindow.SetActive(false);
     }
+    
     public void DisassembleDetail()
     {
-        int levelID = scrollController.GetLevelID();
+        var levelID = scrollController.GetLevelID();
         SaveLevel.levelID = levelID;
         LevelContainer.currentLevelContainer.ResetLevel(levelID);
-        scrollController.UpdapePercents();
+        scrollController.UpdatePercents();
         disassembleWindow.SetActive(false);
     }
 
@@ -75,14 +73,14 @@ public class MainMenu : MonoBehaviour
         scrollRect.SetActive(true);
         settingsPanel.SetActive(true);
     }
+    
     private void PlayTapToPlayClip()
     {
         audioSource.PlayOneShot(tapToPlayClip);
     }
+    
     private void PlayStartGameClip()
     {
         audioSource.PlayOneShot(playClip);
     }
-
-
 }
