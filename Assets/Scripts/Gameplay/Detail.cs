@@ -35,7 +35,7 @@ namespace Gameplay
             var list = new List<Point>();
             foreach (var pointParentConnector in points)
             {
-                if(pointParentConnector.IsReady() && !pointParentConnector.IsInstalled)
+                if (pointParentConnector.IsReady() && !pointParentConnector.IsInstalled)
                 {
                     list.Add(pointParentConnector.point);
                 }

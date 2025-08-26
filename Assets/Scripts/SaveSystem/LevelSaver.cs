@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Gameplay;
 using Level;
 using SaveSystem.DataObjects;
+using SaveSystem.DataObjects.Level;
 using Settings;
 using UnityEngine;
 
@@ -57,6 +58,20 @@ namespace SaveSystem
         }
 
         public static void SaveGame()
+        {
+            var level = CreateSaveObject(LevelContainer.currentLevelContainer.GetCurrentLevelDetails());
+            var bf = new BinaryFormatter();
+            if (!Directory.Exists(_folderPath))
+            {
+                Directory.CreateDirectory(_folderPath);
+            }
+            var file = File.Create(GetSavePath());
+            bf.Serialize(file, level);
+            file.Close();
+            SavePercent(LevelContainer.currentLevelContainer.GetPercent());
+        }   
+
+        public static void SaveLevelData()
         {
             var level = CreateSaveObject(LevelContainer.currentLevelContainer.GetCurrentLevelDetails());
             var bf = new BinaryFormatter();

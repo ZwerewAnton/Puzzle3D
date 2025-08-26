@@ -1,6 +1,6 @@
 using System;
 
-namespace SaveSystem.DataObjects
+namespace SaveSystem.DataObjects.Level
 {
     [Serializable]
     public class PointParentConnectorSaveData
