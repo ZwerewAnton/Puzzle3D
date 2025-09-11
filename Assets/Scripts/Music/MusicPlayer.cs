@@ -1,3 +1,4 @@
+using Configs;
 using DG.Tweening;
 using Settings;
 using UnityEngine;
@@ -9,15 +10,12 @@ namespace Music
     [RequireComponent(typeof(AudioSource))]
     public class MusicPlayer : MonoBehaviour
     {
-        private const float AudioOffValue = -80f;
-        private const float AudioOnValue = -20f;
-        
         [SerializeField] private AudioMixer audioMixer;
         [SerializeField] private AudioClip menuMusicClip;
         [SerializeField] private AudioClip gameMusicClip;
-        [SerializeField] private float fadeTime = 1f;
 
         private SettingsService _settingsService;
+        private ApplicationConfigs _configs;
         private AudioSource _audioSource;
         private float _volume;
         private Tween _fadeTween;
@@ -33,8 +31,9 @@ namespace Music
         }
 
         [Inject]
-        private void Construct(SettingsService settingsService)
+        private void Construct(SettingsService settingsService, ApplicationConfigs configs)
         {
+            _configs = configs;
             _settingsService = settingsService;
             _settingsService.MusicChanged += ApplyMusicState;
         }
@@ -47,7 +46,6 @@ namespace Music
         private void Start()
         {
             _audioSource.clip = menuMusicClip;
-            Volume = AudioOffValue;
         }
 
         private void OnDestroy()
@@ -88,7 +86,7 @@ namespace Music
                 _audioSource.Play();
             
             _fadeTween = DOTween
-                .To(() => Volume, x => Volume = x, AudioOnValue, fadeTime)
+                .To(() => Volume, x => Volume = x, _configs.audioOnValue, _configs.musicFadeTime)
                 .OnComplete(() =>_fadeTween = null);
         }
         
@@ -96,7 +94,7 @@ namespace Music
         {
             _fadeTween?.Kill();
             _fadeTween = DOTween
-                .To(() => Volume, x => Volume = x, AudioOffValue, fadeTime)
+                .To(() => Volume, x => Volume = x, _configs.audioOffValue, _configs.musicFadeTime)
                 .OnComplete(() =>
                 {
                     _audioSource.Stop();

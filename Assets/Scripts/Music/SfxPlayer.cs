@@ -1,4 +1,5 @@
-﻿using Settings;
+﻿using Configs;
+using Settings;
 using UnityEngine;
 using UnityEngine.Audio;
 using Zenject;
@@ -8,9 +9,6 @@ namespace Music
     [RequireComponent(typeof(AudioSource))]
     public class SfxPlayer : MonoBehaviour
     {
-        private const float AudioOffValue = -80f;
-        private const float AudioOnValue = -20f;
-        
         [SerializeField] private AudioMixer audioMixer;
         [SerializeField] private AudioClip tapToPlayClip;
         [SerializeField] private AudioClip playClip;
@@ -18,11 +16,13 @@ namespace Music
         [SerializeField] private AudioClip settingButtonClip;
         
         private SettingsService _settingsService;
+        private ApplicationConfigs _configs;
         private AudioSource _audioSource;
 
         [Inject]
-        private void Construct(SettingsService settingsService)
+        private void Construct(SettingsService settingsService, ApplicationConfigs configs)
         {
+            _configs = configs;
             _settingsService = settingsService;
             _settingsService.SoundChanged += ApplySoundState;
         }
@@ -64,7 +64,7 @@ namespace Music
 
         private void ApplySoundState(bool isOn)
         {
-            SetMusicMixerVolume(isOn ? AudioOnValue : AudioOffValue);
+            SetMusicMixerVolume(isOn ? _configs.audioOnValue : _configs.audioOffValue);
         }
         
         private void SetMusicMixerVolume(float volume)
