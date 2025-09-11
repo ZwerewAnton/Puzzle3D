@@ -132,28 +132,28 @@ namespace SaveSystem
 
         private static void SavePercent(float percent)
         {
-            var key = PropertiesStorage.GetPercentKey() + levelID;
-            PlayerPrefs.SetFloat(key, percent);
-            PlayerPrefs.Save();
+            // var key = PropertiesStorage.GetPercentKey() + levelID;
+            // PlayerPrefs.SetFloat(key, percent);
+            // PlayerPrefs.Save();
         }
         
         public static float[] LoadPercents()
         {
             var levelCount = LevelContainer.currentLevelContainer.GetLevelCount();
             var percents = new float[levelCount - 1];
-            for (var i = 0; i < levelCount; i++)
-            {
-                var key = PropertiesStorage.GetPercentKey() + i;
-                if (PlayerPrefs.HasKey(key))
-                {
-                    percents[i] = PlayerPrefs.GetInt(key);
-                }
-                else
-                {
-                    PlayerPrefs.SetFloat(key, 0f);
-                    PlayerPrefs.Save();
-                }
-            }
+            // for (var i = 0; i < levelCount; i++)
+            // {
+            //     var key = PropertiesStorage.GetPercentKey() + i;
+            //     if (PlayerPrefs.HasKey(key))
+            //     {
+            //         percents[i] = PlayerPrefs.GetInt(key);
+            //     }
+            //     else
+            //     {
+            //         PlayerPrefs.SetFloat(key, 0f);
+            //         PlayerPrefs.Save();
+            //     }
+            // }
             return percents;
         }
     }

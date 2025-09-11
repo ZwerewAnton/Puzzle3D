@@ -107,16 +107,17 @@ namespace UI
     
         private static float GetPercent(int levelID)
         {
-            var key = PropertiesStorage.GetPercentKey() + levelID;
-            return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0f;
+            // var key = PropertiesStorage.GetPercentKey() + levelID;
+            // return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0f;
+            return 0f;
         }
     
         public void UpdatePercents()
         {
-            for (var i = 0; i < _panCount; i++)
-            {
-                _instPans[i].SetPercent(GetPercent(i));
-            }
+            // for (var i = 0; i < _panCount; i++)
+            // {
+            //     _instPans[i].SetPercent(GetPercent(i));
+            // }
         }
     }
 }

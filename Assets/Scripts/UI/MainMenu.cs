@@ -16,7 +16,6 @@ namespace UI
         public GameObject miniHouse;
         public GameObject settingsPanel;
         public UIMainMenuScrollRectController scrollController;
-        public AudioSource audioSource;
         public AudioClip tapToPlayClip;
         public AudioClip playClip;
         [FormerlySerializedAs("_onFirstTap")] [SerializeField] private UnityEvent onFirstTap;
@@ -26,6 +25,7 @@ namespace UI
 
         private SceneLoader _sceneLoader;
         private MusicPlayer _musicPlayer;
+        private SfxPlayer _sfxPlayer;
     
         private void Start()
         {
@@ -40,14 +40,14 @@ namespace UI
         public void FirstTap()
         {
             HideStartScreen();
-            PlayTapToPlayClip();
-            _musicPlayer.Play();
+            _sfxPlayer.PlayTapToPlayClip();
+            _musicPlayer.Play(MusicType.MainMenu);
         }
     
         public void Play()
         {
             LevelSaver.levelID = scrollController.GetLevelID();
-            PlayStartGameClip();
+            _sfxPlayer.PlayStartGameClip();
             _sceneLoader.LoadNextScene();
         }
     
@@ -79,16 +79,6 @@ namespace UI
             disassembleButton.SetActive(true);
             scrollRect.SetActive(true);
             settingsPanel.SetActive(true);
-        }
-    
-        private void PlayTapToPlayClip()
-        {
-            audioSource.PlayOneShot(tapToPlayClip);
-        }
-    
-        private void PlayStartGameClip()
-        {
-            audioSource.PlayOneShot(playClip);
         }
     }
 }

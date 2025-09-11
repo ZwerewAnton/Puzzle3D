@@ -1,27 +1,30 @@
 using DG.Tweening;
+using Music;
 using SceneManagement;
+using Settings;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
 
-namespace UI
+namespace UI.Settings
 {
-    public class UISettingsMenuPanel : MonoBehaviour
+    public class SettingsDropdownMenu : MonoBehaviour
     {
         [Header ("Buttons")]
         [SerializeField] private Button settingButton;
         [SerializeField] private Button[] menuButtons;
         
         [Space]
-        [Header ("Space between menu items")]
+        [Header ("Spacing between menu items")]
         [FormerlySerializedAs("_spacing")] [SerializeField] 
         private Vector2 spacing;
         [FormerlySerializedAs("_offset")] [SerializeField] 
         private Vector2 offset;
 
         [Space]
-        [Header ("Setting button rotation")]
+        [Header ("Main button rotation")]
         [SerializeField] private float rotationDuration;
         [SerializeField] private Ease rotationEase;
 
@@ -36,17 +39,24 @@ namespace UI
         [Header ("Fading")]
         [SerializeField] private float expandFadeDuration;
         [SerializeField] private float collapseFadeDuration;
-        [SerializeField] private AudioSource audioSource;
+        
+        //[SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioClip toggleMenuClip;
         [SerializeField] private AudioClip toggleButtonClip;
-        [SerializeField] private AudioMixer audioMixer;
         
         private SceneLoader _sceneLoader;
+        
+        private Vector2 _settingButtonPosition;
         private RectTransform[] _buttonsTransform;
         private Image[] _buttonsImage;
-        private bool _isExpanded;
-        private Vector2 _settingButtonPosition;
         private int _itemsCount;
+        private bool _isExpanded;
+
+        [Inject]
+        private void Construct(SceneLoader sceneLoader)
+        {
+            _sceneLoader = sceneLoader;
+        }
     
         private void Awake()
         {
@@ -62,28 +72,28 @@ namespace UI
 
         private void Start()
         {
-            _sceneLoader = FindObjectOfType<SceneLoader>();
-            _itemsCount = transform.childCount - 1;
             settingButton = transform.GetChild(0).GetComponent<Button>();
             settingButton.transform.SetAsLastSibling();
-
             _settingButtonPosition = settingButton.GetComponent<RectTransform>().localPosition;
-        
-            ResetPosition();
-        }
-    
-        private void ResetPosition()
-        {
-            for (var i = 0; i < _itemsCount; i++)
-            {
-                _buttonsTransform[i].transform.localPosition = _settingButtonPosition;
-            }
+            _itemsCount = transform.childCount - 1;
+            
+            ResetButtonsPosition();
         }
 
         public void ToggleMenu()
         {
-            PlayToggleMenuClip();
-            if(_isExpanded)
+            AnimateButtons();
+            _isExpanded = !_isExpanded;
+        }
+
+        public void HomeButtonClick()
+        {
+            _sceneLoader.LoadNextScene();
+        }
+
+        private void AnimateButtons()
+        {
+            if (_isExpanded)
             {
                 for (var i = 0; i < _itemsCount; i++)
                 {
@@ -99,28 +109,19 @@ namespace UI
                     _buttonsImage[i].DOFade(1f, expandFadeDuration).From(0f);
                 }
             }
+            
             settingButton.transform
                 .DOLocalRotate(Vector3.forward * 180f, rotationDuration)
                 .From(Vector3.zero)
                 .SetEase(rotationEase);
-
-            _isExpanded = !_isExpanded;
         }
-
-        public void Home()
+    
+        private void ResetButtonsPosition()
         {
-            PlayButtonClip();
-            _sceneLoader.LoadNextScene();
-        }
-        
-        private void PlayToggleMenuClip()
-        {
-            audioSource.PlayOneShot(toggleMenuClip);
-        }
-        
-        public void PlayButtonClip()
-        {
-            audioSource.PlayOneShot(toggleButtonClip);
+            for (var i = 0; i < _itemsCount; i++)
+            {
+                _buttonsTransform[i].transform.localPosition = _settingButtonPosition;
+            }
         }
     }
 }

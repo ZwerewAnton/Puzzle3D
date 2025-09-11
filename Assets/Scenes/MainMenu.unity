@@ -993,6 +993,7 @@ MonoBehaviour:
     - {fileID: 3635035280465600216, guid: 458fa75e449e9464397329a216782981, type: 3}
     - {fileID: 3508270290407700746, guid: b6a21a8578dfc66489e4f32e94c0ba03, type: 3}
     - {fileID: 5328119484493878242, guid: e57acf5840d6faa448f071768ab5c060, type: 3}
+  levelsData: {fileID: 0}
 --- !u!4 &335687078
 Transform:
   m_ObjectHideFlags: 0
@@ -2147,7 +2148,6 @@ MonoBehaviour:
   miniHouse: {fileID: 1134931830}
   settingsPanel: {fileID: 1522406255}
   scrollController: {fileID: 294574386}
-  audioSource: {fileID: 1021247432}
   tapToPlayClip: {fileID: 8300000, guid: 346f93f6d8560574a8d25d3f4ab71e8a, type: 3}
   playClip: {fileID: 8300000, guid: c08bf0f6811fb6847b58852708fc2121, type: 3}
   onFirstTap:
@@ -2264,7 +2264,7 @@ GameObject:
   - component: {fileID: 1035580003}
   - component: {fileID: 1035580002}
   - component: {fileID: 1035580000}
-  - component: {fileID: 1035580001}
+  - component: {fileID: 1035580005}
   m_Layer: 5
   m_Name: SoundButton
   m_TagString: Untagged
@@ -2315,47 +2315,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1035580002}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1035580001}
-        m_TargetAssemblyTypeName: UISettingsAudioButton, Assembly-CSharp
-        m_MethodName: ToggleAudio
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1522406256}
-        m_TargetAssemblyTypeName: UISettingsMenuPanel, Assembly-CSharp
-        m_MethodName: PlayButtonClip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1035580001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1035579999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9332ccf1b0d9d5345b2dc637e14effdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonImage: {fileID: 0}
-  offImage: {fileID: 21300000, guid: 0e20e3e09ae16fd4799c25d575cc0326, type: 3}
-  onImage: {fileID: 21300000, guid: 4deb9bb4bc15e6b4baebe2650724263c, type: 3}
-  dropDown: 1
+      m_Calls: []
 --- !u!114 &1035580002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2413,6 +2373,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -119.99979}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1035580005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035579999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc89bf20b2a4427aec398fde4937ea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onImage: {fileID: 21300000, guid: 0e20e3e09ae16fd4799c25d575cc0326, type: 3}
+  offImage: {fileID: 21300000, guid: 4deb9bb4bc15e6b4baebe2650724263c, type: 3}
 --- !u!1 &1064720081
 GameObject:
   m_ObjectHideFlags: 0
@@ -3379,10 +3353,8 @@ MonoBehaviour:
   collapseEase: 26
   expandFadeDuration: 0.3
   collapseFadeDuration: 0.6
-  audioSource: {fileID: 1021247432}
   toggleMenuClip: {fileID: 8300000, guid: 69ed5ba96fa59664da967a0e4731e1de, type: 3}
   toggleButtonClip: {fileID: 8300000, guid: c08bf0f6811fb6847b58852708fc2121, type: 3}
-  audioMixer: {fileID: 24100000, guid: badcbf26990866e4591fe00e68c6b148, type: 2}
 --- !u!224 &1522406257
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3596,6 +3568,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1599447385}
   m_CullTransparentMesh: 1
+--- !u!1 &1719821146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1719821148}
+  - component: {fileID: 1719821147}
+  m_Layer: 0
+  m_Name: Mediators
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1719821147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719821146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74b5255f67994404ab4775b8f00207e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdownMenu: {fileID: 1522406256}
+  settingsButton: {fileID: 1973619692}
+  musicButton: {fileID: 2055356160}
+  soundButton: {fileID: 1035580005}
+--- !u!4 &1719821148
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719821146}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1786725259
 GameObject:
   m_ObjectHideFlags: 0
@@ -4273,6 +4293,7 @@ GameObject:
   - component: {fileID: 1973619690}
   - component: {fileID: 1973619689}
   - component: {fileID: 1973619688}
+  - component: {fileID: 1973619692}
   m_Layer: 5
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -4323,19 +4344,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1973619689}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1522406256}
-        m_TargetAssemblyTypeName: UISettingsMenuPanel, Assembly-CSharp
-        m_MethodName: ToggleMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1973619689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4393,6 +4402,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1973619692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973619687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a313642d8024344bade818ef022d78f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2026478339
 GameObject:
   m_ObjectHideFlags: 0
@@ -4744,7 +4765,7 @@ GameObject:
   - component: {fileID: 2055356158}
   - component: {fileID: 2055356157}
   - component: {fileID: 2055356155}
-  - component: {fileID: 2055356156}
+  - component: {fileID: 2055356160}
   m_Layer: 5
   m_Name: MusicButton
   m_TagString: Untagged
@@ -4795,47 +4816,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2055356157}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2055356156}
-        m_TargetAssemblyTypeName: UISettingsAudioButton, Assembly-CSharp
-        m_MethodName: ToggleAudio
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1522406256}
-        m_TargetAssemblyTypeName: UISettingsMenuPanel, Assembly-CSharp
-        m_MethodName: PlayButtonClip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &2055356156
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055356154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9332ccf1b0d9d5345b2dc637e14effdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonImage: {fileID: 0}
-  offImage: {fileID: 21300000, guid: 906f2067ff869c64f8776e068066ed75, type: 3}
-  onImage: {fileID: 21300000, guid: ff7b11d18f9deba4d984e5501c39af7d, type: 3}
-  dropDown: 0
+      m_Calls: []
 --- !u!114 &2055356157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4893,6 +4874,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -59.99987}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2055356160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055356154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc89bf20b2a4427aec398fde4937ea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onImage: {fileID: 21300000, guid: 906f2067ff869c64f8776e068066ed75, type: 3}
+  offImage: {fileID: 21300000, guid: ff7b11d18f9deba4d984e5501c39af7d, type: 3}
 --- !u!4 &2064382681 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c23b09ef0cd66834e94a5d19b7597975,
@@ -4911,3 +4906,4 @@ SceneRoots:
   - {fileID: 1537502995}
   - {fileID: 419901968}
   - {fileID: 335687078}
+  - {fileID: 1719821148}

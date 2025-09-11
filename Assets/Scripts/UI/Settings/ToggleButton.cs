@@ -1,0 +1,25 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+
+namespace UI.Settings
+{
+    [RequireComponent(typeof(Image))]
+    public class ToggleButton : ActionButton
+    {
+        [SerializeField] private Sprite onImage;
+        [SerializeField] private Sprite offImage;
+        
+        private Image _buttonImage;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _buttonImage = GetComponent<Image>();
+        }
+
+        public void SetState(bool isOn)
+        {
+            _buttonImage.sprite = isOn ? onImage : offImage;
+        }
+    }
+}

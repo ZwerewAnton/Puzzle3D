@@ -208,7 +208,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1314908526}
         m_TargetAssemblyTypeName: UISettingsMenuPanel, Assembly-CSharp
-        m_MethodName: Home
+        m_MethodName: HomeButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3204,7 +3204,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1314908526}
         m_TargetAssemblyTypeName: UISettingsMenuPanel, Assembly-CSharp
-        m_MethodName: Home
+        m_MethodName: HomeButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
