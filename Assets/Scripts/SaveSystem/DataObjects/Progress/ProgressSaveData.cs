@@ -7,6 +7,7 @@ namespace SaveSystem.DataObjects.Progress
     [Serializable]
     public class ProgressSaveData
     {
+        [SerializeField] public int version;
         [SerializeField] public List<ProgressLevelSaveData> progressLevelsSaveData = new();
     }
 }

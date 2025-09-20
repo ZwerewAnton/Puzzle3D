@@ -1,12 +1,12 @@
+using Infrastructure.SceneManagement;
 using Level;
 using Music;
 using SaveSystem;
-using SceneManagement;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-namespace UI
+namespace UI.MainMenu
 {
     public class MainMenu : MonoBehaviour
     {
@@ -16,25 +16,27 @@ namespace UI
         public GameObject miniHouse;
         public GameObject settingsPanel;
         public UIMainMenuScrollRectController scrollController;
+        
         public AudioClip tapToPlayClip;
         public AudioClip playClip;
+        
         [FormerlySerializedAs("_onFirstTap")] [SerializeField] private UnityEvent onFirstTap;
 
         public GameObject disassembleWindow;
         public GameObject disassembleButton;
 
-        private SceneLoader _sceneLoader;
+        private SceneSwitcher _sceneSwitcher;
         private MusicPlayer _musicPlayer;
         private SfxPlayer _sfxPlayer;
     
         private void Start()
         {
-            _sceneLoader = FindObjectOfType<SceneLoader>();
+            _sceneSwitcher = FindObjectOfType<SceneSwitcher>();
             _musicPlayer = GameObject.FindGameObjectWithTag("MusicPlayer").GetComponent<MusicPlayer>();
-            if (_sceneLoader.IsSecondLaunch())
-            {
-                HideStartScreen();
-            }
+            // if (_sceneSwitcher.IsSecondLaunch())
+            // {
+            //     HideStartScreen();
+            // }
         }
     
         public void FirstTap()
@@ -48,7 +50,7 @@ namespace UI
         {
             LevelSaver.levelID = scrollController.GetLevelID();
             _sfxPlayer.PlayStartGameClip();
-            _sceneLoader.LoadNextScene();
+            _sceneSwitcher.LoadNextScene();
         }
     
         public void ShowDisassembleWindow()

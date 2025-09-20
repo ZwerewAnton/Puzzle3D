@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using Infrastructure.SceneManagement;
 using Level;
 using SaveSystem;
-using SceneManagement;
 using UI;
 using UnityEngine;
 using UnityEngine.Events;
@@ -218,10 +218,10 @@ namespace Gameplay.Movement
     
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                SceneLoader.sceneLoader.LoadNextScene();
-            }
+            // if (Input.GetKeyDown(KeyCode.Escape))
+            // {
+            //     SceneSwitcher.sceneLoader.LoadNextScene();
+            // }
 
             if (!_isInstantiate) 
                 return;

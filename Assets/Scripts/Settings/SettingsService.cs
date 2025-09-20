@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Audio;
 using Utils;
 
 namespace Settings
@@ -33,19 +32,19 @@ namespace Settings
             SoundChanged?.Invoke(_isSoundOn);
         }
 
-        private void ToggleAudio(string prefsKey, ref bool param)
+        private static void ToggleAudio(string prefsKey, ref bool param)
         {
             param = !param;
             SetVolume(prefsKey, param);
         }
 
-        private void SetVolume(string key, bool value)
+        private static void SetVolume(string key, bool value)
         {
             PlayerPrefsUtils.SetBool(key, value);
             PlayerPrefs.Save();
         }
 
-        private bool LoadVolumeState(string key)
+        private static bool LoadVolumeState(string key)
         {
             return PlayerPrefsUtils.GetBool(key);
         }

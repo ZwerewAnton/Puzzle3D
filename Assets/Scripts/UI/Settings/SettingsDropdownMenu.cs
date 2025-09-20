@@ -1,6 +1,6 @@
 using DG.Tweening;
+using Infrastructure.SceneManagement;
 using Music;
-using SceneManagement;
 using Settings;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -44,7 +44,7 @@ namespace UI.Settings
         [SerializeField] private AudioClip toggleMenuClip;
         [SerializeField] private AudioClip toggleButtonClip;
         
-        private SceneLoader _sceneLoader;
+        private SceneSwitcher _sceneSwitcher;
         
         private Vector2 _settingButtonPosition;
         private RectTransform[] _buttonsTransform;
@@ -53,9 +53,9 @@ namespace UI.Settings
         private bool _isExpanded;
 
         [Inject]
-        private void Construct(SceneLoader sceneLoader)
+        private void Construct(SceneSwitcher sceneSwitcher)
         {
-            _sceneLoader = sceneLoader;
+            _sceneSwitcher = sceneSwitcher;
         }
     
         private void Awake()
@@ -88,7 +88,7 @@ namespace UI.Settings
 
         public void HomeButtonClick()
         {
-            _sceneLoader.LoadNextScene();
+            _sceneSwitcher.LoadNextScene();
         }
 
         private void AnimateButtons()

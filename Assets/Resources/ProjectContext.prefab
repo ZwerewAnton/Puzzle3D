@@ -76,3 +76,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d5edc123db4b518104d17ff51c06ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  applicationConfigs: {fileID: 11400000, guid: e425c98055cdcc04493ba68e653ff69c, type: 2}
+  musicPlayer: {fileID: 2588614733497899341, guid: 15fd44c94e3ec714690ece5f01db484d,
+    type: 3}
+  sfxPlayer: {fileID: 547014609096341139, guid: 315a696df74ae564e8c403605fb4e0ef,
+    type: 3}

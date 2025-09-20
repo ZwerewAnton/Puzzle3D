@@ -1263,9 +1263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c1e6f634ecf88647bbf658a3e56ae52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingScreen: {fileID: 823793520}
-  progressBar: {fileID: 338175683}
-  canvasGroup: {fileID: 956046329}
   onStartLoading:
     m_PersistentCalls:
       m_Calls:
@@ -1296,6 +1293,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  loadingScreen: {fileID: 823793520}
 --- !u!4 &419901968
 Transform:
   m_ObjectHideFlags: 0
@@ -3504,10 +3502,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e0d5e51fd018d4fb64ad4fbc958e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: badcbf26990866e4591fe00e68c6b148, type: 2}
-  menuMusicClip: {fileID: 8300000, guid: 4810842e96938334ea14910c9d91ffde, type: 3}
-  gameMusicClip: {fileID: 8300000, guid: 49016395c37935344b841566d71bae21, type: 3}
-  fadeTime: 1
 --- !u!4 &1537502995
 Transform:
   m_ObjectHideFlags: 0
@@ -4901,9 +4895,9 @@ SceneRoots:
   - {fileID: 428087618}
   - {fileID: 161668553}
   - {fileID: 1021247429}
-  - {fileID: 2031745094}
   - {fileID: 1134931832}
   - {fileID: 1537502995}
   - {fileID: 419901968}
   - {fileID: 335687078}
   - {fileID: 1719821148}
+  - {fileID: 2031745094}
