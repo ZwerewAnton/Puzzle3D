@@ -1,4 +1,4 @@
-﻿namespace Editor.SceneManagement
+﻿namespace Utils.BootstrapLoading
 {
     public static class SceneConfigEditor
     {

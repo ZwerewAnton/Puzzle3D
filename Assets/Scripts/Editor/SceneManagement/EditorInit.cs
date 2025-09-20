@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using Utils.BootstrapLoading;
 
 namespace Editor.SceneManagement
 {
@@ -29,7 +30,7 @@ namespace Editor.SceneManagement
             if (state == PlayModeStateChange.ExitingEditMode)
             {
                 var activeScene = EditorSceneManager.GetActiveScene();
-                EditorPrefs.SetString(SceneConfigEditor.StartScenePrefsKey, activeScene.path);
+                EditorPrefs.SetString(SceneConfigEditor.StartScenePrefsKey, activeScene.name);
                 EditorSceneManager.playModeStartScene = BootScene;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using UnityToolbarExtender;
+using Utils.BootstrapLoading;
 
 namespace Editor.SceneManagement
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Gameplay;
-using Level;
 using SaveSystem.DataObjects.Level;
 using SaveSystem.DataObjects.Progress;
 using UnityEngine;
@@ -15,14 +15,13 @@ namespace SaveSystem
     {
         private ProgressSaveData _progressData = new();
         
-        public async Task<bool> LoadProgressDataAsync()
+        public async Task LoadProgressDataAsync(CancellationToken cancellationToken = default)
         {
             if (!Directory.Exists(Paths.PathToSaveDirectory) ||
                 !File.Exists(Paths.GetPathToProgressData()))
-                return false;
+                return;
 
-            _progressData = await LoadDataAsync<ProgressSaveData>(Paths.GetPathToProgressData());
-            return true;
+            _progressData = await LoadDataAsync<ProgressSaveData>(Paths.GetPathToProgressData(), cancellationToken);
         }
 
         public async Task SaveProgressDataAsync(int levelId, int progress)
@@ -31,7 +30,7 @@ namespace SaveSystem
             await SaveDataAsync(_progressData, Paths.PathToSaveDirectory, Paths.GetPathToProgressData());
         }
         
-        public async Task<LevelSaveData> LoadLevelDataAsync(int levelId)
+        public async Task<LevelSaveData> LoadLevelDataAsync(int levelId, CancellationToken cancellationToken = default)
         {
             if (!Directory.Exists(Paths.GetPathToLevelDataDirectory(levelId)) ||
                 !File.Exists(Paths.GetPathToLevelData(levelId)))
@@ -40,7 +39,7 @@ namespace SaveSystem
                 return new LevelSaveData();
             }
             
-            return await LoadDataAsync<LevelSaveData>(Paths.GetPathToLevelData(levelId));
+            return await LoadDataAsync<LevelSaveData>(Paths.GetPathToLevelData(levelId), cancellationToken);
         }
         
         public async Task SaveLevelData(int levelId, List<Detail> allDetails)
@@ -106,16 +105,22 @@ namespace SaveSystem
             }
         }
 
-        private async Task<T> LoadDataAsync<T>(string path) where T : new()
+        private static async Task<T> LoadDataAsync<T>(string path, CancellationToken cancellationToken = default) where T : new()
         {
             try
             {
                 if (!File.Exists(path))
                     return new T();
 
-                var dataStr = await File.ReadAllTextAsync(path);
+                var dataStr = await File.ReadAllTextAsync(path, cancellationToken);
+                cancellationToken.ThrowIfCancellationRequested();
                 var result = JsonUtility.FromJson<T>(dataStr);
                 return result ?? new T();
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.LogWarning($"LoadDataAsync cancelled: {path}");
+                return new T();
             }
             catch (Exception ex)
             {
@@ -124,7 +129,7 @@ namespace SaveSystem
             }
         }
 
-        private async Task SaveDataAsync<T>(T dataObject, string directoryPath, string filePath)
+        private static async Task SaveDataAsync<T>(T dataObject, string directoryPath, string filePath)
         {
             try
             {

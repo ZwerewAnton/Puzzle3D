@@ -6,6 +6,9 @@ namespace Configs
     [CreateAssetMenu(fileName = "ApplicationConfigs", menuName = "My Assets/Configs/ApplicationConfigs")]
     public class ApplicationConfigs : ScriptableObject
     {
+        [Header("Common")] 
+        public int targetFrameRate = 120;
+        
         [Header("Scene Loading")]
         public float minTimeToShowLoadingScreen = 1f;
         [FormerlySerializedAs("loadingScreenFadeTIme")] public float loadingScreenFadeTime = 0.5f;
