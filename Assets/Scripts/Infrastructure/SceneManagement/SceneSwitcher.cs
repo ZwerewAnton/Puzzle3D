@@ -1,67 +1,56 @@
-using System.Collections;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
-using SaveSystem;
-using UI;
+using UI.Mediators;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
+using Zenject;
 
 namespace Infrastructure.SceneManagement
 {
-    public class SceneSwitcher : MonoBehaviour
+    public class SceneSwitcher : IDisposable
     {
-        [FormerlySerializedAs("_onStartLoading")] [SerializeField] private UnityEvent onStartLoading;
-        [FormerlySerializedAs("_onCompleteLoading")] [SerializeField] private UnityEvent onCompleteLoading;
-
-        [SerializeField] private LoadingScreen loadingScreen;
-
-        private void Awake() 
+        private CancellationTokenSource _cts;
+        private LoadingScreenMediator _loadingScreenMediator;
+        private SceneLoader _sceneLoader;
+        private bool _isTransitioning;        
+        
+        public event Action<float> SceneLoadingUpdated
         {
-            DontDestroyOnLoad(gameObject);
-        }
-
-        public void SwitchScene(SceneType sceneTypeName)
-        {
-            StartCoroutine(SwitchSceneCoroutine(sceneTypeName));
-        }
-
-        public void LoadNextScene()
-        {
-            
-        }
-
-        private IEnumerator SwitchSceneCoroutine(SceneType sceneTypeName)
-        {
-            yield return loadingScreen.ShowLoadingScreen();
-            
-            var operation = SceneManager.LoadSceneAsync(sceneTypeName.ToString());
-            if (operation != null)
-            {
-                operation.allowSceneActivation = false;
-
-                while (!operation.isDone)
-                {
-                    var progress = Mathf.Clamp01(operation.progress / 0.9f);
-                    loadingScreen.SetProgress(progress);
-
-                    if (progress >= 0.9f)
-                        operation.allowSceneActivation = true;
-
-                    yield return null;
-                }
-
-                loadingScreen.SetProgress(1f);
-                yield return new WaitForSeconds(0.1f);
-            }
-            
-            yield return loadingScreen.HideLoadingScreen();
+            add => _sceneLoader.SceneLoadingUpdated += value;
+            remove => _sceneLoader.SceneLoadingUpdated -= value;
         }
         
-        public static int GetSceneIndex()
+        [Inject]
+        private void Construct(LoadingScreenMediator loadingScreenMediator, SceneLoader sceneLoader)
         {
-            return SceneManager.GetActiveScene().buildIndex;
+            _loadingScreenMediator = loadingScreenMediator;
+            _sceneLoader = sceneLoader;
+        }
+
+        public async Task LoadSceneAsync(SceneType sceneType)
+        {
+            if (_isTransitioning) 
+                return;
+            _isTransitioning = true;
+            
+            _cts = new CancellationTokenSource();
+
+            try
+            {
+                await _loadingScreenMediator.ShowLoadingScreenAsync();
+                await _sceneLoader.LoadSceneAsync(sceneType, _cts.Token);
+                await _loadingScreenMediator.HideLoadingScreenAsync();
+            }
+            finally
+            {
+                _isTransitioning = false;
+            }
+        }
+
+        public void Dispose()
+        {
+            _cts?.Cancel();
+            _cts?.Dispose();
         }
     }
 }

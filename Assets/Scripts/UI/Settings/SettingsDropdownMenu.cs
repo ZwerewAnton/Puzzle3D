@@ -40,23 +40,14 @@ namespace UI.Settings
         [SerializeField] private float expandFadeDuration;
         [SerializeField] private float collapseFadeDuration;
         
-        //[SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioClip toggleMenuClip;
         [SerializeField] private AudioClip toggleButtonClip;
-        
-        private SceneSwitcher _sceneSwitcher;
         
         private Vector2 _settingButtonPosition;
         private RectTransform[] _buttonsTransform;
         private Image[] _buttonsImage;
         private int _itemsCount;
         private bool _isExpanded;
-
-        [Inject]
-        private void Construct(SceneSwitcher sceneSwitcher)
-        {
-            _sceneSwitcher = sceneSwitcher;
-        }
     
         private void Awake()
         {
@@ -84,11 +75,6 @@ namespace UI.Settings
         {
             AnimateButtons();
             _isExpanded = !_isExpanded;
-        }
-
-        public void HomeButtonClick()
-        {
-            _sceneSwitcher.LoadNextScene();
         }
 
         private void AnimateButtons()

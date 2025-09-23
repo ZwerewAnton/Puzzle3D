@@ -2,7 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Configs;
+using Infrastructure.SceneManagement;
 using SaveSystem;
+using UI.Mediators;
 using UnityEngine;
 using Zenject;
 
@@ -11,14 +13,27 @@ namespace Infrastructure
     public class Bootstrap : MonoBehaviour
     {
         private SaveLoadService _saveSystemService;
+        private LoadingScreenMediator _loadingScreenMediator;
+        private SceneSwitcher _sceneSwitcher;
         private CancellationTokenSource _cts;
         public event Action LoadingCompleted;
         
         [Inject]
-        private void Construct(SaveLoadService saveSystemService, ApplicationConfigs configs)
+        private void Construct(
+            SaveLoadService saveSystemService, 
+            ApplicationConfigs configs, 
+            LoadingScreenMediator loadingScreenMediator,
+            SceneSwitcher sceneSwitcher)
         {
             SetTargetFrameRate(configs.targetFrameRate);
             _saveSystemService = saveSystemService;
+            _loadingScreenMediator = loadingScreenMediator;
+            _sceneSwitcher = sceneSwitcher;
+        }
+
+        private void Awake()
+        {
+            _loadingScreenMediator.ShowLoadingScreenImmediately();
         }
 
         private void Start()
@@ -39,6 +54,7 @@ namespace Infrastructure
                 _cts = new CancellationTokenSource();
                 await _saveSystemService.LoadProgressDataAsync(_cts.Token);
                 LoadingCompleted?.Invoke();
+                await CompleteInitialization();
             }
             catch (Exception ex)
             {
@@ -46,9 +62,10 @@ namespace Infrastructure
             }
         }
 
-        private void CompleteInitialization()
+        private async Task CompleteInitialization()
         {
-            //TODO
+            Debug.Log("Bootstrap loaded");
+            await _sceneSwitcher.LoadSceneAsync(SceneType.MainMenu);
         }
 
         private static void SetTargetFrameRate(int targetFrameRate)

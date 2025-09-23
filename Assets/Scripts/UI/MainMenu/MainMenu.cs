@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Infrastructure.SceneManagement;
 using Level;
 using Music;
@@ -31,7 +32,7 @@ namespace UI.MainMenu
     
         private void Start()
         {
-            _sceneSwitcher = FindObjectOfType<SceneSwitcher>();
+            //_sceneSwitcher = FindObjectOfType<SceneSwitcher>();
             _musicPlayer = GameObject.FindGameObjectWithTag("MusicPlayer").GetComponent<MusicPlayer>();
             // if (_sceneSwitcher.IsSecondLaunch())
             // {
@@ -46,11 +47,11 @@ namespace UI.MainMenu
             _musicPlayer.Play(MusicType.MainMenu);
         }
     
-        public void Play()
+        public async Task Play()
         {
             LevelSaver.levelID = scrollController.GetLevelID();
             _sfxPlayer.PlayStartGameClip();
-            _sceneSwitcher.LoadNextScene();
+            await _sceneSwitcher.LoadSceneAsync(SceneType.Game);
         }
     
         public void ShowDisassembleWindow()

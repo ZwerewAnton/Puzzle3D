@@ -1,7 +1,11 @@
 ﻿using Configs;
+using Infrastructure.SceneManagement;
+using Infrastructure.Utils;
 using Music;
 using SaveSystem;
 using Settings;
+using UI;
+using UI.Mediators;
 using UnityEngine;
 using Zenject;
 
@@ -12,14 +16,33 @@ namespace Infrastructure.Installers
         [SerializeField] private ApplicationConfigs applicationConfigs;
         [SerializeField] private MusicPlayer musicPlayer;
         [SerializeField] private SfxPlayer sfxPlayer;
+        [SerializeField] private LoadingScreenMediator loadingScreenMediator;
         
         public override void InstallBindings()
         {
+            BindApplicationConfigs();
+            BindSceneLoader();
+            BindSceneSwitcher();
             BindSaveLoadService();
             BindSettingsService();
-            BindApplicationConfigs();
             BindMusicPlayer();
             BindSfxPlayer();
+            BindLoadingScreenMediator();
+        }
+
+        private void BindApplicationConfigs()
+        {
+            Container.Bind<ApplicationConfigs>().FromInstance(applicationConfigs).AsSingle().NonLazy();
+        }
+        
+        private void BindSceneLoader()
+        {
+            Container.Bind<SceneLoader>().AsSingle().WhenInjectedInto<SceneSwitcher>().NonLazy();
+        }
+        
+        private void BindSceneSwitcher()
+        {
+            Container.BindInterfacesAndSelfTo<SceneSwitcher>().AsSingle();
         }
 
         private void BindSaveLoadService()
@@ -32,11 +55,6 @@ namespace Infrastructure.Installers
             Container.Bind<SettingsService>().AsSingle().NonLazy();
         }
 
-        private void BindApplicationConfigs()
-        {
-            Container.Bind<ApplicationConfigs>().FromInstance(applicationConfigs).AsSingle().NonLazy();
-        }
-
         private void BindMusicPlayer()
         {
             Container.Bind<MusicPlayer>().FromComponentInNewPrefab(musicPlayer).AsSingle().NonLazy();
@@ -45,6 +63,20 @@ namespace Infrastructure.Installers
         private void BindSfxPlayer()
         {
             Container.Bind<SfxPlayer>().FromComponentInNewPrefab(sfxPlayer).AsSingle().NonLazy();
+        }
+
+        private void BindLoadingScreenMediator()
+        {
+            Container.Bind<LoadingScreenMediator>().FromComponentInNewPrefab(loadingScreenMediator).AsSingle().NonLazy();
+        }
+
+        private void BindDisposableHandler()
+        {
+            Container.Bind<DisposableHandler>()
+                .FromNewComponentOnNewGameObject()
+                .WithGameObjectName("DisposableHandler")
+                .AsSingle()
+                .NonLazy();
         }
     }
 }
