@@ -54,7 +54,9 @@ namespace Infrastructure
                 _cts = new CancellationTokenSource();
                 await _saveSystemService.LoadProgressDataAsync(_cts.Token);
                 LoadingCompleted?.Invoke();
+#if !UNITY_EDITOR
                 await CompleteInitialization();
+#endif
             }
             catch (Exception ex)
             {
@@ -64,7 +66,6 @@ namespace Infrastructure
 
         private async Task CompleteInitialization()
         {
-            Debug.Log("Bootstrap loaded");
             await _sceneSwitcher.LoadSceneAsync(SceneType.MainMenu);
         }
 

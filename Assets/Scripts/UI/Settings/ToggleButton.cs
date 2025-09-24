@@ -11,9 +11,9 @@ namespace UI.Settings
         
         private Image _buttonImage;
 
-        protected override void Awake()
+        public override void Initialize()
         {
-            base.Awake();
+            base.Initialize();
             _buttonImage = GetComponent<Image>();
         }
 

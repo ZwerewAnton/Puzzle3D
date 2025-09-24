@@ -34,6 +34,9 @@ namespace UI.Mediators
 
         private void Start()
         {
+            musicButton.Initialize();
+            soundButton.Initialize();
+            
             UpdateMusicButtonState();
             UpdateSoundButtonState();
 
