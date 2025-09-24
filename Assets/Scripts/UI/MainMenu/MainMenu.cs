@@ -1,49 +1,50 @@
 using System.Threading.Tasks;
+using Common;
 using Infrastructure.SceneManagement;
 using Level;
 using Music;
 using SaveSystem;
+using UI.Mediators;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using Zenject;
 
 namespace UI.MainMenu
 {
     public class MainMenu : MonoBehaviour
     {
-        [FormerlySerializedAs("tapToPlayGO")] public GameObject tapToPlayGo;
-        public GameObject playButton;
-        public GameObject scrollRect;
-        public GameObject miniHouse;
-        public GameObject settingsPanel;
         public UIMainMenuScrollRectController scrollController;
-        
-        public AudioClip tapToPlayClip;
-        public AudioClip playClip;
-        
-        [FormerlySerializedAs("_onFirstTap")] [SerializeField] private UnityEvent onFirstTap;
 
         public GameObject disassembleWindow;
         public GameObject disassembleButton;
 
         private SceneSwitcher _sceneSwitcher;
+        
         private MusicPlayer _musicPlayer;
         private SfxPlayer _sfxPlayer;
-    
+        private MainMenuMediator _mainMenuMediator;
+        private GameState _gameState;
+
+        [Inject]
+        private void Construct(
+            MainMenuMediator mainMenuMediator, 
+            GameState gameState,
+            MusicPlayer musicPlayer)
+        {
+            _gameState = gameState;
+            _mainMenuMediator = mainMenuMediator;
+            _musicPlayer = musicPlayer;
+        }
+        
         private void Start()
         {
-            //_sceneSwitcher = FindObjectOfType<SceneSwitcher>();
-            _musicPlayer = GameObject.FindGameObjectWithTag("MusicPlayer").GetComponent<MusicPlayer>();
-            // if (_sceneSwitcher.IsSecondLaunch())
-            // {
-            //     HideStartScreen();
-            // }
+            SetPanelsVisibility();
         }
     
         public void FirstTap()
         {
-            HideStartScreen();
-            _sfxPlayer.PlayTapToPlayClip();
+            _mainMenuMediator.HideTapToPlayPanel();
             _musicPlayer.Play(MusicType.MainMenu);
         }
     
@@ -52,6 +53,19 @@ namespace UI.MainMenu
             LevelSaver.levelID = scrollController.GetLevelID();
             _sfxPlayer.PlayStartGameClip();
             await _sceneSwitcher.LoadSceneAsync(SceneType.Game);
+        }
+
+        private void SetPanelsVisibility()
+        {
+            if (_gameState.IsFirstMenuLaunch)
+            {
+                _mainMenuMediator.ShowTapToPlayPanel();
+            }
+            else
+            {
+                _mainMenuMediator.HideTapToPlayPanel();
+                _musicPlayer.Play(MusicType.MainMenu);
+            }
         }
     
         public void ShowDisassembleWindow()
@@ -71,17 +85,6 @@ namespace UI.MainMenu
             LevelContainer.currentLevelContainer.ResetLevel(levelID);
             scrollController.UpdatePercents();
             disassembleWindow.SetActive(false);
-        }
-
-        private void HideStartScreen()
-        {
-            onFirstTap.Invoke();
-            tapToPlayGo.SetActive(false);
-            miniHouse.SetActive(false);
-            playButton.SetActive(true);
-            disassembleButton.SetActive(true);
-            scrollRect.SetActive(true);
-            settingsPanel.SetActive(true);
         }
     }
 }

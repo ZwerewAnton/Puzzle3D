@@ -1,4 +1,6 @@
-﻿using Configs;
+﻿using System.ComponentModel;
+using Common;
+using Configs;
 using Infrastructure.SceneManagement;
 using Infrastructure.Utils;
 using Music;
@@ -28,6 +30,7 @@ namespace Infrastructure.Installers
             BindMusicPlayer();
             BindSfxPlayer();
             BindLoadingScreenMediator();
+            BindGameState();
         }
 
         private void BindApplicationConfigs()
@@ -68,6 +71,11 @@ namespace Infrastructure.Installers
         private void BindLoadingScreenMediator()
         {
             Container.Bind<LoadingScreenMediator>().FromComponentInNewPrefab(loadingScreenMediator).AsSingle().NonLazy();
+        }
+
+        private void BindGameState()
+        {
+            Container.Bind<GameState>().AsSingle().NonLazy();
         }
 
         private void BindDisposableHandler()

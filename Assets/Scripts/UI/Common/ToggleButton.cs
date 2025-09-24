@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Settings
+namespace UI.Common
 {
     [RequireComponent(typeof(Image))]
     public class ToggleButton : ActionButton
