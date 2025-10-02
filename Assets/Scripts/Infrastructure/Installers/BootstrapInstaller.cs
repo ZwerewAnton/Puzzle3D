@@ -3,6 +3,7 @@ using Common;
 using Configs;
 using Infrastructure.SceneManagement;
 using Infrastructure.Utils;
+using Input;
 using Music;
 using SaveSystem;
 using Settings;
@@ -31,6 +32,7 @@ namespace Infrastructure.Installers
             BindSfxPlayer();
             BindLoadingScreenMediator();
             BindGameState();
+            BindInputHandler();
         }
 
         private void BindApplicationConfigs()
@@ -76,6 +78,11 @@ namespace Infrastructure.Installers
         private void BindGameState()
         {
             Container.Bind<GameState>().AsSingle().NonLazy();
+        }
+
+        private void BindInputHandler()
+        {
+            Container.Bind<InputHandler>().AsSingle().NonLazy();
         }
 
         private void BindDisposableHandler()

@@ -11,7 +11,10 @@ namespace Configs
         
         [Header("Scene Loading")]
         public float minTimeToShowLoadingScreen = 1f;
-        [FormerlySerializedAs("loadingScreenFadeTIme")] public float loadingScreenFadeTime = 0.5f;
+        public float loadingScreenFadeTime = 0.5f;
+
+        [Header("Camera"), SerializeField] 
+        public CameraConfigs camera;
         
         [Header("Audio")]
         public float audioOffValue = -80f;

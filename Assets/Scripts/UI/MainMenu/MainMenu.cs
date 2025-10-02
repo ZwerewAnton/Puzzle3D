@@ -52,7 +52,7 @@ namespace UI.MainMenu
         {
             LevelSaver.levelID = scrollController.GetLevelID();
             _sfxPlayer.PlayStartGameClip();
-            await _sceneSwitcher.LoadSceneAsync(SceneType.Game);
+            await _sceneSwitcher.LoadSceneAsync(SceneType.Level);
         }
 
         private void SetPanelsVisibility()

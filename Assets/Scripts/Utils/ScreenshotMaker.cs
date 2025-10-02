@@ -15,7 +15,7 @@ namespace Utils
         private void Update()
         {
 #if UNITY_EDITOR
-            if (Input.GetKey("space"))
+            if (UnityEngine.Input.GetKey("space"))
             {
                 TakeScreenshot();
             }

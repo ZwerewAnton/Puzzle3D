@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using VFX;
+using UnityEngine.InputSystem;
 
 namespace Gameplay.Movement
 {
@@ -67,7 +68,7 @@ namespace Gameplay.Movement
             instObject.transform.position = Vector3.zero;
             _mZCoord = mainCamera.WorldToScreenPoint(instObject.transform.position).z;
 
-            _target = Instantiate(instObject, Input.touchSupported ? GetTouchAsWorldPoint() : GetMouseAsWorldPoint(), Quaternion.identity);
+            _target = Instantiate(instObject, UnityEngine.Input.touchSupported ? GetTouchAsWorldPoint() : GetMouseAsWorldPoint(), Quaternion.identity);
 
             _connectionPoints = _instDetail.GetAvailablePoints();
 
@@ -134,14 +135,14 @@ namespace Gameplay.Movement
 
         private Vector3 GetMouseAsWorldPoint()
         {
-            var mousePoint = Input.mousePosition + objectOffset;
+            var mousePoint = UnityEngine.Input.mousePosition + objectOffset;
             mousePoint.z = _mZCoord;
             return mainCamera.ScreenToWorldPoint(mousePoint);
         }
     
         private Vector3 GetTouchAsWorldPoint()
         {
-            Vector3 touchData = Input.GetTouch(0).position;
+            Vector3 touchData = UnityEngine.Input.GetTouch(0).position;
             var touchPoint = touchData + objectOffset;
             touchPoint.z = _mZCoord;
             return mainCamera.ScreenToWorldPoint(touchPoint);
@@ -227,7 +228,7 @@ namespace Gameplay.Movement
                 return;
         
             TransformPosition(_target.transform.position,
-                Input.touchSupported ? GetTouchAsWorldPoint() : GetMouseAsWorldPoint(),
+                UnityEngine.Input.touchSupported ? GetTouchAsWorldPoint() : GetMouseAsWorldPoint(),
                 magnetDistance);
         }
 

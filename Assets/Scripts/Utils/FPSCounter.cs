@@ -23,9 +23,9 @@ namespace Utils
     
         private void Update()
         {
-            if (Input.touchCount > 0)
+            if (UnityEngine.Input.touchCount > 0)
             {
-                eventText.text = Input.GetTouch(0).deltaPosition + " " + Input.GetTouch(0).phase;
+                eventText.text = UnityEngine.Input.GetTouch(0).deltaPosition + " " + UnityEngine.Input.GetTouch(0).phase;
             }
             if (Time.unscaledTime > _timer)
             {

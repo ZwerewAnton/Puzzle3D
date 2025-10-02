@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90d30b706aa5440fa70492a36dd33b1b, type: 3}
+  m_Name: 2
+  m_EditorClassIdentifier: 
+  id: 70f1e3f5-f004-4dce-82dc-b6f4d3803f8e
+  count: 1
+  prefab: {fileID: 0}
+  icon: {fileID: 0}
+  points:
+  - position: {x: 2, y: 3, z: 4}
+    rotation: {x: 4, y: 3, z: 2}
+    constraints:
+    - parentDetail: {fileID: 11400000, guid: 5e90640c07280244aa1315c644839be6, type: 2}
+      parentPointIndexes: 0000000001000000

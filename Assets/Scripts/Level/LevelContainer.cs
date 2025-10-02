@@ -12,7 +12,7 @@ namespace Level
         [SerializeField] private LevelContainerData levelsData;
         public static LevelContainer currentLevelContainer;
         
-        private Level _level;    
+        private Level _level;
 
         private void Awake() 
         {

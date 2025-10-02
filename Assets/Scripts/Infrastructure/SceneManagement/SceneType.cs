@@ -3,6 +3,6 @@
     public enum SceneType
     {
         MainMenu,
-        Game
+        Level
     }
 }

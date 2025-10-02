@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace Cameras
 {
-    public class CameraMovement : MonoBehaviour
+    public class CameraHandler : MonoBehaviour
     {
         [Tooltip("Target for a camera.")]
         public Transform target;
@@ -51,7 +51,7 @@ namespace Cameras
                     }
                 };
                 target = targetObject.transform;
-            }        
+            }
             if (!cam)
             {
                 var cameraObject = new GameObject("CameraObject");
@@ -77,18 +77,18 @@ namespace Cameras
 #if UNITY_EDITOR    
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                if (Input.GetAxis("Mouse ScrollWheel") != 0f)
+                if (UnityEngine.Input.GetAxis("Mouse ScrollWheel") != 0f)
                 {
-                    _desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(_desiredDistance);
+                    _desiredDistance -= UnityEngine.Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(_desiredDistance);
                 }
-                if (Input.GetMouseButtonDown(0))
+                if (UnityEngine.Input.GetMouseButtonDown(0))
                 {
                     _isClicked = true;
-                    _downClickPosition = cam.ScreenToViewportPoint(Input.mousePosition);
+                    _downClickPosition = cam.ScreenToViewportPoint(UnityEngine.Input.mousePosition);
                 }
-                if (Input.GetMouseButton(0) && _isClicked)
+                if (UnityEngine.Input.GetMouseButton(0) && _isClicked)
                 {
-                    Vector2 pos = _downClickPosition - cam.ScreenToViewportPoint(Input.mousePosition);
+                    Vector2 pos = _downClickPosition - cam.ScreenToViewportPoint(UnityEngine.Input.mousePosition);
                     _xDeg -= pos.x * xSpeed;
                     _yDeg += pos.y * ySpeed;
                     _yDeg = ClampAngle(_yDeg, yMinLimit, yMaxLimit);
@@ -99,71 +99,73 @@ namespace Cameras
                 _isClicked = false;
             }
 #endif
-            if (!Input.touchSupported) 
-                return;
-            
-            switch (Input.touchCount)
+            if (UnityEngine.Input.touchSupported)
             {
-                case 1:
+                switch (UnityEngine.Input.touchCount)
                 {
-                    var touch = Input.GetTouch(0);
-                    if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
-                    {        
-                        _isClicked = true;
-                        _downClickPosition = cam.ScreenToViewportPoint(touch.position);
-                        _currentFingerId = touch.fingerId;
-                    }
-                    else if (touch.fingerId == _currentFingerId && touch.phase == TouchPhase.Moved && _isClicked) 
+                    case 1:
                     {
-                        Vector2 pos = _downClickPosition - cam.ScreenToViewportPoint(touch.position);
-                        _xDeg -= pos.x * xSpeed;
-                        _yDeg += pos.y * ySpeed;
-                        _yDeg = ClampAngle(_yDeg, yMinLimit, yMaxLimit);
-                    }
-                    else if (touch.phase == TouchPhase.Ended)
-                    {
-                        _isClicked = false;
-                        _tapCount += 1;
-                    }
+                        var touch = UnityEngine.Input.GetTouch(0);
+                        if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                        {        
+                            _isClicked = true;
+                            _downClickPosition = cam.ScreenToViewportPoint(touch.position);
+                            _currentFingerId = touch.fingerId;
+                        }
+                        else if (touch.fingerId == _currentFingerId && touch.phase == TouchPhase.Moved && _isClicked) 
+                        {
+                            Vector2 pos = _downClickPosition - cam.ScreenToViewportPoint(touch.position);
+                            _xDeg -= pos.x * xSpeed;
+                            _yDeg += pos.y * ySpeed;
+                            _yDeg = ClampAngle(_yDeg, yMinLimit, yMaxLimit);
+                        }
+                        else if (touch.phase == TouchPhase.Ended)
+                        {
+                            _isClicked = false;
+                            _tapCount += 1;
+                        }
 
-                    switch (_tapCount)
-                    {
-                        case 1:
-                            _newTime = Time.time + doubleTapTime;
-                            break;
-                        case 2 when Time.time <= _newTime:
-                            _tapCount = 0;
-                            break;
+                        switch (_tapCount)
+                        {
+                            case 1:
+                                _newTime = Time.time + doubleTapTime;
+                                break;
+                            case 2 when Time.time <= _newTime:
+                                _tapCount = 0;
+                                break;
+                        }
+                
+                        _downClickPosition = cam.ScreenToViewportPoint(UnityEngine.Input.GetTouch(0).position);
+                        break;
                     }
-            
-                    _downClickPosition = cam.ScreenToViewportPoint(Input.GetTouch(0).position);
-                    break;
-                }
-                case 2:
-                {
-                    var touchZero = Input.GetTouch(0);
-                    var touchOne = Input.GetTouch(1);
-                    if (!EventSystem.current.IsPointerOverGameObject(touchZero.fingerId) && 
-                        !EventSystem.current.IsPointerOverGameObject(touchOne.fingerId))
+                    case 2:
                     {
-                        var tZeroPrevious = touchZero.position - touchZero.deltaPosition;
-                        var tOnePrevious = touchOne.position - touchOne.deltaPosition;
+                        var touchZero = UnityEngine.Input.GetTouch(0);
+                        var touchOne = UnityEngine.Input.GetTouch(1);
+                        if (!EventSystem.current.IsPointerOverGameObject(touchZero.fingerId) && 
+                            !EventSystem.current.IsPointerOverGameObject(touchOne.fingerId))
+                        {
+                            var tZeroPrevious = touchZero.position - touchZero.deltaPosition;
+                            var tOnePrevious = touchOne.position - touchOne.deltaPosition;
 
-                        var prevTouchDeltaMag = (tZeroPrevious - tOnePrevious).magnitude;
-                        var touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
-                        var deltaMagDiff = prevTouchDeltaMag - touchDeltaMag;
-    
-                        _desiredDistance += deltaMagDiff * Time.deltaTime * zoomRate * 0.0025f * Mathf.Abs(_desiredDistance);
-                    }
-
-                    break;
-                }
-            }
+                            var prevTouchDeltaMag = (tZeroPrevious - tOnePrevious).magnitude;
+                            var touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+                            var deltaMagDiff = prevTouchDeltaMag - touchDeltaMag;
         
-            if (Time.time > _newTime) 
-            {
-                _tapCount = 0;
+                            _desiredDistance += deltaMagDiff * Time.deltaTime * zoomRate * 0.0025f * Mathf.Abs(_desiredDistance);
+                        }
+
+                        break;
+                    }
+                }
+            
+                if (Time.time > _newTime) 
+                {
+                    _tapCount = 0;
+                }
             }
+            
+
             _desiredRotation = Quaternion.Euler(_yDeg, _xDeg, 0);
             _currentRotation = cam.transform.rotation;
             _rotation = Quaternion.Lerp(_currentRotation, _desiredRotation, Time.deltaTime * zoomDampening);
