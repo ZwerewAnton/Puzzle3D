@@ -1,4 +1,5 @@
 ﻿using Configs;
+using Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -8,40 +9,50 @@ namespace Cameras
     public class MouseCameraMovement : ICameraMovement
     {
         private readonly CameraConfigs _configs;
+        private InputActions.CameraActions _cameraActions;
         
         private Vector2 _eulerAngles;
         private Vector2 _smoothedDelta;
+        private Vector2 _rawDelta;
 
         private float _desiredDistance;
         private float _currentDistance;
 
+        private bool _rotateAllowed;
+
         [Inject]
-        public MouseCameraMovement(ApplicationConfigs configs)
+        public MouseCameraMovement(ApplicationConfigs configs, InputHandler inputHandler)
         {
             _configs = configs.camera;
+            _cameraActions = inputHandler.CameraActions;
             InitializeParameters();
         }
 
         public CameraMovementResult CalculateMovement()
         {
-            if (UnityEngine.Input.GetMouseButton(1))
+            if (_cameraActions.Rotate.WasPressedThisFrame())
             {
-                var rawDelta = new Vector2(UnityEngine.Input.GetAxis("Mouse X"), UnityEngine.Input.GetAxis("Mouse Y"));
-
-                _smoothedDelta = Vector2.Lerp(_smoothedDelta, rawDelta, Time.deltaTime * _configs.mouseSmooth);
-
-                _eulerAngles.y += _smoothedDelta.x * _configs.xSpeed * Time.deltaTime;
-                _eulerAngles.x -= _smoothedDelta.y * _configs.ySpeed * Time.deltaTime;
-                _eulerAngles.x = ClampAngle(_eulerAngles.x, _configs.yMinLimit, _configs.yMaxLimit);
+                _rotateAllowed = !EventSystem.current.IsPointerOverGameObject();
+            }
+            
+            if (_cameraActions.Rotate.IsPressed() && _rotateAllowed)
+            {
+                _rawDelta = _cameraActions.Look.ReadValue<Vector2>();
             }
             else
             {
-                _smoothedDelta = Vector2.zero;
+                _rawDelta = Vector2.zero;
             }
+            
+            _smoothedDelta = Vector2.Lerp(_smoothedDelta, _rawDelta, Time.deltaTime * _configs.mouseSmooth);
+
+            _eulerAngles.y += _smoothedDelta.x * _configs.xSpeed * Time.deltaTime;
+            _eulerAngles.x -= _smoothedDelta.y * _configs.ySpeed * Time.deltaTime;
+            _eulerAngles.x = ClampAngle(_eulerAngles.x, _configs.yMinLimit, _configs.yMaxLimit);
 
             var maxDistance = _configs.maxDistance;
             var minDistance = _configs.minDistance;
-            var scroll = UnityEngine.Input.GetAxis("Mouse ScrollWheel");
+            var scroll = _cameraActions.Zoom.ReadValue<float>();
             _desiredDistance -= scroll * (maxDistance - minDistance) * _configs.zoomSpeed;
             _desiredDistance = Mathf.Clamp(_desiredDistance, minDistance, maxDistance);
 

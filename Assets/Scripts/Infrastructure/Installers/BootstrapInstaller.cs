@@ -82,7 +82,7 @@ namespace Infrastructure.Installers
 
         private void BindInputHandler()
         {
-            Container.Bind<InputHandler>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<InputHandler>().AsSingle().NonLazy();
         }
 
         private void BindDisposableHandler()

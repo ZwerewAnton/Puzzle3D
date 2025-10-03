@@ -1,6 +1,8 @@
-﻿namespace Input
+﻿using System;
+
+namespace Input
 {
-    public class InputHandler
+    public class InputHandler : IDisposable
     {
         public InputActions.CameraActions CameraActions { get; private set; }
         private InputActions InputActions { get; set; }
@@ -9,6 +11,7 @@
         {
             InputActions = new InputActions();
             CameraActions = InputActions.Camera;
+            EnableActions();
         }
         
         private void EnableActions()
@@ -19,6 +22,12 @@
         private void DisableActions()
         {
             InputActions.Disable();
+        }
+
+        public void Dispose()
+        {
+            DisableActions();
+            InputActions?.Dispose();
         }
     }
 }

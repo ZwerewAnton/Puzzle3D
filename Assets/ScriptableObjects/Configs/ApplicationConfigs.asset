@@ -16,13 +16,12 @@ MonoBehaviour:
   minTimeToShowLoadingScreen: 1
   loadingScreenFadeTime: 0.5
   camera:
-    startPosition: {x: -0.95, y: 17.31, z: -33.09}
     startRotation: {x: 0.25881904, y: 0, z: 0, w: 0.9659258}
     distance: 30
     minDistance: 20
     maxDistance: 40
-    xSpeed: 300
-    ySpeed: 300
+    xSpeed: 30
+    ySpeed: 30
     yMinLimit: 5
     yMaxLimit: 80
     targetOffset: {x: 0, y: 5, z: 0}
