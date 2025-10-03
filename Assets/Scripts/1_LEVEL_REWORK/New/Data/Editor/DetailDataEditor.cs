@@ -34,6 +34,7 @@ namespace _1_LEVEL_REWORK.New.Data.Editor
             detail.name = EditorGUILayout.TextField("Name", detail.name);
             detail.Prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", detail.Prefab, typeof(GameObject), false);
             detail.Icon = (Sprite)EditorGUILayout.ObjectField("Icon", detail.Icon, typeof(Sprite), false);
+            detail.Count = EditorGUILayout.IntField("Count", detail.Count);
         }
         
         private void DrawPoints(DetailData detail)

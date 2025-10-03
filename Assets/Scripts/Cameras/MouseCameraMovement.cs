@@ -2,6 +2,7 @@
 using Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Utils;
 using Zenject;
 
 namespace Cameras
@@ -48,7 +49,7 @@ namespace Cameras
 
             _eulerAngles.y += _smoothedDelta.x * _configs.xSpeed * Time.deltaTime;
             _eulerAngles.x -= _smoothedDelta.y * _configs.ySpeed * Time.deltaTime;
-            _eulerAngles.x = ClampAngle(_eulerAngles.x, _configs.yMinLimit, _configs.yMaxLimit);
+            _eulerAngles.x = MathUtils.ClampAngle(_eulerAngles.x, _configs.yMinLimit, _configs.yMaxLimit);
 
             var maxDistance = _configs.maxDistance;
             var minDistance = _configs.minDistance;
@@ -68,15 +69,6 @@ namespace Cameras
         {
             _eulerAngles = _configs.startRotation.eulerAngles;
             _desiredDistance = _currentDistance = _configs.distance;
-        }
-        
-        private static float ClampAngle(float angle, float min, float max)
-        {
-            if (angle < -360)
-                angle += 360;
-            if (angle > 360)
-                angle -= 360;
-            return Mathf.Clamp(angle, min, max);
         }
     }
 }

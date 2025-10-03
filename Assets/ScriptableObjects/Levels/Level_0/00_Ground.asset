@@ -10,15 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90d30b706aa5440fa70492a36dd33b1b, type: 3}
-  m_Name: 2
+  m_Name: 00_Ground
   m_EditorClassIdentifier: 
-  id: 70f1e3f5-f004-4dce-82dc-b6f4d3803f8e
+  id: 3d7267d9-d0e1-4e69-81c0-bf8ea0cf473f
   count: 1
-  prefab: {fileID: 0}
-  icon: {fileID: 0}
+  prefab: {fileID: 6888209934980954318, guid: 712eaeb961abbc04d977eb134473bc77, type: 3}
+  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   points:
-  - position: {x: 2, y: 3, z: 4}
-    rotation: {x: 4, y: 3, z: 2}
-    constraints:
-    - parentDetail: {fileID: 11400000, guid: 5e90640c07280244aa1315c644839be6, type: 2}
-      parentPointIndexes: 0000000001000000
+  - position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0}
+    constraints: []

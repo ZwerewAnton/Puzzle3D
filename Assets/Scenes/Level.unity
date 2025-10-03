@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 11044222}
   - component: {fileID: 11044221}
   - component: {fileID: 11044220}
+  - component: {fileID: 11044223}
   m_Layer: 5
   m_Name: HomeButton
   m_TagString: Untagged
@@ -204,19 +205,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11044221}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1314908526}
-        m_TargetAssemblyTypeName: UISettingsMenuPanel, Assembly-CSharp
-        m_MethodName: HomeButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &11044221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +244,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11044218}
   m_CullTransparentMesh: 1
+--- !u!114 &11044223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11044218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a313642d8024344bade818ef022d78f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &160822817
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,7 +550,7 @@ GameObject:
   - component: {fileID: 350255404}
   - component: {fileID: 350255403}
   - component: {fileID: 350255402}
-  - component: {fileID: 350255401}
+  - component: {fileID: 350255405}
   m_Layer: 5
   m_Name: MusicButton
   m_TagString: Untagged
@@ -576,21 +577,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -59.99987}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &350255401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 350255399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9332ccf1b0d9d5345b2dc637e14effdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonImage: {fileID: 0}
-  offImage: {fileID: 21300000, guid: 906f2067ff869c64f8776e068066ed75, type: 3}
-  onImage: {fileID: 21300000, guid: ff7b11d18f9deba4d984e5501c39af7d, type: 3}
 --- !u!114 &350255402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,19 +620,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 350255403}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 350255401}
-        m_TargetAssemblyTypeName: UISettingsAudioButton, Assembly-CSharp
-        m_MethodName: ToggleAudio
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &350255403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -685,6 +659,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350255399}
   m_CullTransparentMesh: 1
+--- !u!114 &350255405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350255399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc89bf20b2a4427aec398fde4937ea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onImage: {fileID: 21300000, guid: ff7b11d18f9deba4d984e5501c39af7d, type: 3}
+  offImage: {fileID: 21300000, guid: 906f2067ff869c64f8776e068066ed75, type: 3}
 --- !u!4 &438396000 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5188872984447376139, guid: 848e19326a3e611488c952f5ba97c0cb,
@@ -761,7 +749,7 @@ Canvas:
   m_GameObject: {fileID: 671748983}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 963194227}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
@@ -770,7 +758,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 1
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -955,7 +943,7 @@ GameObject:
   - component: {fileID: 815333485}
   - component: {fileID: 815333484}
   - component: {fileID: 815333483}
-  - component: {fileID: 815333482}
+  - component: {fileID: 815333486}
   m_Layer: 5
   m_Name: SoundButton
   m_TagString: Untagged
@@ -982,21 +970,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -119.99979}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &815333482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815333480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9332ccf1b0d9d5345b2dc637e14effdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonImage: {fileID: 0}
-  offImage: {fileID: 21300000, guid: 0e20e3e09ae16fd4799c25d575cc0326, type: 3}
-  onImage: {fileID: 21300000, guid: 4deb9bb4bc15e6b4baebe2650724263c, type: 3}
 --- !u!114 &815333483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,19 +1013,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 815333484}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 815333482}
-        m_TargetAssemblyTypeName: UISettingsAudioButton, Assembly-CSharp
-        m_MethodName: ToggleAudio
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &815333484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,6 +1052,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815333480}
   m_CullTransparentMesh: 1
+--- !u!114 &815333486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815333480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc89bf20b2a4427aec398fde4937ea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onImage: {fileID: 21300000, guid: 4deb9bb4bc15e6b4baebe2650724263c, type: 3}
+  offImage: {fileID: 21300000, guid: 0e20e3e09ae16fd4799c25d575cc0326, type: 3}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1298,18 +1273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ac2e12e52fe40fe99cb1ad0cbc886b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  targetOffset: {x: 0, y: 5, z: 0}
-  distance: 30
-  minDistance: 20
-  maxDistance: 40
-  xSpeed: 300
-  ySpeed: 300
-  yMinLimit: 5
-  yMaxLimit: 80
-  zoomSpeed: 1
-  mouseSmooth: 10
-  zoomDampening: 5
 --- !u!1 &1170574198
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,19 +1505,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1287949273}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1314908526}
-        m_TargetAssemblyTypeName: UISettingsMenuPanel, Assembly-CSharp
-        m_MethodName: ToggleMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1287949273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1593,103 +1544,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1287949270}
   m_CullTransparentMesh: 1
---- !u!82 &1287949275
-AudioSource:
+--- !u!114 &1287949275
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1287949270}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -8997940648217778179, guid: badcbf26990866e4591fe00e68c6b148,
-    type: 2}
-  m_audioClip: {fileID: 8300000, guid: 69ed5ba96fa59664da967a0e4731e1de, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a313642d8024344bade818ef022d78f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1296014962
 GameObject:
   m_ObjectHideFlags: 0
@@ -2156,6 +2022,54 @@ MonoBehaviour:
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
   m_ScrollDeltaPerTick: 6
+--- !u!1 &1731988945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1731988947}
+  - component: {fileID: 1731988946}
+  m_Layer: 0
+  m_Name: Mediators
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1731988946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731988945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74b5255f67994404ab4775b8f00207e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdownMenu: {fileID: 1314908526}
+  settingsButton: {fileID: 1287949275}
+  musicButton: {fileID: 350255405}
+  soundButton: {fileID: 815333486}
+--- !u!4 &1731988947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731988945}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1784373550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2168,6 +2082,7 @@ GameObject:
   - component: {fileID: 1784373554}
   - component: {fileID: 1784373553}
   - component: {fileID: 1784373552}
+  - component: {fileID: 1784373556}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -2218,19 +2133,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1784373553}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1314908526}
-        m_TargetAssemblyTypeName: UISettingsMenuPanel, Assembly-CSharp
-        m_MethodName: HomeButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1784373553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2288,6 +2191,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -180}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1784373556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784373550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a313642d8024344bade818ef022d78f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1842387347
 GameObject:
   m_ObjectHideFlags: 0
@@ -2502,3 +2417,4 @@ SceneRoots:
   - {fileID: 1894950628}
   - {fileID: 176115965}
   - {fileID: 160822820}
+  - {fileID: 1731988947}

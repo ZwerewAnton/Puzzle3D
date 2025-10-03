@@ -10,8 +10,15 @@ namespace _1_LEVEL_REWORK.New.Data
         [SerializeField] private string id = Guid.NewGuid().ToString();
         [SerializeField] private int count = 1;
         [SerializeField] private GameObject prefab;
+        [SerializeField] private Sprite icon;
+        public List<PointData> points = new();
         
-        public int Count => count;
+        public string Id => id;
+        public int Count        
+        {
+            get => count;
+            set => count = value;
+        }
         public GameObject Prefab
         {
             get => prefab;
@@ -22,10 +29,5 @@ namespace _1_LEVEL_REWORK.New.Data
             get => icon;
             set => icon = value;
         }
-
-        [SerializeField] private Sprite icon;
-        
-        public string Id => id;
-        public List<PointData> points = new();
     }
 }
