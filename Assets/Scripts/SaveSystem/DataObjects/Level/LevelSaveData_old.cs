@@ -6,7 +6,7 @@ namespace SaveSystem.DataObjects.Level
     [Serializable]
     public class LevelSaveData
     {
-        public List<DetailSaveData> details = new();
+        public List<DetailSaveData_old> details = new();
         public float percent;
     }
 }
