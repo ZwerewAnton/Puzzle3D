@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using _1_LEVEL_REWORK.New.Instances;
 using UnityEngine;
 
 namespace _1_LEVEL_REWORK.New.Data
@@ -9,7 +10,7 @@ namespace _1_LEVEL_REWORK.New.Data
     {
         [SerializeField] private string id = Guid.NewGuid().ToString();
         [SerializeField] private int count = 1;
-        [SerializeField] private GameObject prefab;
+        [SerializeField] private DetailPrefab prefab;
         [SerializeField] private Sprite icon;
         public List<PointData> points = new();
         
@@ -19,7 +20,7 @@ namespace _1_LEVEL_REWORK.New.Data
             get => count;
             set => count = value;
         }
-        public GameObject Prefab
+        public DetailPrefab Prefab
         {
             get => prefab;
             set => prefab = value;

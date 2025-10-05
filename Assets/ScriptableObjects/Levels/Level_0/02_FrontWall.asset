@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 476919a7-7e20-4094-9ef5-8b6ea4ccc3a3
   count: 1
-  prefab: {fileID: 1964565449057994547, guid: 959499828baff304ca3d5070053170da, type: 3}
+  prefab: {fileID: 6537741284916568135, guid: 959499828baff304ca3d5070053170da, type: 3}
   icon: {fileID: 7011142320162777744, guid: de089d9e5983a6240b102b678586b4bb, type: 3}
   points:
   - position: {x: -3.5, y: 6, z: -7}

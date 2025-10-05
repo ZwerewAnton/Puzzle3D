@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _1_LEVEL_REWORK.New.Instances;
 using UnityEditor;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ namespace _1_LEVEL_REWORK.New.Data.Editor
 
             EditorGUILayout.LabelField("Id", detail.Id);
             detail.name = EditorGUILayout.TextField("Name", detail.name);
-            detail.Prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", detail.Prefab, typeof(GameObject), false);
+            detail.Prefab = (DetailPrefab)EditorGUILayout.ObjectField("Prefab", detail.Prefab, typeof(DetailPrefab), false);
             detail.Icon = (Sprite)EditorGUILayout.ObjectField("Icon", detail.Icon, typeof(Sprite), false);
             detail.Count = EditorGUILayout.IntField("Count", detail.Count);
         }

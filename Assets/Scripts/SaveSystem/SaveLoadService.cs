@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gameplay;
 using SaveSystem.DataObjects.Level;
+using SaveSystem.DataObjects.Level.New;
 using SaveSystem.DataObjects.Progress;
 using UnityEngine;
 using Utils.Paths;
@@ -35,7 +36,7 @@ namespace SaveSystem
             if (!Directory.Exists(Paths.GetPathToLevelDataDirectory(levelId)) ||
                 !File.Exists(Paths.GetPathToLevelData(levelId)))
             {
-                Debug.LogWarning($"Level {levelId} data not found. Returning default.");
+                Debug.Log($"Level {levelId} data not found. Returning default.");
                 return new LevelSaveData();
             }
             
@@ -48,25 +49,25 @@ namespace SaveSystem
             await SaveDataAsync(data, Paths.GetPathToLevelDataDirectory(levelId), Paths.GetPathToLevelData(levelId));
         }
 
-        private LevelSaveData CreateLevelSaveData(List<Detail> allDetails)
+        private LevelSaveData_old CreateLevelSaveData(List<Detail> allDetails)
         {
-            var level = new LevelSaveData();
+            var level = new LevelSaveData_old();
             float installedDetailsCount = 0;
             foreach (var detail in allDetails)
             {
                 var isInstalled = true;
-                var detailSav = new DetailSaveData
+                var detailSav = new DetailSaveData_old
                 {
                     detailName = detail.name,
                     currentCount = detail.CurrentCount
                 };
 
-                var pPCSaverList = new List<PointParentConnectorSaveData>();
+                var pPCSaverList = new List<PointParentConnectorSaveData_old>();
                 detailSav.parentList = pPCSaverList;
 
                 foreach (var pointPC in detail.points)
                 {
-                    var pPCSaveData = new PointParentConnectorSaveData
+                    var pPCSaveData = new PointParentConnectorSaveData_old
                     {
                         isInstalled = pointPC.IsInstalled
                     };

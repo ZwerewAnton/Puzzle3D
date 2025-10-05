@@ -17,25 +17,25 @@ namespace SaveSystem
         private static string _folderPath = Path.Combine(Application.persistentDataPath, "saves");
         public static int levelID;
 
-        private static LevelSaveData CreateSaveObject(List <Detail> allDetails)
+        private static LevelSaveData_old CreateSaveObject(List <Detail> allDetails)
         {
-            var level = new LevelSaveData();
+            var level = new LevelSaveData_old();
             float installedDetailsCount = 0;
             foreach (var detail in allDetails)
             {
                 var isInstalled = true;
-                var detailSav = new DetailSaveData
+                var detailSav = new DetailSaveData_old
                 {
                     detailName = detail.name,
                     currentCount = detail.CurrentCount
                 };
 
-                var pPCSaverList = new List<PointParentConnectorSaveData>();
+                var pPCSaverList = new List<PointParentConnectorSaveData_old>();
                 detailSav.parentList = pPCSaverList;
 
                 foreach (var pointPC in detail.points)
                 {
-                    var pPCSaveData = new PointParentConnectorSaveData
+                    var pPCSaveData = new PointParentConnectorSaveData_old
                     {
                         isInstalled = pointPC.IsInstalled
                     };
@@ -93,7 +93,7 @@ namespace SaveSystem
             var loadDetailList  = LevelContainer.currentLevelContainer.GetCurrentLevelDetails();
             var bf = new BinaryFormatter();
             var file = File.Open(GetSavePath(), FileMode.Open);
-            var save = (LevelSaveData)bf.Deserialize(file);
+            var save = (LevelSaveData_old)bf.Deserialize(file);
             file.Close();
 
             foreach (var detail in save.details)

@@ -7,30 +7,33 @@ namespace _1_LEVEL_REWORK.New.Instances
     public class DetailInstance
     {
         private readonly DetailData _data;
-        private readonly List<PointInstance> _points;
+        private bool _isGround;
+
+        public List<PointInstance> Points { get; }
+        public int RemainingCount { get; set; }
         
-        public IReadOnlyList<PointInstance> Points => _points;
-        public int RemainingCount { get; private set; }
-        
-        public DetailInstance(DetailData data)
+        public DetailInstance(DetailData data, bool isGround = false)
         {
             _data = data;
-            _points = data.points.Select(_ => new PointInstance()).ToList();
+            RemainingCount = data.Count;
+            Points = new List<PointInstance>();
+            _isGround = isGround;
+        }
+
+        public DetailPrefab GetDetailPrefab()
+        {
+            return _data.Prefab;
+        }
+
+        public bool IsAnyInstalled()
+        {
+            return Points.Any(instance => instance.IsInstalled);
         }
 
         public void Reset()
         {
             RemainingCount = _data.Count;
-            foreach (var p in _points) p.Uninstall();
-        }
-
-        public bool IsLastDetail()
-        {
-            if (RemainingCount == 0)
-                RemainingCount = _data.Count;
-
-            RemainingCount--;
-            return RemainingCount == 0;
+            foreach (var p in Points) p.Uninstall();
         }
     }
 }
