@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class UIMainMenuListItem : MonoBehaviour
+    public class LevelScrollItem : MonoBehaviour
     {
         [FormerlySerializedAs("_iconImage")] [SerializeField] private Image levelIconImage;
         [FormerlySerializedAs("_percent")] [SerializeField] private TMP_Text levelPercent;

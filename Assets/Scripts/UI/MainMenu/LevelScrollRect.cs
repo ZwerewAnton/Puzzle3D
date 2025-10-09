@@ -1,12 +1,13 @@
+using System.Collections.Generic;
 using Level;
-using Settings;
+using UI.Scroll;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.MainMenu
 {
-    public class UIMainMenuScrollRectController : MonoBehaviour
+    public class LevelScrollRect : MonoBehaviour
     {
         private int _panCount;
         [Range(0, 500)]
@@ -18,32 +19,30 @@ namespace UI
         [Range(0f, 50f)]
         public float scaleOffset;
         [Header("Other Objects")]
-        public UIMainMenuListItem panPrefab;
+        public LevelScrollItem panPrefab;
         public ScrollRect scrollRect;
         [FormerlySerializedAs("_contentRect")] [SerializeField] private RectTransform contentRect;
         
-        private UIMainMenuListItem[] _instPans;
+        private LevelScrollItem[] _instPans;
         private Vector2[] _panPos;
         private Vector3[] _panScales;
         private int _selectedPanID;
         private bool _isScrolling;
         private Vector2 _contentVector;
 
-        private void Start() 
+        public void SetItems(List<LevelItemModel> models)
         {
-            _panCount = LevelContainer.currentLevelContainer.GetLevelCount();
-            var sprites = LevelContainer.currentLevelContainer.GetLevelIcons();
-            var names = LevelContainer.currentLevelContainer.GetLevelNames();
-            _instPans = new UIMainMenuListItem[_panCount];
+            _panCount = models.Count;
+            _instPans = new LevelScrollItem[_panCount];
             _panPos = new Vector2[_panCount];
             _panScales = new Vector3[_panCount];
 
             for(var i = 0; i < _panCount; i++)
             {
                 _instPans[i] = Instantiate(panPrefab, transform, false);                
-                _instPans[i].SetIcon(sprites[i]);
-                _instPans[i].SetName(names[i]);
-                _instPans[i].SetPercent(GetPercent(i));
+                _instPans[i].SetIcon(models[i].levelIcon);
+                _instPans[i].SetName(models[i].levelName);
+                //_instPans[i].SetPercent(models[i].progressPercent);
                 if (i > 0)
                 {
                     var xPosition = _instPans[i - 1].GetLocalPosition().x + panPrefab.GetComponent<RectTransform>().sizeDelta.x + panOffset;
@@ -54,7 +53,7 @@ namespace UI
             }
         }
 
-        private void FixedUpdate() 
+        private void Update() 
         {
             if (contentRect.anchoredPosition.x >= _panPos[0].x && !_isScrolling || contentRect.anchoredPosition.x <= _panPos[^1].x)
             {
@@ -62,11 +61,11 @@ namespace UI
             }
             
             var nearestPos = float.MaxValue;
-            var time = Time.fixedDeltaTime;
+            var time = Time.deltaTime;
             for (var i = 0; i < _panCount; i++)
             {
                 var distance = Mathf.Abs(contentRect.anchoredPosition.x - _panPos[i].x);
-                if (distance<nearestPos)
+                if (distance < nearestPos)
                 {
                     nearestPos =distance;
                     _selectedPanID = i;

@@ -4,6 +4,7 @@ using Configs;
 using Infrastructure.SceneManagement;
 using Infrastructure.Utils;
 using Input;
+using Level;
 using Music;
 using SaveSystem;
 using Settings;
@@ -20,6 +21,7 @@ namespace Infrastructure.Installers
         [SerializeField] private MusicPlayer musicPlayer;
         [SerializeField] private SfxPlayer sfxPlayer;
         [SerializeField] private LoadingScreenMediator loadingScreenMediator;
+        [SerializeField] private LevelsRepository levelsRepository;
         
         public override void InstallBindings()
         {
@@ -33,6 +35,7 @@ namespace Infrastructure.Installers
             BindLoadingScreenMediator();
             BindGameState();
             BindInputHandler();
+            BindLevelsRepository();
         }
 
         private void BindApplicationConfigs()
@@ -83,6 +86,11 @@ namespace Infrastructure.Installers
         private void BindInputHandler()
         {
             Container.BindInterfacesAndSelfTo<InputHandler>().AsSingle().NonLazy();
+        }
+        
+        private void BindLevelsRepository()
+        {
+            Container.Bind<LevelsRepository>().FromInstance(levelsRepository).AsSingle().NonLazy();
         }
 
         private void BindDisposableHandler()

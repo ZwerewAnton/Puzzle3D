@@ -9,13 +9,11 @@ namespace Infrastructure.Installers
 {
     public class GameInstaller : MonoInstaller
     {
-        [SerializeField] private LevelsRepository levelsRepository;
         [SerializeField] private DetailPrefabSpawner detailPrefabSpawner;
         
         public override void InstallBindings()
         {
             BindCameraMovement();
-            BindLevelsRepository();
             BindDetailPrefabSpawner();
             BindLevelState();
             BindLevelService();
@@ -24,11 +22,6 @@ namespace Infrastructure.Installers
         private void BindCameraMovement()
         {
             Container.Bind<ICameraMovement>().To<MouseCameraMovement>().AsSingle();
-        }
-        
-        private void BindLevelsRepository()
-        {
-            Container.Bind<LevelsRepository>().FromInstance(levelsRepository).AsSingle().NonLazy();
         }
         
         private void BindDetailPrefabSpawner()

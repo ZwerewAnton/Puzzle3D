@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common;
 using Infrastructure.SceneManagement;
@@ -5,6 +6,7 @@ using Level;
 using Music;
 using SaveSystem;
 using UI.Mediators;
+using UI.Scroll;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -14,7 +16,8 @@ namespace UI.MainMenu
 {
     public class MainMenu : MonoBehaviour
     {
-        public UIMainMenuScrollRectController scrollController;
+        [FormerlySerializedAs("scrollController")] public LevelScrollRect scroll;
+        [SerializeField] private LevelScrollController scrollController;
 
         public GameObject disassembleWindow;
         public GameObject disassembleButton;
@@ -40,6 +43,15 @@ namespace UI.MainMenu
         private void Start()
         {
             SetPanelsVisibility();
+            
+            
+            var items = new List<LevelItemModel>();
+            for (var i = 0; i < 10; i++)
+            {
+                items.Add(new LevelItemModel { levelName = $"Item {i}", levelIcon = null, progressPercent = Random.Range(0f, 100f).ToString()});
+            }
+            scrollController.Initialize(items);
+            scroll.SetItems(items);
         }
     
         public void FirstTap()
@@ -50,7 +62,7 @@ namespace UI.MainMenu
     
         public async Task Play()
         {
-            LevelSaver.levelID = scrollController.GetLevelID();
+            LevelSaver.levelID = scroll.GetLevelID();
             _sfxPlayer.PlayStartGameClip();
             await _sceneSwitcher.LoadSceneAsync(SceneType.Level);
         }
@@ -80,10 +92,10 @@ namespace UI.MainMenu
     
         public void DisassembleDetail()
         {
-            var levelID = scrollController.GetLevelID();
+            var levelID = scroll.GetLevelID();
             LevelSaver.levelID = levelID;
             LevelContainer.currentLevelContainer.ResetLevel(levelID);
-            scrollController.UpdatePercents();
+            scroll.UpdatePercents();
             disassembleWindow.SetActive(false);
         }
     }

@@ -10,11 +10,11 @@ namespace UI.MainMenu
         [SerializeField, Range(0f, 20f)] private float snapSpeed;
         [SerializeField, Range(0f, 20f)] private float scaleSpeed;
         [SerializeField, Range(0f, 50f)] private float scaleOffset;
-        [SerializeField] private UIMainMenuListItem panPrefab;
+        [SerializeField] private LevelScrollItem panPrefab;
         [SerializeField] private ScrollRect scrollRect;
         [SerializeField] private RectTransform contentRect;
         
-        private UIMainMenuListItem[] _instPans;
+        private LevelScrollItem[] _instPans;
         private Vector2[] _panPos;
         private Vector3[] _panScales;
         private int _selectedPanID;
