@@ -7,142 +7,144 @@ namespace UI.Scroll
     public class HorizontalScrollController<TModel, TItem> : ScrollControllerBase<TModel, TItem>
         where TItem : ScrollItemView<TModel>
     {
-        [Header("Animation")]
-        [Range(0.5f, 1.5f)] public float maxScale = 1.2f;
-        [Range(0.5f, 1.0f)] public float minScale = 0.8f;
-        
-        private Vector2 _closestItemAnchoredPosition;
-        private float _lastDragDeltaX = 0f;
+        [Header("Snap")]
+        [Range(0f, 20f)] [SerializeField] protected float snapSpeed = 10f;
+        [SerializeField] protected bool enableSnap = true;
+        [SerializeField] protected  float snapThreshold = 0.5f;
 
+        [Header("Animation")]
+        [Range(0.5f, 1.5f)] protected float MaxScale = 1.2f;
+        [Range(0.5f, 1.0f)] protected float MinScale = 0.8f;
+
+        private Vector2 _targetAnchoredPos;
+        private float _lastDragDirection;
+        private bool _shouldSnap;
+
+        #region Unity Events
+        
         protected void LateUpdate()
         {
-            UpdateItemsSize();
-            SnapToItem();
+            if (enableSnap)
+                AnimateItemScaling();
+
+            if (_shouldSnap)
+                SmoothSnap();
         }
-        
+
         public override void OnBeginDrag(PointerEventData eventData)
         {
             base.OnBeginDrag(eventData);
             scrollRect.inertia = true;
+            _shouldSnap = false;
         }
 
         public override void OnEndDrag(PointerEventData eventData)
         {
             base.OnEndDrag(eventData);
             scrollRect.inertia = false;
-            _lastDragDeltaX = eventData.delta.x;
-            _closestItemAnchoredPosition = FindNearestItemPosition();
-        }
-        
-        protected override float GetItemSize(RectTransform rect)
-        {
-            return rect.rect.width;
+
+            _lastDragDirection = Mathf.Sign(eventData.delta.x);
+            _targetAnchoredPos = FindNearestItemAnchoredPos();
+            _shouldSnap = true;
         }
 
-        protected override float GetViewportSize()
+        #endregion
+        
+        #region Content Management
+        
+        protected override void UpdateVisibleItems()
         {
-            return scrollRect.viewport.rect.width;
+            base.UpdateVisibleItems();
+
+            if (enableSnap)
+                AnimateItemScaling();
         }
+
+        protected override float GetItemSize(RectTransform rect) => rect.rect.width;
+        protected override float GetViewportSize() => scrollRect.viewport.rect.width;
 
         protected override Vector2 GetAnchoredPosition(int index)
         {
-            var x = index * (itemSize + itemSpacing);
-            return new Vector2(x, 0);
+            var x = index * (ItemSize + itemSpacing) + BorderSpacing;
+            return new Vector2(x, 0f);
         }
 
         protected override void OnItemClicked(int itemIndex)
         {
             base.OnItemClicked(itemIndex);
 
-            foreach (var item in activeItems.Where(item => item.ItemIndex == itemIndex))
-            {
-                _closestItemAnchoredPosition = item.RectTransform.anchoredPosition;
-            }
+            var clicked = ActiveItems.FirstOrDefault(i => i.ItemIndex == itemIndex);
+            if (clicked == null)
+                return;
+
+            _targetAnchoredPos = clicked.RectTransform.anchoredPosition;
+            _shouldSnap = true;
         }
 
-        protected override void UpdateVisibleItems()
-        {
-            base.UpdateVisibleItems();
-
-            if (enableSnap)
-            {
-                UpdateItemsSize();
-            }
-        }
-
-        private void UpdateItemsSize()
+        #endregion
+        
+        #region Snap and Animation
+        
+        private void AnimateItemScaling()
         {
             var center = -content.anchoredPosition.x;
 
-            foreach (var item in activeItems)
+            foreach (var item in ActiveItems)
             {
-                var itemCenter = item.RectTransform.anchoredPosition.x - borderSpacing;
-                var signDistance = center - itemCenter;
-                var distance = Mathf.Abs(signDistance);
+                var itemCenter = item.RectTransform.anchoredPosition.x - BorderSpacing;
+                var distance = Mathf.Abs(center - itemCenter);
 
-                var t = Mathf.Clamp01(distance / borderSpacing);
-                var scale = Mathf.Lerp(maxScale, minScale, t);
+                var t = Mathf.Clamp01(distance / BorderSpacing);
+                var scale = Mathf.Lerp(MaxScale, MinScale, t);
+
                 item.RectTransform.localScale = new Vector3(scale, scale, 1f);
             }
         }
 
-        private void SnapToItem()
+        private void SmoothSnap()
         {
-            if (!isScrolling && _closestItemAnchoredPosition != Vector2.zero)
+            var currentX = content.anchoredPosition.x;
+            var targetX = -_targetAnchoredPos.x + BorderSpacing;
+
+            var newX = Mathf.Lerp(currentX, targetX, snapSpeed * Time.deltaTime);
+            content.anchoredPosition = new Vector2(newX, content.anchoredPosition.y);
+
+            if (Mathf.Abs(newX - targetX) < snapThreshold)
             {
-                var targetX = -_closestItemAnchoredPosition.x + borderSpacing;
-                content.anchoredPosition = Vector2.Lerp(content.anchoredPosition, new Vector2(targetX, content.anchoredPosition.y), snapSpeed * Time.deltaTime);
+                content.anchoredPosition = new Vector2(targetX, content.anchoredPosition.y);
+                _shouldSnap = false;
             }
         }
 
-        private Vector2 FindNearestItemPosition()
+        private Vector2 FindNearestItemAnchoredPos()
         {
             var center = -content.anchoredPosition.x;
-            var closestDistance = float.MaxValue;
-            var closestItem = Vector2.zero;
+            var closestDist = float.MaxValue;
+            var closest = Vector2.zero;
 
-            foreach (var item in activeItems)
+            foreach (var item in ActiveItems)
             {
-                var itemCenter = item.RectTransform.anchoredPosition.x - borderSpacing;
-                var signDistance = center - itemCenter;
-                var distance = Mathf.Abs(signDistance);
+                var itemCenter = item.RectTransform.anchoredPosition.x - BorderSpacing;
+                var distance = center - itemCenter;
 
-                if (_lastDragDeltaX != 0f)
+                var validByDirection =
+                    Mathf.Approximately(_lastDragDirection, 0f) ||
+                    (_lastDragDirection > 0 && distance >= 0f) ||
+                    (_lastDragDirection < 0 && distance <= 0f);
+
+                if (!validByDirection) continue;
+
+                var absDist = Mathf.Abs(distance);
+                if (absDist < closestDist)
                 {
-                    if (_lastDragDeltaX > 0f)
-                    {
-                        if (signDistance >= 0f)
-                        {
-                            if (distance < closestDistance)
-                            {
-                                closestDistance = distance;
-                                closestItem = item.RectTransform.anchoredPosition;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (signDistance <= 0f)
-                        {
-                            if (distance < closestDistance)
-                            {
-                                closestDistance = distance;
-                                closestItem = item.RectTransform.anchoredPosition;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        closestItem = item.RectTransform.anchoredPosition;
-                    }
+                    closestDist = absDist;
+                    closest = item.RectTransform.anchoredPosition;
                 }
             }
 
-            return closestItem;
+            return closest;
         }
+        
+        #endregion
     }
 }

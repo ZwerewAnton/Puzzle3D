@@ -44,7 +44,6 @@ namespace UI.MainMenu
         {
             SetPanelsVisibility();
             
-            
             var items = new List<LevelItemModel>();
             for (var i = 0; i < 10; i++)
             {

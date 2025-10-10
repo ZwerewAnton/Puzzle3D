@@ -1,72 +1,122 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UI.Scroll
 {
-    public abstract class ScrollControllerBase<TModel, TItem> : MonoBehaviour, IBeginDragHandler, IEndDragHandler 
+    public abstract class ScrollControllerBase<TModel, TItem> : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         where TItem : ScrollItemView<TModel>
     {
         [SerializeField] protected ScrollRect scrollRect;
         [SerializeField] protected RectTransform content;
         [SerializeField] protected GameObject itemPrefab;
 
-        [Header("Config")]
-        [Range(0f, 20f)] [SerializeField] protected float snapSpeed = 10f;
+        [Header("Items")]
         [Range(0f, 500f)] [SerializeField] protected float itemSpacing = 50f;
-        [SerializeField] protected bool enableSnap = true;
 
-        protected readonly List<TModel> models = new();
-        protected readonly List<TItem> activeItems = new();
-        protected float itemSize;
-        protected int visibleItemCount;
-        protected bool initialized;
-        protected float borderSpacing = 0f;
-        protected bool isScrolling;
+        protected readonly List<TModel> Models = new();
+        protected readonly List<TItem> ActiveItems = new();
+
+        protected float ItemSize;
+        protected int VisibleItemCount;
+        protected bool Initialized;
+        protected float BorderSpacing;
+
+        #region Unity Events
 
         protected virtual void OnEnable()
         {
-            scrollRect.onValueChanged.AddListener(OnScrollChanged);
+            if (scrollRect != null)
+                scrollRect.onValueChanged.AddListener(OnScrollChanged);
         }
 
         protected virtual void OnDisable()
         {
-            scrollRect.onValueChanged.RemoveListener(OnScrollChanged);
+            if (scrollRect != null)
+                scrollRect.onValueChanged.RemoveListener(OnScrollChanged);
         }
+
+        protected virtual void OnDestroy()
+        {
+            ClearPool();
+        }
+
+        public virtual void OnBeginDrag(PointerEventData eventData) { }
+        
+        public virtual void OnEndDrag(PointerEventData eventData) { }
+        
+        #endregion
+
+        #region Initialization
 
         public virtual void Initialize(List<TModel> newModels)
         {
-            initialized = true;
-            models.Clear();
-            models.AddRange(newModels);
+            if (newModels == null || newModels.Count == 0)
+                return;
+
+            if (Initialized)
+                ClearPool();
+
+            Initialized = true;
+
+            Models.Clear();
+            Models.AddRange(newModels);
 
             var itemRect = itemPrefab.GetComponent<RectTransform>();
-            itemSize = GetItemSize(itemRect);
+            ItemSize = GetItemSize(itemRect);
+            BorderSpacing = GetViewportSize() / 2f;
 
-            borderSpacing = GetViewportSize() / 2f;
-            
-            var cellWidth = itemSize + itemSpacing;
-            var contendWidth = cellWidth * newModels.Count + borderSpacing * 2f - cellWidth;
-            content.sizeDelta = new Vector2(contendWidth, content.sizeDelta.y);
+            var cellSize = ItemSize + itemSpacing;
+            var totalSize = cellSize * Models.Count + BorderSpacing * 2f - cellSize;
+            SetContentSize(totalSize);
+            VisibleItemCount = Mathf.CeilToInt(GetViewportSize() / cellSize) + 2;
 
-            visibleItemCount = Mathf.CeilToInt(GetViewportSize() / (itemSize + itemSpacing)) + 2;
             CreatePool();
-            
             UpdateVisibleItems();
         }
+        
+        protected virtual void SetContentSize(float totalSize)
+        {
+            if (scrollRect.horizontal)
+                content.sizeDelta = new Vector2(totalSize, content.sizeDelta.y);
+            else
+                content.sizeDelta = new Vector2(content.sizeDelta.x, totalSize);
+        }
+
+        #endregion
+
+        #region Pool Management
 
         protected virtual void CreatePool()
         {
-            for (int i = 0; i < visibleItemCount; i++)
+            ClearPool();
+
+            for (var i = 0; i < VisibleItemCount; i++)
             {
                 var go = Instantiate(itemPrefab, content);
                 var item = go.GetComponent<TItem>();
                 item.Clicked += OnItemClicked;
-                activeItems.Add(item);
+                ActiveItems.Add(item);
             }
         }
+
+        protected virtual void ClearPool()
+        {
+            foreach (var item in ActiveItems)
+            {
+                if (item == null) 
+                    continue;
+                
+                item.Clicked -= OnItemClicked;
+                Destroy(item.gameObject);
+            }
+            ActiveItems.Clear();
+        }
+
+        #endregion
+
+        #region Content Management
 
         protected virtual void OnScrollChanged(Vector2 _)
         {
@@ -75,53 +125,50 @@ namespace UI.Scroll
 
         protected virtual void UpdateVisibleItems()
         {
-            if (!initialized || models.Count == 0)
-            {
+            if (!Initialized || Models.Count == 0)
                 return;
-            }
-            
-            var viewportWidth = scrollRect.viewport.rect.width;
-            var cellWidth = itemSize + itemSpacing;
-            var contentOffset = -content.anchoredPosition.x - viewportWidth / 2f;
 
-            var firstVisibleIndex = Mathf.FloorToInt((contentOffset / cellWidth));
+            var viewportSize = GetViewportSize();
+            var cellSize = ItemSize + itemSpacing;
+
+            var offset = GetScrollOffset() - viewportSize / 2f;
+            var firstVisibleIndex = Mathf.FloorToInt(offset / cellSize);
             firstVisibleIndex = Mathf.Max(0, firstVisibleIndex);
 
-            for (var i = 0; i < activeItems.Count; i++)
+            for (var i = 0; i < ActiveItems.Count; i++)
             {
-                var item = activeItems[i];
                 var modelIndex = firstVisibleIndex + i;
-                if (modelIndex < 0 || modelIndex >= models.Count)
+                var item = ActiveItems[i];
+
+                if (modelIndex < 0 || modelIndex >= Models.Count)
                 {
                     item.gameObject.SetActive(false);
                     continue;
                 }
 
                 if (!item.gameObject.activeSelf)
-                {
                     item.gameObject.SetActive(true);
-                }
-                
-                item.SetData(modelIndex, models[modelIndex]);
 
-                var x = modelIndex * cellWidth + borderSpacing;
-                item.RectTransform.anchoredPosition = new Vector2(x, 0f);
+                item.SetData(modelIndex, Models[modelIndex]);
+                item.RectTransform.anchoredPosition = GetAnchoredPosition(modelIndex);
             }
         }
-        
-        public virtual void OnBeginDrag(PointerEventData eventData)
-        {
-            isScrolling = true;
-        }
 
-        public virtual void OnEndDrag(PointerEventData eventData)
+        protected virtual void OnItemClicked(int itemIndex) { }
+
+        protected abstract float GetItemSize(RectTransform rect);
+
+        protected abstract float GetViewportSize();
+
+        protected abstract Vector2 GetAnchoredPosition(int index);
+
+        protected virtual float GetScrollOffset()
         {
-            isScrolling = false;
+            return scrollRect.horizontal
+                ? -content.anchoredPosition.x
+                : content.anchoredPosition.y;
         }
         
-        protected virtual void OnItemClicked(int itemIndex) {}
-        protected abstract float GetItemSize(RectTransform rect);
-        protected abstract float GetViewportSize();
-        protected abstract Vector2 GetAnchoredPosition(int index);
+        #endregion
     }
 }
