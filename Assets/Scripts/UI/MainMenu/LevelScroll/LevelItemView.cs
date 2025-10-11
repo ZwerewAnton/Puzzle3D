@@ -25,7 +25,7 @@ namespace UI.Scroll
             
             levelIcon.sprite = model.levelIcon;
             levelName.SetText(model.levelName);
-            progressPercent.SetText(model.progressPercent);
+            progressPercent.SetText(model.progressPercent.ToString());
         }
     }
 }

@@ -1,22 +1,22 @@
 ﻿using System.Linq;
+using UI.MainMenu.LevelScroll;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace UI.Scroll
 {
-    public class HorizontalScrollController<TModel, TItem> : ScrollControllerBase<TModel, TItem>
-        where TItem : ScrollItemView<TModel>
+    public class LevelScrollController : ScrollControllerBase<LevelItemModel, LevelItemView>
     {
         [Header("Snap")]
-        [Range(0f, 20f)] [SerializeField] protected float snapSpeed = 10f;
+        [SerializeField, Range(0f, 20f)] protected float snapSpeed = 10f;
         [SerializeField] protected bool enableSnap = true;
         [SerializeField] protected  float snapThreshold = 0.5f;
 
         [Header("Animation")]
-        [Range(0.5f, 1.5f)] protected float MaxScale = 1.2f;
-        [Range(0.5f, 1.0f)] protected float MinScale = 0.8f;
+        [SerializeField, Range(0.5f, 1.5f)] protected float MaxScale = 1f;
+        [SerializeField, Range(0.5f, 1.0f)] protected float MinScale = 0.8f;
 
-        private Vector2 _targetAnchoredPos;
+        private TargetItemData _targetItemData;
         private float _lastDragDirection;
         private bool _shouldSnap;
 
@@ -44,13 +44,30 @@ namespace UI.Scroll
             scrollRect.inertia = false;
 
             _lastDragDirection = Mathf.Sign(eventData.delta.x);
-            _targetAnchoredPos = FindNearestItemAnchoredPos();
+            _targetItemData = FindNearestItemData();
             _shouldSnap = true;
         }
 
         #endregion
         
         #region Content Management
+
+        public LevelItemModel GetTargetItemModel()
+        {
+            return Models[_targetItemData.ItemIndex];
+        }
+
+        public void MoveToItem(string levelName)
+        {
+            var itemIndex = Models.FindIndex(model => model.levelName == levelName);
+            if (itemIndex < 0)
+            {
+                return;
+            }
+            var targetX = (ItemSize + itemSpacing) * itemIndex;
+            content.anchoredPosition = new Vector2(-targetX, content.anchoredPosition.y);
+            _targetItemData = new TargetItemData(GetAnchoredPosition(itemIndex), itemIndex);
+        }
         
         protected override void UpdateVisibleItems()
         {
@@ -73,11 +90,11 @@ namespace UI.Scroll
         {
             base.OnItemClicked(itemIndex);
 
-            var clicked = ActiveItems.FirstOrDefault(i => i.ItemIndex == itemIndex);
-            if (clicked == null)
+            var item = ActiveItems.FirstOrDefault(i => i.ItemIndex == itemIndex);
+            if (item == null)
                 return;
 
-            _targetAnchoredPos = clicked.RectTransform.anchoredPosition;
+            _targetItemData = new TargetItemData(item.RectTransform.anchoredPosition, item.ItemIndex);
             _shouldSnap = true;
         }
 
@@ -104,7 +121,7 @@ namespace UI.Scroll
         private void SmoothSnap()
         {
             var currentX = content.anchoredPosition.x;
-            var targetX = -_targetAnchoredPos.x + BorderSpacing;
+            var targetX = -_targetItemData.AnchoredPosition.x + BorderSpacing;
 
             var newX = Mathf.Lerp(currentX, targetX, snapSpeed * Time.deltaTime);
             content.anchoredPosition = new Vector2(newX, content.anchoredPosition.y);
@@ -116,11 +133,11 @@ namespace UI.Scroll
             }
         }
 
-        private Vector2 FindNearestItemAnchoredPos()
+        private TargetItemData FindNearestItemData()
         {
             var center = -content.anchoredPosition.x;
             var closestDist = float.MaxValue;
-            var closest = Vector2.zero;
+            var closest = new TargetItemData();
 
             foreach (var item in ActiveItems)
             {
@@ -138,7 +155,8 @@ namespace UI.Scroll
                 if (absDist < closestDist)
                 {
                     closestDist = absDist;
-                    closest = item.RectTransform.anchoredPosition;
+                    closest.AnchoredPosition = item.RectTransform.anchoredPosition;
+                    closest.ItemIndex = item.ItemIndex;
                 }
             }
 

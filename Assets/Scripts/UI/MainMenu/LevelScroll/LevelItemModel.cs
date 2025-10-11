@@ -6,7 +6,8 @@ namespace UI.Scroll
     public class LevelItemModel
     {
         public Sprite levelIcon;
+        public string levelId;
         public string levelName;
-        public string progressPercent;
+        public int progressPercent;
     }
 }
