@@ -17,14 +17,14 @@ namespace UI.Settings
         [SerializeField] private Button[] menuButtons;
         
         [Space]
-        [Header ("Spacing between menu items")]
+        [Header ("Spacing Between Menu Items")]
         [FormerlySerializedAs("_spacing")] [SerializeField] 
         private Vector2 spacing;
         [FormerlySerializedAs("_offset")] [SerializeField] 
         private Vector2 offset;
 
         [Space]
-        [Header ("Main button rotation")]
+        [Header ("Main Button Rotation")]
         [SerializeField] private float rotationDuration;
         [SerializeField] private Ease rotationEase;
 
@@ -32,7 +32,7 @@ namespace UI.Settings
         [Header ("Animation")]
         [SerializeField] private float expandDuration;
         [SerializeField] private float collapseDuration;
-        [FormerlySerializedAs("expandeEase")] [SerializeField] private Ease expandEase;
+        [SerializeField] private Ease expandEase;
         [SerializeField] private Ease collapseEase;
 
         [Space]

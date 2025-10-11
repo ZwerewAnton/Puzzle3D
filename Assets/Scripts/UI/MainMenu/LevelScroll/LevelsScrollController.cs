@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using UI.MainMenu.LevelScroll;
+using UI.Scroll;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UI.Scroll
+namespace UI.MainMenu.LevelScroll
 {
-    public class LevelScrollController : ScrollControllerBase<LevelItemModel, LevelItemView>
+    public class LevelsScrollController : ScrollControllerBase<LevelItemModel, LevelItemView>
     {
         [Header("Snap")]
         [SerializeField, Range(0f, 20f)] protected float snapSpeed = 10f;
@@ -77,15 +77,6 @@ namespace UI.Scroll
                 AnimateItemScaling();
         }
 
-        protected override float GetItemSize(RectTransform rect) => rect.rect.width;
-        protected override float GetViewportSize() => scrollRect.viewport.rect.width;
-
-        protected override Vector2 GetAnchoredPosition(int index)
-        {
-            var x = index * (ItemSize + itemSpacing) + BorderSpacing;
-            return new Vector2(x, 0f);
-        }
-
         protected override void OnItemClicked(int itemIndex)
         {
             base.OnItemClicked(itemIndex);
@@ -96,6 +87,11 @@ namespace UI.Scroll
 
             _targetItemData = new TargetItemData(item.RectTransform.anchoredPosition, item.ItemIndex);
             _shouldSnap = true;
+        }
+
+        protected override float GetBorderSpacing()
+        {
+            return GetViewportSize() / 2f;
         }
 
         #endregion

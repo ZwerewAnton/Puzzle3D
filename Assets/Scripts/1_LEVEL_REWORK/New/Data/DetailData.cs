@@ -15,7 +15,7 @@ namespace _1_LEVEL_REWORK.New.Data
         public List<PointData> points = new();
         
         public string Id => id;
-        public int Count        
+        public int Count
         {
             get => count;
             set => count = value;

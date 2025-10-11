@@ -6,12 +6,12 @@ namespace SaveSystem.DataObjects.Progress
     [Serializable]
     public class ProgressLevelSaveData
     {
-        [SerializeField] public int levelId;
+        [SerializeField] public string levelName;
         [SerializeField] public int progress;
 
-        public ProgressLevelSaveData(int levelId, int progress)
+        public ProgressLevelSaveData(string levelName, int progress)
         {
-            this.levelId = levelId;
+            this.levelName = levelName;
             this.progress = progress;
         }
     }

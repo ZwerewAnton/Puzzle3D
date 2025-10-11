@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using _1_LEVEL_REWORK.New.Data;
+using UnityEngine;
 
 namespace _1_LEVEL_REWORK.New.Instances
 {
@@ -25,9 +26,19 @@ namespace _1_LEVEL_REWORK.New.Instances
             return _data.Prefab;
         }
 
+        public Sprite GetDetailIcon()
+        {
+            return _data.Icon;
+        }
+
         public bool IsAnyInstalled()
         {
             return Points.Any(instance => instance.IsInstalled);
+        }
+
+        public bool IsAllInstalled()
+        {
+            return Points.All(instance => instance.IsInstalled);
         }
 
         public void Reset()

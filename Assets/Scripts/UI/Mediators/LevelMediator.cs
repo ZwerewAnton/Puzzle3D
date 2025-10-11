@@ -1,0 +1,16 @@
+﻿using System.Collections.Generic;
+using UI.Game.DetailsScroll;
+using UnityEngine;
+
+namespace UI.Mediators
+{
+    public class LevelMediator : MonoBehaviour
+    {
+        [SerializeField] private DetailsScrollController detailsScrollController;
+        
+        public void InitializeLevelScroll(List<DetailItemModel> models)
+        {
+            detailsScrollController.Initialize(models);
+        }
+    }
+}

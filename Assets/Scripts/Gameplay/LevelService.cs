@@ -8,42 +8,84 @@ using Common;
 using Gameplay.Spawn;
 using Level;
 using SaveSystem;
+using SaveSystem.DataObjects.Level.New;
+using UI.Game.DetailsScroll;
+using UI.Mediators;
+using UnityEngine;
 using Zenject;
 
 namespace Gameplay
 {
     public class LevelService : IDisposable
     {
-        private readonly LevelData _levelData;
         private readonly DetailPrefabSpawner _spawner;
         private readonly LevelState _levelState;
         private readonly SaveLoadService _saveLoadService;
-        private readonly int _selectedLevel;
+        private readonly GameState _gameState;
+        private readonly LevelsRepository _repository;
+        private readonly LevelMediator _levelMediator;
+        private LevelData _levelData;
         private CancellationTokenSource _cts;
         
         [Inject]
         private LevelService(
-            DetailPrefabSpawner spawner, 
-            GameState gameState, 
-            LevelsRepository repository, 
-            LevelState levelState, 
-            SaveLoadService saveLoadService)
+            DetailPrefabSpawner spawner,
+            GameState gameState,
+            LevelsRepository repository,
+            LevelState levelState,
+            SaveLoadService saveLoadService,
+            LevelMediator levelMediator)
         {
             _spawner = spawner;
-            _selectedLevel = gameState.SelectedLevel;
-            _levelData = repository.GetLevel(_selectedLevel);
             _levelState = levelState;
             _saveLoadService = saveLoadService;
+            _gameState = gameState;
+            _repository = repository;
+            _levelMediator = levelMediator;
         }
 
         public async Task InitializeLevel()
         {
             _cts = new CancellationTokenSource();
-            var saveData = await _saveLoadService.LoadLevelDataAsync(_selectedLevel, _cts.Token);
-            _levelState.CreateDetailsInstances(_levelData.Ground, _levelData.Details, saveData.details);
+        
+            var result = _repository.TryGetLevel(_gameState.SelectedLevelName, out _levelData);
+            if (!result)
+                return;
+        
+            var saveData = await _saveLoadService.LoadLevelDataAsync(_levelData.LevelName, _cts.Token);
+        
+            InitializeLevelState(saveData);
+            InitializeDetailsScrollController();
             SpawnStartDetailPrefabs();
         }
 
+        private void InitializeLevelState(LevelSaveData saveData)
+        {
+            _levelState.CreateDetailsInstances(_levelData.Ground, _levelData.Details, saveData.details);
+        }
+
+        private void InitializeDetailsScrollController()
+        {
+            var details = _levelState.Details;
+            var detailModels = new List<DetailItemModel>();
+            foreach (var detailInstancePair in details)
+            {
+                var detailInstance = detailInstancePair.Value;
+                
+                if (detailInstance.IsAllInstalled())
+                    continue;
+                
+                detailModels.Add(new DetailItemModel
+                {
+                    ID = detailInstancePair.Key,
+                    Icon = detailInstance.GetDetailIcon(),
+                    Count = detailInstance.RemainingCount
+                });
+                
+            }
+            _levelMediator.InitializeLevelScroll(detailModels);
+        }
+        
         private void SpawnStartDetailPrefabs()
         {
             var installedDetails = _levelState.GetInstalledDetails();

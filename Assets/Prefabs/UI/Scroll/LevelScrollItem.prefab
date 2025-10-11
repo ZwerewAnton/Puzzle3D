@@ -688,7 +688,7 @@ GameObject:
   - component: {fileID: 9085690935787438924}
   - component: {fileID: 3992994898652341359}
   m_Layer: 5
-  m_Name: LevelListItem
+  m_Name: LevelScrollItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

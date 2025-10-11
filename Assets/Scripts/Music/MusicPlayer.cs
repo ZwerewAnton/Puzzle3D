@@ -56,9 +56,6 @@ namespace Music
 
         public void Play(MusicType type)
         {
-            if (!_settingsService.IsMusicOn) 
-                return;
-            
             switch (type)
             {
                 case MusicType.MainMenu:
@@ -72,7 +69,8 @@ namespace Music
                     return;
             }
             
-            FadeIn();
+            if (_settingsService.IsMusicOn)
+                FadeIn();
         }
         
         public void Stop()

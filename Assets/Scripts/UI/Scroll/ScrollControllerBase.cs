@@ -14,6 +14,7 @@ namespace UI.Scroll
 
         [Header("Items")]
         [Range(0f, 500f)] [SerializeField] protected float itemSpacing = 50f;
+        [Range(0f, 500f)] [SerializeField] protected float borderSpacing = 50f;
 
         protected readonly List<TModel> Models = new();
         protected readonly List<TItem> ActiveItems = new();
@@ -65,7 +66,7 @@ namespace UI.Scroll
 
             var itemRect = itemPrefab.GetComponent<RectTransform>();
             ItemSize = GetItemSize(itemRect);
-            BorderSpacing = GetViewportSize() / 2f;
+            BorderSpacing = GetBorderSpacing();
 
             var cellSize = ItemSize + itemSpacing;
             var totalSize = cellSize * Models.Count + BorderSpacing * 2f - cellSize;
@@ -154,13 +155,19 @@ namespace UI.Scroll
             }
         }
 
-        protected virtual void OnItemClicked(int itemIndex) { }
+        protected virtual void OnItemClicked(int itemIndex) {}
 
-        protected abstract float GetItemSize(RectTransform rect);
+        protected virtual float GetItemSize(RectTransform rect) => rect.rect.width;
 
-        protected abstract float GetViewportSize();
+        protected virtual float GetViewportSize() => scrollRect.viewport.rect.width;
+        
+        protected virtual float GetBorderSpacing() => borderSpacing;
 
-        protected abstract Vector2 GetAnchoredPosition(int index);
+        protected virtual Vector2 GetAnchoredPosition(int index)
+        {
+            var x = index * (ItemSize + itemSpacing) + BorderSpacing;
+            return new Vector2(x, 0f);
+        }
 
         protected virtual float GetScrollOffset()
         {

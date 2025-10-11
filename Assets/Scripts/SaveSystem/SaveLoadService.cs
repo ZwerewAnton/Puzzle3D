@@ -15,7 +15,9 @@ namespace SaveSystem
     public class SaveLoadService
     {
         private ProgressSaveData _progressData = new();
-        
+
+        public ProgressSaveData ProgressData => _progressData;
+
         public async Task LoadProgressDataAsync(CancellationToken cancellationToken = default)
         {
             if (!Directory.Exists(Paths.PathToSaveDirectory) ||
@@ -25,28 +27,28 @@ namespace SaveSystem
             _progressData = await LoadDataAsync<ProgressSaveData>(Paths.GetPathToProgressData(), cancellationToken);
         }
 
-        public async Task SaveProgressDataAsync(int levelId, int progress)
+        public async Task SaveProgressDataAsync(string levelId, int progress)
         {
             UpdateProgressData(levelId, progress);
             await SaveDataAsync(_progressData, Paths.PathToSaveDirectory, Paths.GetPathToProgressData());
         }
         
-        public async Task<LevelSaveData> LoadLevelDataAsync(int levelId, CancellationToken cancellationToken = default)
+        public async Task<LevelSaveData> LoadLevelDataAsync(string levelName, CancellationToken cancellationToken = default)
         {
-            if (!Directory.Exists(Paths.GetPathToLevelDataDirectory(levelId)) ||
-                !File.Exists(Paths.GetPathToLevelData(levelId)))
+            if (!Directory.Exists(Paths.GetPathToLevelDataDirectory(levelName)) ||
+                !File.Exists(Paths.GetPathToLevelData(levelName)))
             {
-                Debug.Log($"Level {levelId} data not found. Returning default.");
+                Debug.Log($"Level {levelName} save data not found. Returning default.");
                 return new LevelSaveData();
             }
             
-            return await LoadDataAsync<LevelSaveData>(Paths.GetPathToLevelData(levelId), cancellationToken);
+            return await LoadDataAsync<LevelSaveData>(Paths.GetPathToLevelData(levelName), cancellationToken);
         }
         
-        public async Task SaveLevelData(int levelId, List<Detail> allDetails)
+        public async Task SaveLevelData(string levelName, List<Detail> allDetails)
         {
             var data = CreateLevelSaveData(allDetails);
-            await SaveDataAsync(data, Paths.GetPathToLevelDataDirectory(levelId), Paths.GetPathToLevelData(levelId));
+            await SaveDataAsync(data, Paths.GetPathToLevelDataDirectory(levelName), Paths.GetPathToLevelData(levelName));
         }
 
         private LevelSaveData_old CreateLevelSaveData(List<Detail> allDetails)
@@ -92,13 +94,13 @@ namespace SaveSystem
             return level;
         }
 
-        private void UpdateProgressData(int levelId, int progress)
+        private void UpdateProgressData(string levelName, int progress)
         {
             var dataList = _progressData.progressLevelsSaveData;
-            var index = dataList.FindIndex(data => data.levelId == levelId);
+            var index = dataList.FindIndex(data => data.levelName == levelName);
             if (index == -1)
             {
-                dataList.Add(new ProgressLevelSaveData(levelId, progress));
+                dataList.Add(new ProgressLevelSaveData(levelName, progress));
             }
             else
             {

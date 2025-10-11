@@ -1,10 +1,11 @@
 ﻿using System;
 using TMPro;
 using UI.Common;
+using UI.Scroll;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Scroll
+namespace UI.MainMenu.LevelScroll
 {
     public class LevelItemView: ScrollItemView<LevelItemModel>
     {

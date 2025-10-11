@@ -13,14 +13,14 @@ namespace Utils.Paths
             return Path.Combine(PathToSaveDirectory, "progress.data");
         }
         
-        public static string GetPathToLevelDataDirectory(int levelId)
+        public static string GetPathToLevelDataDirectory(string levelName)
         {
-            return Path.Combine(PathToSaveDirectory, levelId.ToString());
+            return Path.Combine(PathToSaveDirectory, levelName);
         }
         
-        public static string GetPathToLevelData(int levelId)
+        public static string GetPathToLevelData(string levelName)
         {
-            return Path.Combine(PathToSaveDirectory, levelId.ToString(), "save.data");
+            return Path.Combine(PathToSaveDirectory, levelName, "save.data");
         }
         
     }
