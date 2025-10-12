@@ -1182,17 +1182,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 849118276}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2077309200}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00012207031}
-  m_SizeDelta: {x: 0, y: 20}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.000061035156, y: 0.000061035156}
+  m_SizeDelta: {x: 0, y: 400}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &963194225
 GameObject:
@@ -1817,7 +1817,7 @@ GameObject:
   - component: {fileID: 1363331476}
   - component: {fileID: 1363331480}
   m_Layer: 5
-  m_Name: NewScrollRect
+  m_Name: DetailsScrollRect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1941,7 +1941,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1775881065355688192, guid: 906dba73dcfd3954bb12a4c82430c53d,
     type: 3}
   itemSpacing: 10
-  borderSpacing: 10
+  borderSpacing: 5
+  dragThreshold: 50
 --- !u!1 &1436498533
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UI.Scroll
 {
-    public abstract class ScrollControllerBase<TModel, TItem> : MonoBehaviour, IBeginDragHandler, IEndDragHandler
+    public abstract class ScrollControllerBase<TModel, TItem> : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
         where TItem : ScrollItemView<TModel>
     {
         [SerializeField] protected ScrollRect scrollRect;
@@ -43,9 +43,11 @@ namespace UI.Scroll
             ClearPool();
         }
 
-        public virtual void OnBeginDrag(PointerEventData eventData) { }
+        public virtual void OnBeginDrag(PointerEventData eventData) {}
         
-        public virtual void OnEndDrag(PointerEventData eventData) { }
+        public virtual void OnEndDrag(PointerEventData eventData) {}
+        
+        public virtual void OnDrag(PointerEventData eventData) {}
         
         #endregion
 
@@ -157,7 +159,12 @@ namespace UI.Scroll
 
         protected virtual void OnItemClicked(int itemIndex) {}
 
-        protected virtual float GetItemSize(RectTransform rect) => rect.rect.width;
+        protected virtual float GetItemSize(RectTransform rect)
+        { 
+            return scrollRect.horizontal
+                ? rect.rect.width
+                : rect.rect.height;
+        }
 
         protected virtual float GetViewportSize() => scrollRect.viewport.rect.width;
         
@@ -165,8 +172,10 @@ namespace UI.Scroll
 
         protected virtual Vector2 GetAnchoredPosition(int index)
         {
-            var x = index * (ItemSize + itemSpacing) + BorderSpacing;
-            return new Vector2(x, 0f);
+            var position = index * (ItemSize + itemSpacing) + BorderSpacing;
+            return scrollRect.horizontal
+                ? new Vector2(position, 0f)
+                : new Vector2(0f, -position);
         }
 
         protected virtual float GetScrollOffset()

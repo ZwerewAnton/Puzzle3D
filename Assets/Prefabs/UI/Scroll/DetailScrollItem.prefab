@@ -90,9 +90,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7823786314346ea95e65dc1cca5ac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rectTransform: {fileID: 8940218641853829941}
+  rectTransform: {fileID: 1775881065355688195}
   countText: {fileID: 2831495892483638763}
-  detailImage: {fileID: 0}
+  detailImage: {fileID: 2299915580023926524}
 --- !u!1 &2379260556319392981
 GameObject:
   m_ObjectHideFlags: 0
