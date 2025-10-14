@@ -197,6 +197,45 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Detail"",
+            ""id"": ""eabdaa97-6c4d-4b0c-9ce0-cf0dc5aa506f"",
+            ""actions"": [
+                {
+                    ""name"": ""Tap"",
+                    ""type"": ""Button"",
+                    ""id"": ""09c4223f-052f-4261-824a-f70aa14824a7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8091f9ca-8b97-405e-ba8a-e3447d80498e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a0b27fc-a300-4bcd-b14b-06ed44ccc130"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -207,11 +246,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Camera_Zoom = m_Camera.FindAction("Zoom", throwIfNotFound: true);
         m_Camera_Tap = m_Camera.FindAction("Tap", throwIfNotFound: true);
         m_Camera_Rotate = m_Camera.FindAction("Rotate", throwIfNotFound: true);
+        // Detail
+        m_Detail = asset.FindActionMap("Detail", throwIfNotFound: true);
+        m_Detail_Tap = m_Detail.FindAction("Tap", throwIfNotFound: true);
     }
 
     ~@InputActions()
     {
         UnityEngine.Debug.Assert(!m_Camera.enabled, "This will cause a leak and performance issues, InputActions.Camera.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Detail.enabled, "This will cause a leak and performance issues, InputActions.Detail.Disable() has not been called.");
     }
 
     /// <summary>
@@ -412,6 +455,102 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="CameraActions" /> instance referencing this action map.
     /// </summary>
     public CameraActions @Camera => new CameraActions(this);
+
+    // Detail
+    private readonly InputActionMap m_Detail;
+    private List<IDetailActions> m_DetailActionsCallbackInterfaces = new List<IDetailActions>();
+    private readonly InputAction m_Detail_Tap;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Detail".
+    /// </summary>
+    public struct DetailActions
+    {
+        private @InputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public DetailActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Detail/Tap".
+        /// </summary>
+        public InputAction @Tap => m_Wrapper.m_Detail_Tap;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Detail; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="DetailActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(DetailActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="DetailActions" />
+        public void AddCallbacks(IDetailActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DetailActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DetailActionsCallbackInterfaces.Add(instance);
+            @Tap.started += instance.OnTap;
+            @Tap.performed += instance.OnTap;
+            @Tap.canceled += instance.OnTap;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="DetailActions" />
+        private void UnregisterCallbacks(IDetailActions instance)
+        {
+            @Tap.started -= instance.OnTap;
+            @Tap.performed -= instance.OnTap;
+            @Tap.canceled -= instance.OnTap;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="DetailActions.UnregisterCallbacks(IDetailActions)" />.
+        /// </summary>
+        /// <seealso cref="DetailActions.UnregisterCallbacks(IDetailActions)" />
+        public void RemoveCallbacks(IDetailActions instance)
+        {
+            if (m_Wrapper.m_DetailActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="DetailActions.AddCallbacks(IDetailActions)" />
+        /// <seealso cref="DetailActions.RemoveCallbacks(IDetailActions)" />
+        /// <seealso cref="DetailActions.UnregisterCallbacks(IDetailActions)" />
+        public void SetCallbacks(IDetailActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DetailActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DetailActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="DetailActions" /> instance referencing this action map.
+    /// </summary>
+    public DetailActions @Detail => new DetailActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Camera" which allows adding and removing callbacks.
     /// </summary>
@@ -447,5 +586,20 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotate(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Detail" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="DetailActions.AddCallbacks(IDetailActions)" />
+    /// <seealso cref="DetailActions.RemoveCallbacks(IDetailActions)" />
+    public interface IDetailActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Tap" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTap(InputAction.CallbackContext context);
     }
 }

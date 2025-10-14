@@ -111,6 +111,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Detail",
+            "id": "eabdaa97-6c4d-4b0c-9ce0-cf0dc5aa506f",
+            "actions": [
+                {
+                    "name": "Tap",
+                    "type": "Button",
+                    "id": "09c4223f-052f-4261-824a-f70aa14824a7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8091f9ca-8b97-405e-ba8a-e3447d80498e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a0b27fc-a300-4bcd-b14b-06ed44ccc130",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
