@@ -21,14 +21,24 @@ namespace _1_LEVEL_REWORK.New.Instances
             _isGround = isGround;
         }
 
+        public Sprite GetDetailIcon()
+        {
+            return _data.Icon;
+        }
+
         public DetailPrefab GetDetailPrefab()
         {
             return _data.Prefab;
         }
 
-        public Sprite GetDetailIcon()
+        public Mesh GetDetailMesh()
         {
-            return _data.Icon;
+            return _data.Mesh;
+        }
+
+        public Material GetDetailMaterial()
+        {
+            return _data.Material;
         }
 
         public bool IsAnyInstalled()

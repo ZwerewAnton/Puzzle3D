@@ -10,7 +10,7 @@ namespace UI.Game.DetailsScroll
         [Header("Drag Settings")]
         [SerializeField] private float dragThreshold = 30f;
 
-        public event Action<DetailItemModel> OnItemDragStart;
+        public event Action<DetailItemModel> ItemDragStarted;
 
         private bool _isDraggingItem;
         private int _activePointerId = -1;
@@ -79,7 +79,7 @@ namespace UI.Game.DetailsScroll
             _isDraggingItem = true;
             ExecuteEvents.Execute(scrollRect.gameObject, eventData, ExecuteEvents.endDragHandler);
 
-            OnItemDragStart?.Invoke(Models[_draggedItemIndex]);
+            ItemDragStarted?.Invoke(Models[_draggedItemIndex]);
         }
 
         private void StopItemDrag()

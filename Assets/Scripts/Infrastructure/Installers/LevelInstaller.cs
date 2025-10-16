@@ -1,6 +1,7 @@
 ﻿using _1_LEVEL_REWORK.New.Instances;
 using Cameras;
 using Gameplay;
+using Gameplay.Movement;
 using UI.Mediators;
 using UnityEngine;
 using Zenject;
@@ -11,11 +12,13 @@ namespace Infrastructure.Installers
     {
         [SerializeField] private DetailPrefabSpawner detailPrefabSpawner;
         [SerializeField] private LevelMediator levelMediator;
+        [SerializeField] private DetailViewMover detailViewMover;
         
         public override void InstallBindings()
         {
             BindCameraMovement();
             BindDetailPrefabSpawner();
+            BindDetailViewMover();
             BindLevelState();
             BindLevelService();
             BindLevelMediator();
@@ -29,6 +32,11 @@ namespace Infrastructure.Installers
         private void BindDetailPrefabSpawner()
         {
             Container.Bind<DetailPrefabSpawner>().FromInstance(detailPrefabSpawner).AsSingle().NonLazy();
+        }
+        
+        private void BindDetailViewMover()
+        {
+            Container.Bind<DetailViewMover>().FromInstance(detailViewMover).AsSingle().NonLazy();
         }
         
         private void BindLevelState()
