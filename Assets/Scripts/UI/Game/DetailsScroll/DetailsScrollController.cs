@@ -84,7 +84,6 @@ namespace UI.Game.DetailsScroll
 
         private void StopItemDrag()
         {
-            Debug.Log("StopDragging");
             _isDraggingItem = false;
         }
 

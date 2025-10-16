@@ -9,6 +9,8 @@ namespace Cameras
 {
     public class MouseCameraMovement : ICameraMovement
     {
+        private const float ScrollCoefficient = 0.001f;
+        
         private readonly CameraConfigs _configs;
         private InputActions.CameraActions _cameraActions;
         
@@ -54,7 +56,7 @@ namespace Cameras
             var maxDistance = _configs.maxDistance;
             var minDistance = _configs.minDistance;
             var scroll = _cameraActions.Zoom.ReadValue<float>();
-            _desiredDistance -= scroll * (maxDistance - minDistance) * _configs.zoomSpeed;
+            _desiredDistance -= scroll * (maxDistance - minDistance) * _configs.zoomSpeed * ScrollCoefficient;
             _desiredDistance = Mathf.Clamp(_desiredDistance, minDistance, maxDistance);
 
             _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, Time.deltaTime * _configs.zoomDampening);
