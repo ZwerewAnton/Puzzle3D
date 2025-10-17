@@ -5,7 +5,7 @@ using Zenject;
 
 namespace UI.Mediators
 {
-    public class LoadingScreenMediator : MonoBehaviour
+    public class LoadingScreenMediator : MonoBehaviour, ILoadingScreen
     {
         [SerializeField] private LoadingScreen loadingScreen;
         private SceneSwitcher _sceneSwitcher;
@@ -20,25 +20,25 @@ namespace UI.Mediators
         {
             _sceneSwitcher.SceneLoadingUpdated += loadingScreen.SetProgress;
         }
+
+        private void OnDestroy()
+        {
+            _sceneSwitcher.SceneLoadingUpdated -= loadingScreen.SetProgress;
+        }
         
         public void ShowLoadingScreenImmediately()
         {
             loadingScreen.ShowLoadingScreenImmediately();
         }
-        
-        public async Task ShowLoadingScreenAsync()
+
+        public async Task ShowAsync()
         {
             await loadingScreen.ShowLoadingScreenAsync();
         }
-        
-        public async Task HideLoadingScreenAsync()
+
+        public async Task HideAsync()
         {
             await loadingScreen.HideLoadingScreenAsync();
-        }
-
-        private void OnDestroy()
-        {
-            _sceneSwitcher.SceneLoadingUpdated -= loadingScreen.SetProgress;
         }
     }
 }

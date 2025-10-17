@@ -8,7 +8,6 @@ using Level;
 using Music;
 using SaveSystem;
 using Settings;
-using UI;
 using UI.Mediators;
 using UnityEngine;
 using Zenject;
@@ -76,6 +75,7 @@ namespace Infrastructure.Installers
         private void BindLoadingScreenMediator()
         {
             Container.Bind<LoadingScreenMediator>().FromComponentInNewPrefab(loadingScreenMediator).AsSingle().NonLazy();
+            Container.Bind<ILoadingScreen>().To<LoadingScreenMediator>().FromResolve().AsSingle();
         }
 
         private void BindGameState()
