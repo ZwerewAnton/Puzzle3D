@@ -29,6 +29,7 @@ namespace Gameplay
         private readonly DetailViewMover _detailViewMover;
         private LevelData _levelData;
         private CancellationTokenSource _cts;
+        private string _movingDetailId;
         
         [Inject]
         private LevelService(
@@ -112,20 +113,35 @@ namespace Gameplay
         
         private void OnDetailItemDragStarted(DetailItemModel detailItemModel)
         {
-            var detailInstance = _levelState.Details[detailItemModel.ID];
+            _movingDetailId = detailItemModel.ID;
+            var detailInstance = _levelState.Details[_movingDetailId];
             StartDetailViewMove(detailInstance);
         }
 
         private void StartDetailViewMove(DetailInstance detailInstance)
         {
             var pointList = detailInstance.Points.Select(pointInstance => new PointTransform(pointInstance.Position, pointInstance.Rotation)).ToList();
-            
             _detailViewMover.StartMove(detailInstance.GetDetailMesh(), detailInstance.GetDetailMaterial(), pointList);
         }
 
         private void OnDetailViewPlacementEnded(DetailPlacementResult placementResult)
         {
-            Debug.Log(placementResult.Success + " " + placementResult.PointIndex);
+            if (_movingDetailId == null)
+            {
+                _levelMediator.CommitDetailDrag(false, "", 0);
+            }
+
+            if (placementResult.Success)
+            {
+                var installResult = _levelState.TryInstallDetail(_movingDetailId, placementResult.PointIndex);
+                if (installResult)
+                {
+                    _levelMediator.CommitDetailDrag(true, _movingDetailId, 0);
+                }
+            }
+
+            // _levelMediator.CommitDetailDrag(placementResult.Success, "", 0);
+            // Debug.Log(placementResult.Success + " " + placementResult.PointIndex);
         }
         
         public void Dispose()

@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace Cameras
 {
-    public class CameraHandlerTest : MonoBehaviour
+    public class CameraHandlerOldTest : MonoBehaviour
     {
         [Tooltip("Target for a camera.")]
         public Transform target;

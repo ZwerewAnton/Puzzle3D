@@ -74,8 +74,7 @@ namespace Infrastructure.Installers
 
         private void BindLoadingScreenMediator()
         {
-            Container.Bind<LoadingScreenMediator>().FromComponentInNewPrefab(loadingScreenMediator).AsSingle().NonLazy();
-            Container.Bind<ILoadingScreen>().To<LoadingScreenMediator>().FromResolve().AsSingle();
+            Container.BindInterfacesAndSelfTo<LoadingScreenMediator>().FromComponentInNewPrefab(loadingScreenMediator).AsSingle().NonLazy();
         }
 
         private void BindGameState()

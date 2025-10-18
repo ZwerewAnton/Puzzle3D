@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using _1_LEVEL_REWORK.New.Instances;
-using Input;
+using Configs;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
 
 namespace Gameplay.Movement
@@ -12,14 +11,10 @@ namespace Gameplay.Movement
     {
         [SerializeField] private MovingDetailView movingDetailViewPrefab;
         [SerializeField] private GhostDetailView ghostDetailViewPrefab;
-        
-        [Header("Settings")]
-        [SerializeField] private Camera mainCamera;
-        [SerializeField] private float magnetDistance = 0.5f;
-        [SerializeField] private float ghostDistance = 20f;
-        [SerializeField] private Vector3 screenOffset = new (0, 100, 0);
 
-        private InputHandler _inputHandler;
+        private IDetailViewMoverInput _moverInput;
+        private float _magnetDistance;
+        private float _ghostDistance;
         
         private MovingDetailView _movingDetail;
         private GhostDetailView _ghostDetail;
@@ -27,7 +22,6 @@ namespace Gameplay.Movement
         private List<PointTransform> _connectionPoints;
         private bool _isMoving;
         private bool _isConnected;
-        private float _zCoord;
         private int _bestPointIndex;
 
         private static readonly Color NearColor = new(1, 1, 1, 0.5f);
@@ -36,19 +30,17 @@ namespace Gameplay.Movement
         public event Action<DetailPlacementResult> PlacementEnded;
 
         [Inject]
-        private void Construct(InputHandler inputHandler)
+        private void Construct(ApplicationConfigs config, IDetailViewMoverInput moverInput)
         {
-            _inputHandler = inputHandler;
+            _magnetDistance = config.gameplay.magnetDistance;
+            _ghostDistance = config.gameplay.ghostDistance;
+            _moverInput = moverInput;
         }
         
         private void Awake()
         {
-            _movingDetail = Instantiate(movingDetailViewPrefab, Vector3.zero, Quaternion.identity, transform);
-            _movingDetail.Hide();
-            _ghostDetail = Instantiate(ghostDetailViewPrefab, Vector3.zero, Quaternion.identity, transform);
-            _ghostDetail.Hide();
-            
-            _inputHandler.DetailActions.Tap.canceled += OnTapCanceled;
+            InstantiateDetailViews();
+            _moverInput.InputCanceled += OnInputCanceled;
         }
 
         private void Update()
@@ -56,21 +48,21 @@ namespace Gameplay.Movement
             if (!_isMoving)
                 return;
             
-            UpdateMove(GetCursorWorldPoint());
+            UpdateMove(_moverInput.GetDesiredPosition());
         }
 
         private void OnDestroy()
         {
-            _inputHandler.DetailActions.Tap.canceled -= OnTapCanceled;
+            _moverInput.InputCanceled -= OnInputCanceled;
         }
 
         public void StartMove(Mesh mesh, Material material, List<PointTransform> connectionPoints)
         {
-            _zCoord = mainCamera.WorldToScreenPoint(Vector3.zero).z;
+            _moverInput.UpdateDepth(Vector3.zero);
             _isMoving = true;
             _isConnected = false;
             
-            if (connectionPoints.Count == 0 || !_inputHandler.DetailActions.Tap.IsPressed())
+            if (connectionPoints.Count == 0 || !_moverInput.IsInputActive())
             {
                 StopMove();
             }
@@ -99,8 +91,16 @@ namespace Gameplay.Movement
             _movingDetail.Hide();
             _ghostDetail.Hide();
         }
+
+        private void InstantiateDetailViews()
+        {
+            _movingDetail = Instantiate(movingDetailViewPrefab, Vector3.zero, Quaternion.identity, transform);
+            _movingDetail.Hide();
+            _ghostDetail = Instantiate(ghostDetailViewPrefab, Vector3.zero, Quaternion.identity, transform);
+            _ghostDetail.Hide();
+        }
         
-        private void UpdateMove(Vector3 cursorPosition)
+        private void UpdateMove(Vector3 desiredPosition)
         {
             var minDistance = float.MaxValue;
             var closestPoint = new PointTransform();
@@ -109,7 +109,7 @@ namespace Gameplay.Movement
             for (var i = 0; i < _connectionPoints.Count; i++)
             {
                 var point = _connectionPoints[i];
-                var distance = Vector3.Distance(cursorPosition, point.Position);
+                var distance = Vector3.Distance(desiredPosition, point.Position);
                 if (distance < minDistance)
                 {
                     minDistance = distance;
@@ -118,10 +118,10 @@ namespace Gameplay.Movement
                 }
             }
 
-            var distanceToBest = Vector3.Distance(cursorPosition, closestPoint.Position);
-            _zCoord = mainCamera.WorldToScreenPoint(closestPoint.Position).z;
+            var distanceToBest = Vector3.Distance(desiredPosition, closestPoint.Position);
+            _moverInput.UpdateDepth(closestPoint.Position);
 
-            if (distanceToBest <= magnetDistance)
+            if (distanceToBest <= _magnetDistance)
             {
                 _isConnected = true;
                 _bestPointIndex = closestPointIndex;
@@ -131,25 +131,17 @@ namespace Gameplay.Movement
             else
             {
                 _isConnected = false;
-                _movingDetail.SetPositionAndRotation(cursorPosition, closestPoint.Rotation);
+                _movingDetail.SetPositionAndRotation(desiredPosition, closestPoint.Rotation);
                 _ghostDetail.SetPositionAndRotation(closestPoint.Position, closestPoint.Rotation);
-                var t = Mathf.InverseLerp(0, ghostDistance, distanceToBest);
+                var t = Mathf.InverseLerp(0, _ghostDistance, distanceToBest);
                 var color = Color.Lerp(NearColor, FarColor, t);
                 _ghostDetail.SetMaterialColor(color);
             }
         }
 
-        private void OnTapCanceled(InputAction.CallbackContext callbackContext)
+        private void OnInputCanceled()
         {
             StopMove();
-        }
-        
-        private Vector3 GetCursorWorldPoint()
-        {
-            Vector3 input = _inputHandler.DetailActions.Cursor.ReadValue<Vector2>();
-            var cursor = input + screenOffset;
-            cursor.z = _zCoord;
-            return mainCamera.ScreenToWorldPoint(cursor);
         }
     }
 }

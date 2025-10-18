@@ -10,34 +10,26 @@ namespace UI.Game.DetailsScroll
         [SerializeField] private TMP_Text countText;
         [SerializeField] private Image detailImage;
         
-        private int _showedCount;
+        private static readonly Color DefaultColor = new(1, 1, 1, 1f);
+        private static readonly Color InActiveColor = new(1, 1, 1, 0.6f);
 
         public override void SetData(int itemIndex, DetailItemModel model)
         {
             base.SetData(itemIndex, model);
-
-            SetCount(model.Count);
+            
             detailImage.sprite = model.Icon;
+            detailImage.color = model.IsInactive ? InActiveColor : DefaultColor;
             detailImage.preserveAspect = true;
-        }
-
-        public void DecrementCount()
-        {
-            if (_showedCount > 0)
+            var count = model.IsDragged ? model.Count - 1 : model.Count;
+            if (count <= 1)
             {
-                SetCount(_showedCount - 1);
+                countText.enabled = false;
             }
             else
             {
-                countText.enabled = false;
-                detailImage.enabled = false;
+                countText.enabled = true;
+                countText.SetText(count.ToString());
             }
-        }
-
-        private void SetCount(int count)
-        {
-            _showedCount = count;
-            countText.SetText(_showedCount.ToString());
         }
     }
 }

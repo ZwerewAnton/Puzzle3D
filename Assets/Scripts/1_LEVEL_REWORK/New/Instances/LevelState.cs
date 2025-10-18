@@ -62,6 +62,20 @@ namespace _1_LEVEL_REWORK.New.Instances
             return details;
         }
 
+        public bool TryInstallDetail(string detailId, int pointIndex)
+        {
+            var detailInstance = _detailInstances[detailId];
+            if (detailInstance == null)
+            {
+                return false;
+            }
+            
+            var pointInstance = detailInstance.Points[pointIndex];
+            var isReady = _dependencyGraph.IsReady(pointInstance);
+            
+            return isReady && detailInstance.TryInstall(pointIndex);
+        }
+
         private void CreateDependencyGraph(List<DetailData> details)
         {
             foreach (var detailData in details)

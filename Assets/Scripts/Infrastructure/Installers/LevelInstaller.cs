@@ -13,15 +13,23 @@ namespace Infrastructure.Installers
         [SerializeField] private DetailPrefabSpawner detailPrefabSpawner;
         [SerializeField] private LevelMediator levelMediator;
         [SerializeField] private DetailViewMover detailViewMover;
+        [SerializeField] private CameraHandler cameraHandler;
         
         public override void InstallBindings()
         {
+            BindCameraHandler();
             BindCameraMovement();
             BindDetailPrefabSpawner();
+            BindDetailViewMoverInput();
             BindDetailViewMover();
             BindLevelState();
             BindLevelService();
             BindLevelMediator();
+        }
+
+        private void BindCameraHandler()
+        {
+            Container.Bind<CameraHandler>().FromInstance(cameraHandler).AsSingle().NonLazy();
         }
 
         private void BindCameraMovement()
@@ -32,6 +40,11 @@ namespace Infrastructure.Installers
         private void BindDetailPrefabSpawner()
         {
             Container.Bind<DetailPrefabSpawner>().FromInstance(detailPrefabSpawner).AsSingle().NonLazy();
+        }
+
+        private void BindDetailViewMoverInput()
+        {
+            Container.Bind<IDetailViewMoverInput>().To<DetailViewMoverInput>().AsSingle();
         }
         
         private void BindDetailViewMover()

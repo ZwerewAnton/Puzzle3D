@@ -379,6 +379,7 @@ MonoBehaviour:
   detailPrefabSpawner: {fileID: 102444542}
   levelMediator: {fileID: 1731988948}
   detailViewMover: {fileID: 1912028878}
+  cameraHandler: {fileID: 963194234}
 --- !u!114 &160822819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1207,6 +1208,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194234}
   - component: {fileID: 963194232}
   - component: {fileID: 963194231}
   - component: {fileID: 963194230}
@@ -1402,6 +1404,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ac2e12e52fe40fe99cb1ad0cbc886b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &963194234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e3b0d9d0c204f42ac8a59667e9b8335, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneCamera: {fileID: 963194227}
 --- !u!1 &1170574198
 GameObject:
   m_ObjectHideFlags: 0
@@ -2736,9 +2751,6 @@ MonoBehaviour:
     type: 3}
   ghostDetailViewPrefab: {fileID: 6374152246803665330, guid: 13bb15f8f73f7ba4d91d69987ed3043f,
     type: 3}
-  mainCamera: {fileID: 963194227}
-  magnetDistance: 0.5
-  screenOffset: {x: 0, y: 100, z: 0}
 --- !u!1 &2077309199
 GameObject:
   m_ObjectHideFlags: 0

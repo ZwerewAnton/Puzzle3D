@@ -19,5 +19,10 @@ namespace UI.Mediators
         {
             detailsScrollController.Initialize(models);
         }
+
+        public void CommitDetailDrag(bool isInstalled, string detailId, int newCount)
+        {
+            detailsScrollController.CommitDetailDrag(isInstalled, detailId, newCount);
+        }
     }
 }

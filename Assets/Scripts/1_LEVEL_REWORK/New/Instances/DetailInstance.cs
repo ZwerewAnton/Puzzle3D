@@ -41,6 +41,18 @@ namespace _1_LEVEL_REWORK.New.Instances
             return _data.Material;
         }
 
+        public bool TryInstall(int pointIndex)
+        {
+            if (RemainingCount <= 0 || pointIndex < 0 || pointIndex >= Points.Count)
+            {
+                return false;
+            }
+
+            RemainingCount--;
+            Points[pointIndex].Install();
+            return true;
+        }
+
         public bool IsAnyInstalled()
         {
             return Points.Any(instance => instance.IsInstalled);

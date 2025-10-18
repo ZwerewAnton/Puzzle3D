@@ -4,6 +4,6 @@ namespace Cameras
 {
     public interface ICameraMovement
     {
-        public CameraMovementResult CalculateMovement();
+        CameraMovementResult CalculateMovement();
     }
 }

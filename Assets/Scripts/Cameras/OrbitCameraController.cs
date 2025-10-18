@@ -6,11 +6,13 @@ namespace Cameras
     public class OrbitCameraController : MonoBehaviour
     {
         private ICameraMovement _cameraMovement;
+        private Transform _cameraTransform;
 
         [Inject]
-        private void Construct(ICameraMovement cameraMovement)
+        private void Construct(ICameraMovement cameraMovement, CameraHandler cameraHandler)
         {
             _cameraMovement = cameraMovement;
+            _cameraTransform = cameraHandler.transform;
         }
 
         private void LateUpdate()
@@ -22,8 +24,8 @@ namespace Cameras
         {
             var result = _cameraMovement.CalculateMovement();
 
-            transform.rotation = result.Rotation;
-            transform.position = result.Position;
+            _cameraTransform.rotation = result.Rotation;
+            _cameraTransform.position = result.Position;
         }
     }
 }

@@ -16,6 +16,9 @@ namespace Configs
         [Header("Camera"), SerializeField] 
         public CameraConfigs camera;
         
+        [Header("Camera"), SerializeField] 
+        public GameplayConfig gameplay;
+        
         [Header("Audio")]
         public float audioOffValue = -80f;
         public float audioOnValue = -20f;
