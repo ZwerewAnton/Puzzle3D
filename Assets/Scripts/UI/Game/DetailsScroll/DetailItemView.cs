@@ -20,7 +20,7 @@ namespace UI.Game.DetailsScroll
             detailImage.sprite = model.Icon;
             detailImage.color = model.IsInactive ? InActiveColor : DefaultColor;
             detailImage.preserveAspect = true;
-            var count = model.IsDragged ? model.Count - 1 : model.Count;
+            var count = model.IsDragOut ? model.Count - 1 : model.Count;
             if (count <= 1)
             {
                 countText.enabled = false;

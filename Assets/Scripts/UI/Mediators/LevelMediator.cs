@@ -9,20 +9,25 @@ namespace UI.Mediators
     {
         [SerializeField] private DetailsScrollController detailsScrollController;
         
-        public event Action<DetailItemModel> DetailItemDragStarted
+        public event Action<DetailItemModel> DetailItemDragOutStarted
         {
-            add => detailsScrollController.ItemDragStarted += value;
-            remove => detailsScrollController.ItemDragStarted -= value;
+            add => detailsScrollController.DragOutStarted += value;
+            remove => detailsScrollController.DragOutStarted -= value;
         }
         
-        public void InitializeLevelScroll(List<DetailItemModel> models)
+        public void InitializeDetailsScroll(List<DetailItemModel> models)
         {
             detailsScrollController.Initialize(models);
-        }
-
-        public void CommitDetailDrag(bool isInstalled, string detailId, int newCount)
+        }        
+        
+        public void MarkItemDragOutState(string detailId, bool isDragOut)
         {
-            detailsScrollController.CommitDetailDrag(isInstalled, detailId, newCount);
+            detailsScrollController.MarkItemDragOutState(detailId, isDragOut);
+        }
+        
+        public void UpdateModels(List<DetailItemModel> models)
+        {
+            detailsScrollController.UpdateModels(models);
         }
     }
 }

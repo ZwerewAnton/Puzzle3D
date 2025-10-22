@@ -10,6 +10,8 @@ namespace _1_LEVEL_REWORK.New.Instances
         private readonly DetailData _data;
         private bool _isGround;
 
+        public bool IsGround => _isGround;
+
         public List<PointInstance> Points { get; }
         public int RemainingCount { get; set; }
         

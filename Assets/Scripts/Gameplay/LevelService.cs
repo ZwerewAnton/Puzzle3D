@@ -1,53 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using _1_LEVEL_REWORK.New.Data;
 using _1_LEVEL_REWORK.New.Instances;
 using Common;
-using Gameplay.Movement;
-using Gameplay.Spawn;
+using Gameplay.Dto;
 using Level;
 using SaveSystem;
 using SaveSystem.DataObjects.Level.New;
-using UI.Game.DetailsScroll;
-using UI.Mediators;
-using UnityEngine;
 using Zenject;
 
 namespace Gameplay
 {
     public class LevelService : IDisposable
     {
-        private readonly DetailPrefabSpawner _spawner;
+        public event Action LevelInitialized;
+        public event Action LevelUpdated;
+        public event Action LevelCompleted;
+        
         private readonly LevelState _levelState;
         private readonly SaveLoadService _saveLoadService;
         private readonly GameState _gameState;
         private readonly LevelsRepository _repository;
-        private readonly LevelMediator _levelMediator;
-        private readonly DetailViewMover _detailViewMover;
         private LevelData _levelData;
         private CancellationTokenSource _cts;
-        private string _movingDetailId;
+        private Dictionary<string, DetailInstanceDto> _dtos = new();
         
         [Inject]
         private LevelService(
-            DetailPrefabSpawner spawner,
             GameState gameState,
             LevelsRepository repository,
             LevelState levelState,
-            SaveLoadService saveLoadService,
-            LevelMediator levelMediator,
-            DetailViewMover detailViewMover)
+            SaveLoadService saveLoadService)
         {
-            _spawner = spawner;
             _levelState = levelState;
             _saveLoadService = saveLoadService;
             _gameState = gameState;
             _repository = repository;
-            _levelMediator = levelMediator;
-            _detailViewMover = detailViewMover;
         }
 
         public async Task InitializeLevel()
@@ -62,9 +52,26 @@ namespace Gameplay
             var saveData = await _saveLoadService.LoadLevelDataAsync(_levelData.LevelName, _cts.Token);
         
             InitializeLevelState(saveData);
-            InitializeDetailsScrollController();
-            SpawnStartDetailPrefabs();
-            _detailViewMover.PlacementEnded += OnDetailViewPlacementEnded;
+            FillDetailsDtoList();
+            
+            LevelInitialized?.Invoke();
+        }
+
+        public bool TryInstallDetail(string detailId, int pointIndex)
+        {
+            var isSuccess = _levelState.TryInstallDetail(detailId, pointIndex);
+            if (isSuccess)
+            {
+                UpdateDtoList();
+                LevelUpdated?.Invoke();
+            }
+            
+            return isSuccess;
+        }
+
+        public Dictionary<string, DetailInstanceDto> GetDetailsInfo()
+        {
+            return _dtos;
         }
 
         private void InitializeLevelState(LevelSaveData saveData)
@@ -72,82 +79,54 @@ namespace Gameplay
             _levelState.CreateDetailsInstances(_levelData.Ground, _levelData.Details, saveData.details);
         }
 
-        private void InitializeDetailsScrollController()
+        private void FillDetailsDtoList()
         {
             var details = _levelState.Details;
-            var detailModels = new List<DetailItemModel>();
             foreach (var (id, detailInstance) in details)
             {
-                if (detailInstance.IsAllInstalled())
-                    continue;
-                
-                detailModels.Add(new DetailItemModel
+                var detailDto = new DetailInstanceDto
                 {
-                    ID = id,
                     Icon = detailInstance.GetDetailIcon(),
-                    Count = detailInstance.RemainingCount
-                });
-                
-            }
-            _levelMediator.InitializeLevelScroll(detailModels);
-            _levelMediator.DetailItemDragStarted += OnDetailItemDragStarted;
-        }
-        
-        private void SpawnStartDetailPrefabs()
-        {
-            var installedDetails = _levelState.GetInstalledDetails();
-            var spawnInfoList = new List<DetailPrefabSpawnInfo>();
-            foreach (var installedDetail in installedDetails)
-            {
-                foreach (var pointInstance in installedDetail.Points)
+                    Prefab = detailInstance.GetDetailPrefab(),
+                    CurrentCount = detailInstance.RemainingCount,
+                    IsGround = detailInstance.IsGround,
+                    Mesh = detailInstance.GetDetailMesh(),
+                    Material = detailInstance.GetDetailMaterial(),
+                    Points = new List<PointInstanceDto>()
+                };
+                foreach (var pointInstance in detailInstance.Points)
                 {
-                    if (!pointInstance.IsInstalled) 
-                        continue;
-                    
-                    var spawnInfo = new DetailPrefabSpawnInfo(installedDetail.GetDetailPrefab(), pointInstance.Position, pointInstance.Rotation);
-                    spawnInfoList.Add(spawnInfo);
+                    detailDto.Points.Add(new PointInstanceDto
+                    {
+                        IsInstalled = pointInstance.IsInstalled,
+                        Position = pointInstance.Position,
+                        Rotation = pointInstance.Rotation,
+                        IsAvailable = _levelState.IsPointReady(pointInstance)
+                    });
+                }
+                _dtos.Add(id, detailDto);
+            }
+        }
+
+        private void UpdateDtoList()
+        {
+            var details = _levelState.Details;
+            foreach (var (id, detailInstance) in details)
+            {
+                var detailDto = _dtos[id];
+                detailDto.CurrentCount = detailInstance.RemainingCount;
+                for (var i = 0; i < detailInstance.Points.Count; i++)
+                {
+                    var pointInstance = detailInstance.Points[i];
+                    var pointDto = detailDto.Points[i];
+                    pointDto.IsInstalled = pointInstance.IsInstalled;
+                    pointDto.IsAvailable = _levelState.IsPointReady(pointInstance);
                 }
             }
-            _spawner.SpawnPrefabs(spawnInfoList);
-        }
-        
-        private void OnDetailItemDragStarted(DetailItemModel detailItemModel)
-        {
-            _movingDetailId = detailItemModel.ID;
-            var detailInstance = _levelState.Details[_movingDetailId];
-            StartDetailViewMove(detailInstance);
-        }
-
-        private void StartDetailViewMove(DetailInstance detailInstance)
-        {
-            var pointList = detailInstance.Points.Select(pointInstance => new PointTransform(pointInstance.Position, pointInstance.Rotation)).ToList();
-            _detailViewMover.StartMove(detailInstance.GetDetailMesh(), detailInstance.GetDetailMaterial(), pointList);
-        }
-
-        private void OnDetailViewPlacementEnded(DetailPlacementResult placementResult)
-        {
-            if (_movingDetailId == null)
-            {
-                _levelMediator.CommitDetailDrag(false, "", 0);
-            }
-
-            if (placementResult.Success)
-            {
-                var installResult = _levelState.TryInstallDetail(_movingDetailId, placementResult.PointIndex);
-                if (installResult)
-                {
-                    _levelMediator.CommitDetailDrag(true, _movingDetailId, 0);
-                }
-            }
-
-            // _levelMediator.CommitDetailDrag(placementResult.Success, "", 0);
-            // Debug.Log(placementResult.Success + " " + placementResult.PointIndex);
         }
         
         public void Dispose()
         {
-            _detailViewMover.PlacementEnded -= OnDetailViewPlacementEnded;
-            _levelMediator.DetailItemDragStarted -= OnDetailItemDragStarted;
             _cts?.Cancel();
             _cts?.Dispose();
         }

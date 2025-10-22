@@ -27,7 +27,7 @@ namespace Gameplay.Movement
         private static readonly Color NearColor = new(1, 1, 1, 0.5f);
         private static readonly Color FarColor = new(1, 1, 1, 0.0f);
 
-        public event Action<DetailPlacementResult> PlacementEnded;
+        public event Action<PlacementResult> PlacementEnded;
 
         [Inject]
         private void Construct(ApplicationConfigs config, IDetailViewMoverInput moverInput)
@@ -80,7 +80,7 @@ namespace Gameplay.Movement
 
             _isMoving = false;
 
-            var result = new DetailPlacementResult
+            var result = new PlacementResult
             {
                 Success = _isConnected,
                 PointIndex = _bestPointIndex

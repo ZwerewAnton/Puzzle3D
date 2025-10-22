@@ -1,6 +1,6 @@
 ﻿namespace Gameplay.Movement
 {
-    public struct DetailPlacementResult
+    public struct PlacementResult
     {
         public bool Success;
         public int PointIndex;

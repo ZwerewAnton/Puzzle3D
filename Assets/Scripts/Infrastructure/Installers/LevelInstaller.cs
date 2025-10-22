@@ -25,6 +25,7 @@ namespace Infrastructure.Installers
             BindLevelState();
             BindLevelService();
             BindLevelMediator();
+            BindLevelInteractableCoordinator();
         }
 
         private void BindCameraHandler()
@@ -65,6 +66,11 @@ namespace Infrastructure.Installers
         private void BindLevelMediator()
         {
             Container.Bind<LevelMediator>().FromInstance(levelMediator).AsSingle().NonLazy();
+        }
+
+        private void BindLevelInteractableCoordinator()
+        {
+            Container.Bind<LevelInteractableCoordinator>().AsSingle().NonLazy();
         }
     }
 }

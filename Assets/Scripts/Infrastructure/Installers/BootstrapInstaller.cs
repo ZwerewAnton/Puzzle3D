@@ -1,8 +1,6 @@
-﻿using System.ComponentModel;
-using Common;
+﻿using Common;
 using Configs;
 using Infrastructure.SceneManagement;
-using Infrastructure.Utils;
 using Input;
 using Level;
 using Music;
@@ -90,15 +88,6 @@ namespace Infrastructure.Installers
         private void BindLevelsRepository()
         {
             Container.Bind<LevelsRepository>().FromInstance(levelsRepository).AsSingle().NonLazy();
-        }
-
-        private void BindDisposableHandler()
-        {
-            Container.Bind<DisposableHandler>()
-                .FromNewComponentOnNewGameObject()
-                .WithGameObjectName("DisposableHandler")
-                .AsSingle()
-                .NonLazy();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -19,6 +20,7 @@ namespace UI.Scroll
         protected readonly List<TModel> Models = new();
         protected readonly List<TItem> ActiveItems = new();
 
+        private bool _markToUpdate;
         protected float ItemSize;
         protected int VisibleItemCount;
         protected bool Initialized;
@@ -30,6 +32,15 @@ namespace UI.Scroll
         {
             if (scrollRect != null)
                 scrollRect.onValueChanged.AddListener(OnScrollChanged);
+        }
+
+        protected void Update()
+        {
+            if (!_markToUpdate) 
+                return;
+            
+            UpdateVisibleItems();
+            _markToUpdate = false;
         }
 
         protected virtual void OnDisable()
@@ -128,7 +139,7 @@ namespace UI.Scroll
 
         protected virtual void UpdateVisibleItems()
         {
-            if (!Initialized || Models.Count == 0)
+            if (!Initialized)
                 return;
 
             var viewportSize = GetViewportSize();
@@ -183,6 +194,11 @@ namespace UI.Scroll
             return scrollRect.horizontal
                 ? -content.anchoredPosition.x
                 : content.anchoredPosition.y;
+        }
+
+        protected void MarkToUpdate()
+        {
+            _markToUpdate = true;
         }
         
         #endregion

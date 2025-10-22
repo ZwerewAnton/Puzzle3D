@@ -76,6 +76,11 @@ namespace _1_LEVEL_REWORK.New.Instances
             return isReady && detailInstance.TryInstall(pointIndex);
         }
 
+        public bool IsPointReady(PointInstance point)
+        {
+            return _dependencyGraph.IsReady(point);
+        }
+
         private void CreateDependencyGraph(List<DetailData> details)
         {
             foreach (var detailData in details)

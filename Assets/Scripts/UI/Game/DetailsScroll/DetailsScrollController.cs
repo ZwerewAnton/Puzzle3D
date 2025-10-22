@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UI.Scroll;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,17 +11,16 @@ namespace UI.Game.DetailsScroll
         [Header("Drag Settings")]
         [SerializeField] private float dragThreshold = 30f;
 
-        public event Action<DetailItemModel> ItemDragStarted;
+        public event Action<DetailItemModel> DragOutStarted;
 
-        private bool _isDraggingItem;
-        private bool _isDraggingDetail;
+        private bool _isDragOutStarted;
         private int _activePointerId = -1;
         private Vector2 _startDragPos;
         private int _draggedItemIndex;
 
         public override void OnBeginDrag(PointerEventData eventData)
         {
-            if (_isDraggingItem || _activePointerId != -1)
+            if (_isDragOutStarted || _activePointerId != -1)
                 return;
 
             base.OnBeginDrag(eventData);
@@ -29,10 +29,9 @@ namespace UI.Game.DetailsScroll
             _startDragPos = eventData.position;
 
             var draggedItem = GetItemUnderPointer(eventData);
+            
             if (draggedItem != null)
-            {
                 _draggedItemIndex = draggedItem.ItemIndex;
-            }
         }
 
         public override void OnDrag(PointerEventData eventData)
@@ -40,7 +39,7 @@ namespace UI.Game.DetailsScroll
             if (eventData.pointerId != _activePointerId)
                 return;
 
-            if (_isDraggingItem)
+            if (_isDragOutStarted)
             {
                 eventData.Use();
                 return;
@@ -50,7 +49,7 @@ namespace UI.Game.DetailsScroll
 
             if (Mathf.Abs(delta.x) > dragThreshold && Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
             {
-                StartDetailDrag(eventData);
+                StartDragOut(eventData);
             }
             else
             {
@@ -62,63 +61,43 @@ namespace UI.Game.DetailsScroll
         {
             if (eventData.pointerId != _activePointerId)
                 return;
-
-            // if (_isDraggingItem)
-            //     StopDetailDrag();
-            // else
-            //     base.OnEndDrag(eventData);
             
             base.OnEndDrag(eventData);
 
             _activePointerId = -1;
-            // _isDraggingItem = false;
+            _isDragOutStarted = false;
         }
 
-        public void CommitDetailDrag(bool isInstalled, string detailId, int newCount)
+        public void MarkItemDragOutState(string detailId, bool isDragOut)
         {
-            StopDetailDrag(isInstalled, detailId, newCount);
+            var model = Models.Find(itemModel => itemModel.ID == detailId);
+            if (model == null)
+                return;
+            
+            model.IsDragOut = isDragOut;
+
+            MarkToUpdate();
         }
 
-        private void StartDetailDrag(PointerEventData eventData)
+        public void UpdateModels(List<DetailItemModel> models)
+        {
+            Models.Clear();
+            Models.AddRange(models);
+            
+            MarkToUpdate();
+        }
+
+        private void StartDragOut(PointerEventData eventData)
         {
             if (_draggedItemIndex < 0 || _draggedItemIndex >= Models.Count)
                 return;
 
-            _isDraggingItem = true;
+            _isDragOutStarted = true;
             ExecuteEvents.Execute(scrollRect.gameObject, eventData, ExecuteEvents.endDragHandler);
 
-            for (var i = 0; i < Models.Count; i++)
-            {
-                var detailItemModel = Models[i];
-                var isDraggedItem = _draggedItemIndex == i;
-                
-                detailItemModel.IsDragged = isDraggedItem;
-                detailItemModel.IsInactive = !isDraggedItem;
-            }
-
-            ItemDragStarted?.Invoke(Models[_draggedItemIndex]);
+            DragOutStarted?.Invoke(Models[_draggedItemIndex]);
         }
-
-        private void StopDetailDrag(bool isInstalled, string detailId, int newCount)
-        {
-            _isDraggingItem = false;
-            
-            for (var i = Models.Count - 1; i >= 0; i--)
-            {
-                var detailItemModel = Models[i];
-                
-                if (isInstalled && detailItemModel.ID == detailId)
-                {
-                    UpdateInstalledDetailModel(detailItemModel, newCount);
-                }
-                
-                detailItemModel.IsDragged = false;
-                detailItemModel.IsInactive = false;
-            }
-            
-            UpdateVisibleItems();
-        }
-
+        
         private void UpdateInstalledDetailModel(DetailItemModel model, int count)
         {
             if (model.Count == 1)
