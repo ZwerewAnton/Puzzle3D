@@ -22,5 +22,5 @@ MonoBehaviour:
   - position: {x: -3.5, y: 6, z: -7}
     rotation: {x: 0, y: 0, z: 0}
     constraints:
-    - parentDetail: {fileID: 11400000, guid: b9288367389a7624bb7d0f8b64cd78c9, type: 2}
-      parentPointIndexes: 00000000
+    - parentDetail: {fileID: 11400000, guid: 96017b8d977e66046999c8ab89d9ed18, type: 2}
+      parentPointIndexes: 01000000

@@ -87,6 +87,7 @@ namespace Gameplay
         private void OnDetailItemDragOutStarted(DetailItemModel detailItemModel)
         {
             _movingDetailId = detailItemModel.ID;
+            _levelMediator.MarkItemDragOutState(_movingDetailId, true);
             var detail = _levelService.GetDetailsInfo()[_movingDetailId];
             StartDetailViewMove(detail);
         }
@@ -113,6 +114,13 @@ namespace Gameplay
             
             var details = _levelService.GetDetailsInfo();
             _levelMediator.UpdateModels(CreateDetailModelList(details));
+            SpawnDetailPrefab(details[_movingDetailId], placementResult.PointIndex);
+        }
+
+        private void SpawnDetailPrefab(DetailInstanceDto detail, int pointIndex)
+        {
+            var point = detail.Points[pointIndex];
+            _spawner.SpawnPrefab(new DetailPrefabSpawnInfo(detail.Prefab, point.Position, point.Rotation));
         }
 
         public void Dispose()

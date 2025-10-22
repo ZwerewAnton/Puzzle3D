@@ -11,6 +11,7 @@ namespace _1_LEVEL_REWORK.New.Instances
         {
             _meshRenderer = GetComponentInChildren<MeshRenderer>();
             _meshFilter = GetComponentInChildren<MeshFilter>();
+            _meshRenderer.transform.localPosition = Vector3.zero;
         }
 
         public Material GetMaterial()

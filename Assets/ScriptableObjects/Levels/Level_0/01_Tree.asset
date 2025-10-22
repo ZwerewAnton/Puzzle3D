@@ -13,13 +13,18 @@ MonoBehaviour:
   m_Name: 01_Tree
   m_EditorClassIdentifier: 
   id: 3c173f61-9248-4860-b5f0-8953e3ae114a
-  count: 1
+  count: 2
   prefab: {fileID: -672368211226075671, guid: 5bfa99f1e48f4c04ba654845d6305b7b, type: 3}
   mesh: {fileID: -2432090755550338912, guid: 25aa9ff3ab22fd641bea12151604f7d8, type: 3}
   material: {fileID: 2100000, guid: fd853b32fab9f9d41a1c96049925358e, type: 2}
   icon: {fileID: -3955455620117389472, guid: 0eab73c60dde52748b43208e947e3077, type: 3}
   points:
   - position: {x: 7, y: 8, z: -7.5}
+    rotation: {x: 0, y: 0, z: 0}
+    constraints:
+    - parentDetail: {fileID: 11400000, guid: b9288367389a7624bb7d0f8b64cd78c9, type: 2}
+      parentPointIndexes: 00000000
+  - position: {x: -7, y: 8, z: -7.5}
     rotation: {x: 0, y: 0, z: 0}
     constraints:
     - parentDetail: {fileID: 11400000, guid: b9288367389a7624bb7d0f8b64cd78c9, type: 2}
