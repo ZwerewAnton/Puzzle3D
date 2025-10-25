@@ -137,13 +137,25 @@ MonoBehaviour:
   points:
   - showParentDetailList: 01
     point:
+      Position: {x: -0.3, y: 4.65, z: -3.45}
+      Rotation: {x: -0, y: -0, z: -0}
+    parentList:
+    - showParentPointList: 01
+      checkToogleList: 01
+      parentDetail: {fileID: -8516924141718755286, guid: e00fca25d7746254e8be2b55b4818e56, type: 3}
+      parentPointList:
+      - Position: {x: 0.85, y: 4.9, z: -3.55}
+        Rotation: {x: -0, y: -0, z: -0}
+      - Position: {x: 0.85, y: 4.9, z: -3.55}
+        Rotation: {x: -0, y: -0, z: -0}
+  - showParentDetailList: 01
+    point:
       position: {x: -0.3, y: 4.65, z: -3.45}
       rotation: {x: -0, y: -0, z: -0}
     parentList:
     - showParentPointList: 01
       checkToggleList: 01
-      parentDetail: {fileID: -8516924141718755286, guid: e00fca25d7746254e8be2b55b4818e56,
-        type: 3}
+      parentDetail: {fileID: -8516924141718755286, guid: e00fca25d7746254e8be2b55b4818e56, type: 3}
       parentPointList:
       - position: {x: 0.85, y: 4.9, z: -3.55}
         rotation: {x: -0, y: -0, z: -0}
