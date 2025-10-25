@@ -15,7 +15,7 @@ namespace Configs
         [Header("Camera"), SerializeField] 
         public CameraConfigs camera;
         
-        [Header("Camera"), SerializeField] 
+        [Header("Gameplay"), SerializeField] 
         public GameplayConfig gameplay;
         
         [Header("Audio")]

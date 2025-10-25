@@ -55,6 +55,7 @@ namespace Gameplay
             FillDetailsDtoList();
             
             LevelInitialized?.Invoke();
+            CheckLevelComplete();
         }
 
         public bool TryInstallDetail(string detailId, int pointIndex)
@@ -64,6 +65,7 @@ namespace Gameplay
             {
                 UpdateDtoList();
                 LevelUpdated?.Invoke();
+                CheckLevelComplete();
             }
             
             return isSuccess;
@@ -123,6 +125,22 @@ namespace Gameplay
                     pointDto.IsAvailable = _levelState.IsPointReady(pointInstance);
                 }
             }
+        }
+
+        private void CheckLevelComplete()
+        {
+            var details = _levelState.Details;
+            var isCompleted = true;
+            foreach (var (_, detailInstance) in details)
+            {
+                if (detailInstance.RemainingCount == 0) 
+                    continue;
+                isCompleted = false;
+                break;
+            }
+
+            if (isCompleted)
+                LevelCompleted?.Invoke();
         }
         
         public void Dispose()

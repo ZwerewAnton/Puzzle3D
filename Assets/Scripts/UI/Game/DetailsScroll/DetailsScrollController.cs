@@ -17,6 +17,7 @@ namespace UI.Game.DetailsScroll
         private int _activePointerId = -1;
         private Vector2 _startDragPos;
         private int _draggedItemIndex;
+        private bool _isDraggedItemInactive;
 
         public override void OnBeginDrag(PointerEventData eventData)
         {
@@ -31,12 +32,18 @@ namespace UI.Game.DetailsScroll
             var draggedItem = GetItemUnderPointer(eventData);
             
             if (draggedItem != null)
+            {
                 _draggedItemIndex = draggedItem.ItemIndex;
+                _isDraggedItemInactive = Models[_draggedItemIndex].IsInactive;
+            }
         }
 
         public override void OnDrag(PointerEventData eventData)
         {
             if (eventData.pointerId != _activePointerId)
+                return;
+            
+            if (_isDraggedItemInactive)
                 return;
 
             if (_isDragOutStarted)

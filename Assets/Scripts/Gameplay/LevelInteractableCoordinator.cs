@@ -47,56 +47,6 @@ namespace Gameplay
             _levelMediator.InitializeDetailsScroll(detailModels);
             _levelMediator.DetailItemDragOutStarted += OnDetailItemDragOutStarted;
         }
-
-        private List<DetailItemModel> CreateDetailModelList(Dictionary<string,DetailInstanceDto> details)
-        {
-            var detailModels = new List<DetailItemModel>();
-            foreach (var (id, detail) in details)
-            {
-                if (detail.CurrentCount == 0 || detail.IsGround)
-                    continue;
-                
-                detailModels.Add(new DetailItemModel
-                {
-                    ID = id,
-                    Icon = detail.Icon,
-                    Count = detail.CurrentCount
-                });
-            }
-
-            return detailModels;
-        }
-        
-        private void SpawnStartDetailPrefabs(Dictionary<string,DetailInstanceDto> details)
-        {
-            var spawnInfoList = new List<DetailPrefabSpawnInfo>();
-            foreach (var (_, detail) in details)
-            {
-                foreach (var point in detail.Points)
-                {
-                    if (!point.IsInstalled) 
-                        continue;
-                    
-                    var spawnInfo = new DetailPrefabSpawnInfo(detail.Prefab, point.Position, point.Rotation);
-                    spawnInfoList.Add(spawnInfo);
-                }
-            }
-            _spawner.SpawnPrefabs(spawnInfoList);
-        }
-        
-        private void OnDetailItemDragOutStarted(DetailItemModel detailItemModel)
-        {
-            _movingDetailId = detailItemModel.ID;
-            _levelMediator.MarkItemDragOutState(_movingDetailId, true);
-            var detail = _levelService.GetDetailsInfo()[_movingDetailId];
-            StartDetailViewMove(detail);
-        }
-        
-        private void StartDetailViewMove(DetailInstanceDto detail)
-        {
-            var pointList = detail.Points.Select(pointInstance => new PointTransform(pointInstance.Position, pointInstance.Rotation)).ToList();
-            _detailViewMover.StartMove(detail.Mesh, detail.Material, pointList);
-        }
         
         private void OnDetailPlacementEnded(PlacementResult placementResult)
         {
@@ -115,6 +65,57 @@ namespace Gameplay
             var details = _levelService.GetDetailsInfo();
             _levelMediator.UpdateModels(CreateDetailModelList(details));
             SpawnDetailPrefab(details[_movingDetailId], placementResult.PointIndex);
+        }
+
+        private List<DetailItemModel> CreateDetailModelList(Dictionary<string,DetailInstanceDto> details)
+        {
+            var detailModels = new List<DetailItemModel>();
+            foreach (var (id, detail) in details)
+            {
+                if (detail.CurrentCount == 0 || detail.IsGround)
+                    continue;
+                
+                detailModels.Add(new DetailItemModel
+                {
+                    ID = id,
+                    Icon = detail.Icon,
+                    Count = detail.CurrentCount,
+                    IsInactive = !detail.Points.Any(point => point.IsAvailable)
+                });
+            }
+
+            return detailModels;
+        }
+        
+        private void OnDetailItemDragOutStarted(DetailItemModel detailItemModel)
+        {
+            _movingDetailId = detailItemModel.ID;
+            _levelMediator.MarkItemDragOutState(_movingDetailId, true);
+            var detail = _levelService.GetDetailsInfo()[_movingDetailId];
+            StartDetailViewMove(detail);
+        }
+        
+        private void StartDetailViewMove(DetailInstanceDto detail)
+        {
+            var pointList = detail.Points.Select(pointInstance => new PointTransform(pointInstance.Position, pointInstance.Rotation)).ToList();
+            _detailViewMover.StartMove(detail.Mesh, detail.Material, pointList);
+        }
+        
+        private void SpawnStartDetailPrefabs(Dictionary<string,DetailInstanceDto> details)
+        {
+            var spawnInfoList = new List<DetailPrefabSpawnInfo>();
+            foreach (var (_, detail) in details)
+            {
+                foreach (var point in detail.Points)
+                {
+                    if (!point.IsInstalled) 
+                        continue;
+                    
+                    var spawnInfo = new DetailPrefabSpawnInfo(detail.Prefab, point.Position, point.Rotation);
+                    spawnInfoList.Add(spawnInfo);
+                }
+            }
+            _spawner.SpawnPrefabs(spawnInfoList);
         }
 
         private void SpawnDetailPrefab(DetailInstanceDto detail, int pointIndex)

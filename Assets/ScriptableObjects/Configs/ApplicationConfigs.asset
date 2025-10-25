@@ -28,6 +28,10 @@ MonoBehaviour:
     zoomSpeed: 1
     mouseSmooth: 10
     zoomDampening: 5
+  gameplay:
+    magnetDistance: 1
+    ghostDistance: 20
+    screenOffset: {x: 0, y: 100, z: 0}
   audioOffValue: -80
   audioOnValue: -20
   musicFadeTime: 1
