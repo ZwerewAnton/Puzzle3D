@@ -22,6 +22,11 @@ namespace _1_LEVEL_REWORK.New.Instances
             Points = new List<PointInstance>();
             _isGround = isGround;
         }
+        
+        public string GetDetailId()
+        {
+            return _data.Id;
+        }
 
         public Sprite GetDetailIcon()
         {

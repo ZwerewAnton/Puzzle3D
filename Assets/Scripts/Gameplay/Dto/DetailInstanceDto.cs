@@ -6,6 +6,7 @@ namespace Gameplay.Dto
 {
     public class DetailInstanceDto
     {
+        public string Id;
         public int CurrentCount;
         public bool IsGround;
         public DetailPrefab Prefab;

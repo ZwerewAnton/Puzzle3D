@@ -23,19 +23,25 @@ namespace UI.Game.DetailsScroll
         {
             if (_isDragOutStarted || _activePointerId != -1)
                 return;
-
+            
+            if (eventData.pointerId >= 0)
+            {
+                if (eventData.button != PointerEventData.InputButton.Left)
+                    return;
+            }
+            
             base.OnBeginDrag(eventData);
 
             _activePointerId = eventData.pointerId;
             _startDragPos = eventData.position;
 
             var draggedItem = GetItemUnderPointer(eventData);
+
+            if (draggedItem == null) 
+                return;
             
-            if (draggedItem != null)
-            {
-                _draggedItemIndex = draggedItem.ItemIndex;
-                _isDraggedItemInactive = Models[_draggedItemIndex].IsInactive;
-            }
+            _draggedItemIndex = draggedItem.ItemIndex;
+            _isDraggedItemInactive = Models[_draggedItemIndex].IsInactive;
         }
 
         public override void OnDrag(PointerEventData eventData)
@@ -103,18 +109,6 @@ namespace UI.Game.DetailsScroll
             ExecuteEvents.Execute(scrollRect.gameObject, eventData, ExecuteEvents.endDragHandler);
 
             DragOutStarted?.Invoke(Models[_draggedItemIndex]);
-        }
-        
-        private void UpdateInstalledDetailModel(DetailItemModel model, int count)
-        {
-            if (model.Count == 1)
-            {
-                Models.Remove(model);
-            }
-            else
-            {
-                model.Count = count;
-            }
         }
 
         private DetailItemView GetItemUnderPointer(PointerEventData eventData)

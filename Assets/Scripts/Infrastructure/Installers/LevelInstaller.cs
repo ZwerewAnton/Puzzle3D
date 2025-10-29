@@ -14,9 +14,11 @@ namespace Infrastructure.Installers
         [SerializeField] private LevelMediator levelMediator;
         [SerializeField] private DetailViewMover detailViewMover;
         [SerializeField] private CameraHandler cameraHandler;
+        [SerializeField] private LevelSaverMono levelSaverMono;
         
         public override void InstallBindings()
         {
+            BindLevelSaverMono();
             BindCameraHandler();
             BindCameraMovement();
             BindDetailPrefabSpawner();
@@ -26,6 +28,11 @@ namespace Infrastructure.Installers
             BindLevelService();
             BindLevelMediator();
             BindLevelInteractableCoordinator();
+        }
+
+        private void BindLevelSaverMono()
+        {
+            Container.Bind<LevelSaverMono>().FromInstance(levelSaverMono).AsSingle().NonLazy();
         }
 
         private void BindCameraHandler()

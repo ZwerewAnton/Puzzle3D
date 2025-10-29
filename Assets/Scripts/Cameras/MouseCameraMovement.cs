@@ -33,12 +33,12 @@ namespace Cameras
 
         public CameraMovementResult CalculateMovement()
         {
-            if (_cameraActions.Rotate.WasPressedThisFrame())
+            if (_cameraActions.Press.WasPressedThisFrame())
             {
                 _rotateAllowed = !EventSystem.current.IsPointerOverGameObject();
             }
             
-            if (_cameraActions.Rotate.IsPressed() && _rotateAllowed)
+            if (_cameraActions.Press.IsPressed() && _rotateAllowed)
             {
                 _rawDelta = _cameraActions.Look.ReadValue<Vector2>();
             }

@@ -25,18 +25,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Tap",
+                    "name": "Press",
                     "type": "Button",
                     "id": "409e3201-8a04-4cbb-a3c0-9052eac704fb",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Rotate",
-                    "type": "Button",
-                    "id": "9417e5d0-e1c6-4914-bb9f-65f72ce9e83f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -73,29 +64,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Tap",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1f9e2ffd-2408-420d-a6dc-214c6b6d2741",
-                    "path": "<Touchscreen>/primaryTouch/tap",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Tap",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e33b6b26-ea3a-4280-8e2f-611f64dc0055",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotate",
+                    "action": "Press",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -106,7 +75,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Rotate",
+                    "action": "Press",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

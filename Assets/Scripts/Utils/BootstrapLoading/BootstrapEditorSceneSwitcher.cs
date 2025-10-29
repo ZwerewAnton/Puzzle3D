@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Infrastructure;
 using Infrastructure.SceneManagement;
 using UnityEditor;
@@ -43,8 +44,20 @@ namespace Utils.BootstrapLoading
                     return;
             }
             var sceneType = (SceneType)Enum.Parse(typeof(SceneType), startScene);
-            _ = _sceneSwitcher.LoadSceneAsync(sceneType);
+            _ = LoadSceneAsync(sceneType);
 #endif
+        }
+        
+        private async Task LoadSceneAsync(SceneType sceneType)
+        {
+            try
+            {
+                await _sceneSwitcher.LoadSceneAsync(sceneType);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to load scene: {ex}");
+            }
         }
     }
 }

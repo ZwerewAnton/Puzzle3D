@@ -111,18 +111,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Tap"",
+                    ""name"": ""Press"",
                     ""type"": ""Button"",
                     ""id"": ""409e3201-8a04-4cbb-a3c0-9052eac704fb"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Rotate"",
-                    ""type"": ""Button"",
-                    ""id"": ""9417e5d0-e1c6-4914-bb9f-65f72ce9e83f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -159,29 +150,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Tap"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1f9e2ffd-2408-420d-a6dc-214c6b6d2741"",
-                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Tap"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e33b6b26-ea3a-4280-8e2f-611f64dc0055"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate"",
+                    ""action"": ""Press"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -192,7 +161,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Rotate"",
+                    ""action"": ""Press"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -275,8 +244,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_Look = m_Camera.FindAction("Look", throwIfNotFound: true);
         m_Camera_Zoom = m_Camera.FindAction("Zoom", throwIfNotFound: true);
-        m_Camera_Tap = m_Camera.FindAction("Tap", throwIfNotFound: true);
-        m_Camera_Rotate = m_Camera.FindAction("Rotate", throwIfNotFound: true);
+        m_Camera_Press = m_Camera.FindAction("Press", throwIfNotFound: true);
         // Detail
         m_Detail = asset.FindActionMap("Detail", throwIfNotFound: true);
         m_Detail_Tap = m_Detail.FindAction("Tap", throwIfNotFound: true);
@@ -364,8 +332,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<ICameraActions> m_CameraActionsCallbackInterfaces = new List<ICameraActions>();
     private readonly InputAction m_Camera_Look;
     private readonly InputAction m_Camera_Zoom;
-    private readonly InputAction m_Camera_Tap;
-    private readonly InputAction m_Camera_Rotate;
+    private readonly InputAction m_Camera_Press;
     /// <summary>
     /// Provides access to input actions defined in input action map "Camera".
     /// </summary>
@@ -386,13 +353,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Zoom => m_Wrapper.m_Camera_Zoom;
         /// <summary>
-        /// Provides access to the underlying input action "Camera/Tap".
+        /// Provides access to the underlying input action "Camera/Press".
         /// </summary>
-        public InputAction @Tap => m_Wrapper.m_Camera_Tap;
-        /// <summary>
-        /// Provides access to the underlying input action "Camera/Rotate".
-        /// </summary>
-        public InputAction @Rotate => m_Wrapper.m_Camera_Rotate;
+        public InputAction @Press => m_Wrapper.m_Camera_Press;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -425,12 +388,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
-            @Tap.started += instance.OnTap;
-            @Tap.performed += instance.OnTap;
-            @Tap.canceled += instance.OnTap;
-            @Rotate.started += instance.OnRotate;
-            @Rotate.performed += instance.OnRotate;
-            @Rotate.canceled += instance.OnRotate;
+            @Press.started += instance.OnPress;
+            @Press.performed += instance.OnPress;
+            @Press.canceled += instance.OnPress;
         }
 
         /// <summary>
@@ -448,12 +408,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
-            @Tap.started -= instance.OnTap;
-            @Tap.performed -= instance.OnTap;
-            @Tap.canceled -= instance.OnTap;
-            @Rotate.started -= instance.OnRotate;
-            @Rotate.performed -= instance.OnRotate;
-            @Rotate.canceled -= instance.OnRotate;
+            @Press.started -= instance.OnPress;
+            @Press.performed -= instance.OnPress;
+            @Press.canceled -= instance.OnPress;
         }
 
         /// <summary>
@@ -616,19 +573,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnZoom(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Tap" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Press" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnTap(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Rotate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRotate(InputAction.CallbackContext context);
+        void OnPress(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Detail" which allows adding and removing callbacks.

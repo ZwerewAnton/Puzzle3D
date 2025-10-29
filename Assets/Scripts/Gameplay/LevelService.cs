@@ -88,6 +88,7 @@ namespace Gameplay
             {
                 var detailDto = new DetailInstanceDto
                 {
+                    Id = detailInstance.GetDetailId(),
                     Icon = detailInstance.GetDetailIcon(),
                     Prefab = detailInstance.GetDetailPrefab(),
                     CurrentCount = detailInstance.RemainingCount,

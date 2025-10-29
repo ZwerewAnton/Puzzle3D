@@ -27,9 +27,9 @@ namespace SaveSystem
             _progressData = await LoadDataAsync<ProgressSaveData>(Paths.GetPathToProgressData(), cancellationToken);
         }
 
-        public async Task SaveProgressDataAsync(string levelId, int progress)
+        public async Task SaveProgressDataAsync(string levelName, int progress)
         {
-            UpdateProgressData(levelId, progress);
+            UpdateProgressData(levelName, progress);
             await SaveDataAsync(_progressData, Paths.PathToSaveDirectory, Paths.GetPathToProgressData());
         }
         
@@ -43,6 +43,11 @@ namespace SaveSystem
             }
             
             return await LoadDataAsync<LevelSaveData>(Paths.GetPathToLevelData(levelName), cancellationToken);
+        }
+        
+        public async Task SaveLevelDataAsync(string levelName, LevelSaveData data)
+        {
+            await SaveDataAsync(data, Paths.GetPathToLevelDataDirectory(levelName), Paths.GetPathToLevelData(levelName));
         }
         
         public async Task SaveLevelData(string levelName, List<Detail> allDetails)
