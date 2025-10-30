@@ -79,6 +79,14 @@ namespace UI.Settings
 
         private void AnimateButtons()
         {
+            for (var i = 0; i < _itemsCount; i++)
+            {
+                _buttonsTransform[i].DOKill();
+                _buttonsImage[i].DOKill();
+            }
+            
+            settingButton.transform.DOKill();
+            
             if (_isExpanded)
             {
                 for (var i = 0; i < _itemsCount; i++)
@@ -89,7 +97,7 @@ namespace UI.Settings
             }
             else
             {
-                for(var i = 0; i < _itemsCount; i++)
+                for (var i = 0; i < _itemsCount; i++)
                 {
                     _buttonsTransform[i].transform.DOLocalMove(_settingButtonPosition + spacing * (i + 1), expandDuration).SetEase(expandEase);
                     _buttonsImage[i].DOFade(1f, expandFadeDuration).From(0f);

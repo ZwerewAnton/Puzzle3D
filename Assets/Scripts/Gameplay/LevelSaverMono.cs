@@ -12,16 +12,40 @@ namespace Gameplay
     public class LevelSaverMono : MonoBehaviour
     {
         private SaveLoadService _saveLoadService;
+        private LevelService _levelService;
 
         [Inject]
-        private void Construct(SaveLoadService saveLoadService)
+        private void Construct(SaveLoadService saveLoadService, LevelService levelService)
         {
             _saveLoadService = saveLoadService;
+            _levelService = levelService;
         }
 
-        public void SaveProgress(string levelName, int progress, List<DetailInstanceDto> details)
+        private void OnEnable()
         {
+            _levelService.LevelCompleted += SaveProgress;
+        }
+
+        private void OnDisable()
+        {
+            _levelService.LevelCompleted -= SaveProgress;
+        }
+        
+        private void OnApplicationPause(bool pause)
+        {
+            if (pause)
+            {
+                SaveProgress();
+            }
+        }
+        
+        public void SaveProgress()
+        {
+            var levelName = _levelService.GetLevelName();
+            var progress = _levelService.GetLevelProgress();
+            var details = _levelService.GetDetailsInfo();
             var data = CreateLevelSaveData(details);
+            
             _ = SaveLevelDataAsync(levelName, progress, data);
         }
 
@@ -38,15 +62,15 @@ namespace Gameplay
             }
         }
 
-        private LevelSaveData CreateLevelSaveData(List<DetailInstanceDto> details)
+        private static LevelSaveData CreateLevelSaveData(Dictionary<string, DetailInstanceDto> details)
         {
             var levelSaveData = new LevelSaveData();
 
-            foreach (var detail in details)
+            foreach (var (id, detail) in details)
             {
                 var detailData = new DetailSaveData
                 {
-                    id = detail.Id,
+                    id = id,
                     currentCount = detail.CurrentCount
                 };
 
@@ -58,6 +82,8 @@ namespace Gameplay
                     };
                     detailData.points.Add(pointData);
                 }
+                
+                levelSaveData.details.Add(detailData);
             }
 
             return levelSaveData;

@@ -18,7 +18,6 @@ namespace Infrastructure.Installers
         
         public override void InstallBindings()
         {
-            BindLevelSaverMono();
             BindCameraHandler();
             BindCameraMovement();
             BindDetailPrefabSpawner();
@@ -28,6 +27,7 @@ namespace Infrastructure.Installers
             BindLevelService();
             BindLevelMediator();
             BindLevelInteractableCoordinator();
+            BindLevelSaverMono();
         }
 
         private void BindLevelSaverMono()

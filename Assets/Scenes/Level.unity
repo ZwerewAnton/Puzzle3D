@@ -380,6 +380,7 @@ MonoBehaviour:
   levelMediator: {fileID: 1731988948}
   detailViewMover: {fileID: 1912028878}
   cameraHandler: {fileID: 963194234}
+  levelSaverMono: {fileID: 0}
 --- !u!114 &160822819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1957,7 +1958,8 @@ MonoBehaviour:
   itemPrefab: {fileID: 1775881065355688192, guid: 906dba73dcfd3954bb12a4c82430c53d,
     type: 3}
   itemSpacing: 10
-  borderSpacing: 5
+  borderSpacing: 25
+  canvas: {fileID: 671748986}
   dragThreshold: 50
 --- !u!1 &1436498533
 GameObject:

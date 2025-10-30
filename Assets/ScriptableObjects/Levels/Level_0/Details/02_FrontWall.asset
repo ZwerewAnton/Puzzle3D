@@ -10,21 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90d30b706aa5440fa70492a36dd33b1b, type: 3}
-  m_Name: 01_Tree
+  m_Name: 02_FrontWall
   m_EditorClassIdentifier: 
-  id: 3c173f61-9248-4860-b5f0-8953e3ae114a
-  count: 2
-  prefab: {fileID: -672368211226075671, guid: 5bfa99f1e48f4c04ba654845d6305b7b, type: 3}
-  mesh: {fileID: -2432090755550338912, guid: 25aa9ff3ab22fd641bea12151604f7d8, type: 3}
+  id: 476919a7-7e20-4094-9ef5-8b6ea4ccc3a3
+  count: 1
+  prefab: {fileID: 6537741284916568135, guid: 959499828baff304ca3d5070053170da, type: 3}
+  mesh: {fileID: -2432090755550338912, guid: 2a78f830f65f97d44b72ababb62a68f0, type: 3}
   material: {fileID: 2100000, guid: fd853b32fab9f9d41a1c96049925358e, type: 2}
-  icon: {fileID: -3955455620117389472, guid: 0eab73c60dde52748b43208e947e3077, type: 3}
+  icon: {fileID: 7011142320162777744, guid: de089d9e5983a6240b102b678586b4bb, type: 3}
   points:
-  - position: {x: 7, y: 8, z: -7.5}
-    rotation: {x: 0, y: 0, z: 0}
-    constraints:
-    - parentDetail: {fileID: 11400000, guid: b9288367389a7624bb7d0f8b64cd78c9, type: 2}
-      parentPointIndexes: 00000000
-  - position: {x: -7, y: 8, z: -7.5}
+  - position: {x: -3.5, y: 6, z: -7}
     rotation: {x: 0, y: 0, z: 0}
     constraints:
     - parentDetail: {fileID: 11400000, guid: b9288367389a7624bb7d0f8b64cd78c9, type: 2}

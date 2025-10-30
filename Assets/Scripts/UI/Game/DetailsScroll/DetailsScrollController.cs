@@ -8,16 +8,25 @@ namespace UI.Game.DetailsScroll
 {
     public class DetailsScrollController : ScrollControllerBase<DetailItemModel, DetailItemView>
     {
+        [Header("Canvas")]
+        [SerializeField] private Canvas canvas;
         [Header("Drag Settings")]
         [SerializeField] private float dragThreshold = 30f;
 
         public event Action<DetailItemModel> DragOutStarted;
 
+        private float _scaledDragThreshold;
         private bool _isDragOutStarted;
         private int _activePointerId = -1;
         private Vector2 _startDragPos;
-        private int _draggedItemIndex;
+        private int _draggedItemIndex = -1;
         private bool _isDraggedItemInactive;
+
+        public override void Initialize(List<DetailItemModel> newModels)
+        {
+            base.Initialize(newModels);
+            _scaledDragThreshold = dragThreshold * canvas.scaleFactor;
+        }
 
         public override void OnBeginDrag(PointerEventData eventData)
         {
@@ -49,7 +58,7 @@ namespace UI.Game.DetailsScroll
             if (eventData.pointerId != _activePointerId)
                 return;
             
-            if (_isDraggedItemInactive)
+            if (_isDraggedItemInactive || _draggedItemIndex < 0)
                 return;
 
             if (_isDragOutStarted)
@@ -60,7 +69,7 @@ namespace UI.Game.DetailsScroll
 
             var delta = eventData.position - _startDragPos;
 
-            if (Mathf.Abs(delta.x) > dragThreshold && Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+            if (Mathf.Abs(delta.x) > _scaledDragThreshold && Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
             {
                 StartDragOut(eventData);
             }
@@ -78,6 +87,7 @@ namespace UI.Game.DetailsScroll
             base.OnEndDrag(eventData);
 
             _activePointerId = -1;
+            _draggedItemIndex = -1;
             _isDragOutStarted = false;
         }
 
@@ -106,9 +116,9 @@ namespace UI.Game.DetailsScroll
                 return;
 
             _isDragOutStarted = true;
-            ExecuteEvents.Execute(scrollRect.gameObject, eventData, ExecuteEvents.endDragHandler);
-
             DragOutStarted?.Invoke(Models[_draggedItemIndex]);
+            
+            ExecuteEvents.Execute(scrollRect.gameObject, eventData, ExecuteEvents.endDragHandler);
         }
 
         private DetailItemView GetItemUnderPointer(PointerEventData eventData)

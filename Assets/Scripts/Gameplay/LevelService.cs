@@ -9,6 +9,7 @@ using Gameplay.Dto;
 using Level;
 using SaveSystem;
 using SaveSystem.DataObjects.Level.New;
+using UnityEngine;
 using Zenject;
 
 namespace Gameplay
@@ -76,6 +77,30 @@ namespace Gameplay
             return _dtos;
         }
 
+        public string GetLevelName()
+        {
+            return _levelData.LevelName;
+        }
+
+        public int GetLevelProgress()
+        {
+            float allDetails = 0;
+            float installedDetails = 0;
+            var details = _levelState.Details;
+            foreach (var (_, detail) in details)
+            {
+                foreach (var point in detail.Points)
+                {
+                    if (point.IsInstalled)
+                    {
+                        installedDetails++;
+                    }
+                    allDetails++;
+                }
+            }
+            return Mathf.RoundToInt(installedDetails / allDetails * 100);
+        }
+
         private void InitializeLevelState(LevelSaveData saveData)
         {
             _levelState.CreateDetailsInstances(_levelData.Ground, _levelData.Details, saveData.details);
@@ -88,7 +113,6 @@ namespace Gameplay
             {
                 var detailDto = new DetailInstanceDto
                 {
-                    Id = detailInstance.GetDetailId(),
                     Icon = detailInstance.GetDetailIcon(),
                     Prefab = detailInstance.GetDetailPrefab(),
                     CurrentCount = detailInstance.RemainingCount,

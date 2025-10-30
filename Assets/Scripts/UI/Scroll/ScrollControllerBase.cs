@@ -82,7 +82,7 @@ namespace UI.Scroll
             BorderSpacing = GetBorderSpacing();
 
             var cellSize = ItemSize + itemSpacing;
-            var totalSize = cellSize * Models.Count + BorderSpacing * 2f - cellSize;
+            var totalSize = (cellSize * Models.Count - itemSpacing) + BorderSpacing * 2;
             SetContentSize(totalSize);
             VisibleItemCount = Mathf.CeilToInt(GetViewportSize() / cellSize) + 2;
 
@@ -92,10 +92,9 @@ namespace UI.Scroll
         
         protected virtual void SetContentSize(float totalSize)
         {
-            if (scrollRect.horizontal)
-                content.sizeDelta = new Vector2(totalSize, content.sizeDelta.y);
-            else
-                content.sizeDelta = new Vector2(content.sizeDelta.x, totalSize);
+            content.sizeDelta = scrollRect.horizontal 
+                ? new Vector2(totalSize, content.sizeDelta.y) 
+                : new Vector2(content.sizeDelta.x, totalSize);
         }
 
         #endregion
@@ -177,8 +176,13 @@ namespace UI.Scroll
                 : rect.rect.height;
         }
 
-        protected virtual float GetViewportSize() => scrollRect.viewport.rect.width;
-        
+        protected virtual float GetViewportSize()
+        {
+            return scrollRect.horizontal
+                ? scrollRect.viewport.rect.width
+                : scrollRect.viewport.rect.height;
+        }
+
         protected virtual float GetBorderSpacing() => borderSpacing;
 
         protected virtual Vector2 GetAnchoredPosition(int index)
