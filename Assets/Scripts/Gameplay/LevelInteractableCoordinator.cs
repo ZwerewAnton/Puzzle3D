@@ -63,7 +63,7 @@ namespace Gameplay
                 return;
             
             var details = _levelService.GetDetailsInfo();
-            _levelMediator.UpdateModels(CreateDetailModelList(details));
+            _levelMediator.UpdateScrollController(CreateDetailModelList(details));
             SpawnDetailPrefab(details[_movingDetailId], placementResult.PointIndex);
         }
 

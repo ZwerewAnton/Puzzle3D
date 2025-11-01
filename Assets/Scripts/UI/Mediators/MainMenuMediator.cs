@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Music;
 using UI.Common;
+using UI.Common.Dialog;
 using UI.MainMenu;
 using UI.MainMenu.LevelScroll;
 using UI.Scroll;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace UI.Mediators
@@ -17,6 +19,8 @@ namespace UI.Mediators
         [SerializeField] private MainMenu.MainMenu mainMenu;
         [SerializeField] private LevelsScrollController scrollController;
         [SerializeField] private ActionButton playButton;
+        [SerializeField] private ActionButton deleteButton;
+        [SerializeField] private CancelAcceptDialog deleteDialog;
 
         private SfxPlayer _sfxPlayer;
 
@@ -26,25 +30,34 @@ namespace UI.Mediators
             _sfxPlayer = sfxPlayer;
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             tapToPlayPanel.Clicked += mainMenu.FirstTap;
             tapToPlayPanel.Clicked += _sfxPlayer.PlayTapToPlayClip;
             playButton.Clicked += _sfxPlayer.PlayStartGameClip;
             playButton.Clicked += mainMenu.Play;
+            deleteButton.Clicked += deleteDialog.Show;
+            deleteDialog.Completed += OnDeleteDialogCompleted;
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             tapToPlayPanel.Clicked -= mainMenu.FirstTap;
             tapToPlayPanel.Clicked -= _sfxPlayer.PlayTapToPlayClip;
             playButton.Clicked -= _sfxPlayer.PlayStartGameClip;
             playButton.Clicked -= mainMenu.Play;
+            deleteButton.Clicked -= deleteDialog.Show;
+            deleteDialog.Completed -= OnDeleteDialogCompleted;
         }
 
         public void InitializeLevelScroll(List<LevelItemModel> models)
         {
             scrollController.Initialize(models);
+        }
+
+        public void UpdateLevelScroll(List<LevelItemModel> models)
+        {
+            scrollController.UpdateModels(models);
         }
 
         public void MoveLevelScrollToItem(string levelName)
@@ -69,6 +82,12 @@ namespace UI.Mediators
             tapToPlayPanel.Hide();
             miniHousePanel.Hide();
             menuPanel.Show();
+        }
+
+        private void OnDeleteDialogCompleted(DialogResult result)
+        {
+            if (result == DialogResult.Accept)
+                mainMenu.DeleteSaveData();
         }
     }
 }

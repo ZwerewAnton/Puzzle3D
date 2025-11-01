@@ -20,7 +20,7 @@ namespace Gameplay.Movement
         [SerializeField] private UnityEvent restartEvent;
         [FormerlySerializedAs("_onInstantiateGround")] [SerializeField] private UnityEvent<Transform> onInstantiateGround;
         [SerializeField] private ParticlePlayer particlePlayer;
-        [SerializeField] private UILevelMenu levelMenu;
+        [SerializeField] private LevelMenu levelMenu;
     
         private GameObject _target;
         private float _mZCoord;
@@ -51,7 +51,7 @@ namespace Gameplay.Movement
             StartDetailInstance();
             if (IsEndOfDetails())
             {
-                levelMenu.ShowHomeButton();
+                levelMenu.ShowEndScreen();
             }
 
             objectOffset.y = Screen.height * 0.1f;
@@ -124,7 +124,7 @@ namespace Gameplay.Movement
         
             particlePlayer.Play();
             levelMenu.PlayEndClip();
-            levelMenu.ShowHomeButton();
+            levelMenu.ShowEndScreen();
             return true;
         }
 

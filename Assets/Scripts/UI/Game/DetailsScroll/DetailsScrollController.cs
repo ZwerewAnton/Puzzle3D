@@ -102,14 +102,6 @@ namespace UI.Game.DetailsScroll
             MarkToUpdate();
         }
 
-        public void UpdateModels(List<DetailItemModel> models)
-        {
-            Models.Clear();
-            Models.AddRange(models);
-            
-            MarkToUpdate();
-        }
-
         private void StartDragOut(PointerEventData eventData)
         {
             if (_draggedItemIndex < 0 || _draggedItemIndex >= Models.Count)

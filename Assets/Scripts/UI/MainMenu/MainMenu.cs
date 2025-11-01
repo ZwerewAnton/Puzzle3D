@@ -8,23 +8,14 @@ using Music;
 using SaveSystem;
 using UI.MainMenu.LevelScroll;
 using UI.Mediators;
-using UI.Scroll;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace UI.MainMenu
 {
     public class MainMenu : MonoBehaviour
     {
-        public GameObject disassembleWindow;
-        public GameObject disassembleButton;
-
         private SceneSwitcher _sceneSwitcher;
-        
-        private SfxPlayer _sfxPlayer;
-        
         private MainMenuMediator _mainMenuMediator;
         private GameState _gameState;
         private MusicPlayer _musicPlayer;
@@ -67,6 +58,12 @@ namespace UI.MainMenu
             _ = LoadLevelScene();
         }
 
+        public void DeleteSaveData()
+        {
+            _saveLoadService.DeleteSaveDirectory();
+            UpdateScrollControllerContent();
+        }
+
         private async Task LoadLevelScene()
         {
             try
@@ -84,6 +81,7 @@ namespace UI.MainMenu
             if (_gameState.IsFirstMenuLaunch)
             {
                 _mainMenuMediator.ShowTapToPlayPanel();
+                _gameState.MarkMenuAsLaunched();
             }
             else
             {
@@ -93,6 +91,19 @@ namespace UI.MainMenu
         }
 
         private void SetScrollControllerContent()
+        {
+            var items = CreateScrollItems();
+            _mainMenuMediator.InitializeLevelScroll(items);
+            _mainMenuMediator.MoveLevelScrollToItem(_gameState.SelectedLevelName);
+        }
+
+        private void UpdateScrollControllerContent()
+        {
+            var items = CreateScrollItems();
+            _mainMenuMediator.UpdateLevelScroll(items);
+        }
+
+        private List<LevelItemModel> CreateScrollItems()
         {
             var items = new List<LevelItemModel>();
             var saveData = _saveLoadService.ProgressData.progressLevelsSaveData;
@@ -107,27 +118,8 @@ namespace UI.MainMenu
                     progressPercent = progress?.progress ?? 0
                 });
             }
-            _mainMenuMediator.InitializeLevelScroll(items);
-            _mainMenuMediator.MoveLevelScrollToItem(_gameState.SelectedLevelName);
-        }
-    
-        public void ShowDisassembleWindow()
-        {
-            disassembleWindow.SetActive(true);
-        }
-    
-        public void CloseDisassembleWindow()
-        {
-            disassembleWindow.SetActive(false);
-        }
-    
-        public void DisassembleDetail()
-        {
-            //var levelID = scroll.GetLevelID();
-            //LevelSaver.levelID = levelID;
-            //LevelContainer.currentLevelContainer.ResetLevel(levelID);
-            //scroll.UpdatePercents();
-            //disassembleWindow.SetActive(false);
+
+            return items;
         }
     }
 }

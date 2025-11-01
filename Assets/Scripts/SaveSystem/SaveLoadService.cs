@@ -49,54 +49,14 @@ namespace SaveSystem
         {
             await SaveDataAsync(data, Paths.GetPathToLevelDataDirectory(levelName), Paths.GetPathToLevelData(levelName));
         }
-        
-        public async Task SaveLevelData(string levelName, List<Detail> allDetails)
+
+        public void DeleteSaveDirectory()
         {
-            var data = CreateLevelSaveData(allDetails);
-            await SaveDataAsync(data, Paths.GetPathToLevelDataDirectory(levelName), Paths.GetPathToLevelData(levelName));
-        }
-
-        private LevelSaveData_old CreateLevelSaveData(List<Detail> allDetails)
-        {
-            var level = new LevelSaveData_old();
-            float installedDetailsCount = 0;
-            foreach (var detail in allDetails)
-            {
-                var isInstalled = true;
-                var detailSav = new DetailSaveData_old
-                {
-                    detailName = detail.name,
-                    currentCount = detail.CurrentCount
-                };
-
-                var pPCSaverList = new List<PointParentConnectorSaveData_old>();
-                detailSav.parentList = pPCSaverList;
-
-                foreach (var pointPC in detail.points)
-                {
-                    var pPCSaveData = new PointParentConnectorSaveData_old
-                    {
-                        isInstalled = pointPC.IsInstalled
-                    };
-
-                    if (!pointPC.IsInstalled || !detail.isRoot)
-                    {
-                        isInstalled = false;
-                    }
-
-                    pPCSaverList.Add(pPCSaveData);
-                }
-
-                if (isInstalled)
-                {
-                    installedDetailsCount++;
-                }
-
-                level.details.Add(detailSav);
-            }
-
-            level.percent = Mathf.Round((installedDetailsCount / allDetails.Count) * 100);
-            return level;
+            if (!Directory.Exists(Paths.PathToSaveDirectory))
+                return;
+            
+            Directory.Delete(Paths.PathToSaveDirectory, true);
+            _progressData = new ProgressSaveData();
         }
 
         private void UpdateProgressData(string levelName, int progress)

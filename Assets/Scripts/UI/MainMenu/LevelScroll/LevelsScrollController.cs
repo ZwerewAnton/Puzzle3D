@@ -50,6 +50,19 @@ namespace UI.MainMenu.LevelScroll
 
         #endregion
         
+        #region Initialization
+        
+        protected override void SetContentSize()
+        {
+            var cellSize = ItemSize + itemSpacing;
+            var size = (cellSize * Models.Count - itemSpacing) + BorderSpacing * 2 - ItemSize;
+            content.sizeDelta = scrollRect.horizontal 
+                ? new Vector2(size, content.sizeDelta.y) 
+                : new Vector2(content.sizeDelta.x, size);
+        }
+        
+        #endregion
+        
         #region Content Management
 
         public LevelItemModel GetTargetItemModel()
@@ -145,7 +158,8 @@ namespace UI.MainMenu.LevelScroll
                     (_lastDragDirection > 0 && distance >= 0f) ||
                     (_lastDragDirection < 0 && distance <= 0f);
 
-                if (!validByDirection) continue;
+                if (!validByDirection) 
+                    continue;
 
                 var absDist = Mathf.Abs(distance);
                 if (absDist < closestDist)

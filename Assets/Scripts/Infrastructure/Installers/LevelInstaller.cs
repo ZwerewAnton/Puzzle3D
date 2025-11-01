@@ -2,6 +2,7 @@
 using Cameras;
 using Gameplay;
 using Gameplay.Movement;
+using UI;
 using UI.Mediators;
 using UnityEngine;
 using Zenject;
@@ -15,6 +16,7 @@ namespace Infrastructure.Installers
         [SerializeField] private DetailViewMover detailViewMover;
         [SerializeField] private CameraHandler cameraHandler;
         [SerializeField] private LevelSaverMono levelSaverMono;
+        [SerializeField] private LevelMenu levelMenu;
         
         public override void InstallBindings()
         {
@@ -28,6 +30,12 @@ namespace Infrastructure.Installers
             BindLevelMediator();
             BindLevelInteractableCoordinator();
             BindLevelSaverMono();
+            BindLevelMenu();
+        }
+
+        private void BindLevelMenu()
+        {
+            Container.Bind<LevelMenu>().FromInstance(levelMenu).AsSingle().NonLazy();
         }
 
         private void BindLevelSaverMono()

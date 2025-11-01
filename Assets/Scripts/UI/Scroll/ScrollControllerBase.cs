@@ -81,20 +81,20 @@ namespace UI.Scroll
             ItemSize = GetItemSize(itemRect);
             BorderSpacing = GetBorderSpacing();
 
+            SetContentSize();
             var cellSize = ItemSize + itemSpacing;
-            var totalSize = (cellSize * Models.Count - itemSpacing) + BorderSpacing * 2;
-            SetContentSize(totalSize);
             VisibleItemCount = Mathf.CeilToInt(GetViewportSize() / cellSize) + 2;
 
             CreatePool();
             UpdateVisibleItems();
         }
         
-        protected virtual void SetContentSize(float totalSize)
+        protected virtual void SetContentSize()
         {
+            var size = (ItemSize + itemSpacing * Models.Count - itemSpacing) + BorderSpacing * 2;
             content.sizeDelta = scrollRect.horizontal 
-                ? new Vector2(totalSize, content.sizeDelta.y) 
-                : new Vector2(content.sizeDelta.x, totalSize);
+                ? new Vector2(size, content.sizeDelta.y) 
+                : new Vector2(content.sizeDelta.x, size);
         }
 
         #endregion
@@ -130,7 +130,15 @@ namespace UI.Scroll
         #endregion
 
         #region Content Management
-
+        
+        public virtual void UpdateModels(List<TModel> models)
+        {
+            Models.Clear();
+            Models.AddRange(models);
+            
+            MarkToUpdate();
+        }
+        
         protected virtual void OnScrollChanged(Vector2 _)
         {
             UpdateVisibleItems();

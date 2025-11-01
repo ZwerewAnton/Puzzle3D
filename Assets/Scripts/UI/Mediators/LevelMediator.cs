@@ -1,14 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using UI.Common;
 using UI.Game.DetailsScroll;
 using UnityEngine;
+using Zenject;
 
 namespace UI.Mediators
 {
     public class LevelMediator : MonoBehaviour
     {
         [SerializeField] private DetailsScrollController detailsScrollController;
-        
+        [SerializeField] private ActionButton backButton;
+        [SerializeField] private ActionButton homeButton;
+
+        private LevelMenu _levelMenu;
+
+        [Inject]
+        private void Construct(LevelMenu levelMenu)
+        {
+            _levelMenu = levelMenu;
+        }
+
+        private void OnEnable()
+        {
+            backButton.Clicked += OnBackButton;
+        }
+
+        private void OnDisable()
+        {
+            backButton.Clicked -= OnBackButton;
+        }
+
         public event Action<DetailItemModel> DetailItemDragOutStarted
         {
             add => detailsScrollController.DragOutStarted += value;
@@ -25,9 +47,14 @@ namespace UI.Mediators
             detailsScrollController.MarkItemDragOutState(detailId, isDragOut);
         }
         
-        public void UpdateModels(List<DetailItemModel> models)
+        public void UpdateScrollController(List<DetailItemModel> models)
         {
             detailsScrollController.UpdateModels(models);
+        }
+
+        public void OnBackButton()
+        {
+            _levelMenu.BackToMainMenu();
         }
     }
 }
