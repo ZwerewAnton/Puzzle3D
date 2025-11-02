@@ -1408,7 +1408,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 9085690935787438921, guid: 03f5d0ce4dcb7944a85543d58ed6f9a6,
     type: 3}
   itemSpacing: 50
-  borderSpacing: 50
+  borderSpacing: 5
   snapSpeed: 10
   enableSnap: 1
   snapThreshold: 0.5
@@ -2962,6 +2962,7 @@ MonoBehaviour:
   playButton: {fileID: 1840577055}
   deleteButton: {fileID: 1541475163}
   deleteDialog: {fileID: 167825009}
+  settingsMediator: {fileID: 1719821147}
 --- !u!1 &1731697480
 GameObject:
   m_ObjectHideFlags: 0

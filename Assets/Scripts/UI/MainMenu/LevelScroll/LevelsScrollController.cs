@@ -43,7 +43,7 @@ namespace UI.MainMenu.LevelScroll
             base.OnEndDrag(eventData);
             scrollRect.inertia = false;
 
-            _lastDragDirection = Mathf.Sign(eventData.delta.x);
+            _lastDragDirection = Mathf.Sign(eventData.position.x - eventData.pressPosition.x);
             _targetItemData = FindNearestItemData();
             _shouldSnap = true;
         }
@@ -146,7 +146,9 @@ namespace UI.MainMenu.LevelScroll
         {
             var center = -content.anchoredPosition.x;
             var closestDist = float.MaxValue;
+            var closestByDirectionDist = float.MaxValue;
             var closest = new TargetItemData();
+            var closestByDirection = new TargetItemData();
 
             foreach (var item in ActiveItems)
             {
@@ -157,10 +159,8 @@ namespace UI.MainMenu.LevelScroll
                     Mathf.Approximately(_lastDragDirection, 0f) ||
                     (_lastDragDirection > 0 && distance >= 0f) ||
                     (_lastDragDirection < 0 && distance <= 0f);
-
-                if (!validByDirection) 
-                    continue;
-
+                
+                
                 var absDist = Mathf.Abs(distance);
                 if (absDist < closestDist)
                 {
@@ -168,9 +168,16 @@ namespace UI.MainMenu.LevelScroll
                     closest.AnchoredPosition = item.RectTransform.anchoredPosition;
                     closest.ItemIndex = item.ItemIndex;
                 }
-            }
 
-            return closest;
+                if (validByDirection && absDist < closestByDirectionDist)
+                {
+                    closestByDirectionDist = absDist;
+                    closestByDirection.AnchoredPosition = item.RectTransform.anchoredPosition;
+                    closestByDirection.ItemIndex = item.ItemIndex;
+                }
+            }
+            
+            return closestByDirectionDist < float.MaxValue ? closestByDirection : closest;
         }
         
         #endregion

@@ -55,6 +55,8 @@ namespace UI.Mediators
             _settingsService.MusicChanged -= musicButton.SetState;
             _settingsService.SoundChanged -= soundButton.SetState;
         }
+        
+        public void ToggleMenu() => dropdownMenu.ToggleMenu();
 
         private void BindToggleButton(ToggleButton button, Action toggleAction, Action updateAction)
         {
@@ -75,8 +77,6 @@ namespace UI.Mediators
 
         private void ToggleMusic() => _settingsService.ToggleMusic();
         private void ToggleSound() => _settingsService.ToggleSound();
-        
-        private void ToggleMenu() => dropdownMenu.ToggleMenu();
 
         private void PlaySettingButtonClip() => _sfxPlayer.PlaySettingButtonClip();
         

@@ -4,9 +4,7 @@ using UI.Common;
 using UI.Common.Dialog;
 using UI.MainMenu;
 using UI.MainMenu.LevelScroll;
-using UI.Scroll;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace UI.Mediators
@@ -21,6 +19,7 @@ namespace UI.Mediators
         [SerializeField] private ActionButton playButton;
         [SerializeField] private ActionButton deleteButton;
         [SerializeField] private CancelAcceptDialog deleteDialog;
+        [SerializeField] private SettingsMediator settingsMediator;
 
         private SfxPlayer _sfxPlayer;
 
@@ -36,7 +35,7 @@ namespace UI.Mediators
             tapToPlayPanel.Clicked += _sfxPlayer.PlayTapToPlayClip;
             playButton.Clicked += _sfxPlayer.PlayStartGameClip;
             playButton.Clicked += mainMenu.Play;
-            deleteButton.Clicked += deleteDialog.Show;
+            deleteButton.Clicked += ShowDeleteDialog;
             deleteDialog.Completed += OnDeleteDialogCompleted;
         }
 
@@ -46,7 +45,7 @@ namespace UI.Mediators
             tapToPlayPanel.Clicked -= _sfxPlayer.PlayTapToPlayClip;
             playButton.Clicked -= _sfxPlayer.PlayStartGameClip;
             playButton.Clicked -= mainMenu.Play;
-            deleteButton.Clicked -= deleteDialog.Show;
+            deleteButton.Clicked -= ShowDeleteDialog;
             deleteDialog.Completed -= OnDeleteDialogCompleted;
         }
 
@@ -88,6 +87,12 @@ namespace UI.Mediators
         {
             if (result == DialogResult.Accept)
                 mainMenu.DeleteSaveData();
+        }
+
+        private void ShowDeleteDialog()
+        {
+            settingsMediator.ToggleMenu();
+            deleteDialog.Show();
         }
     }
 }
