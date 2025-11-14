@@ -91,7 +91,7 @@ namespace UI.Scroll
         
         protected virtual void SetContentSize()
         {
-            var size = (ItemSize + itemSpacing * Models.Count - itemSpacing) + BorderSpacing * 2;
+            var size = (ItemSize + itemSpacing) * Models.Count - itemSpacing + BorderSpacing * 2;
             content.sizeDelta = scrollRect.horizontal 
                 ? new Vector2(size, content.sizeDelta.y) 
                 : new Vector2(content.sizeDelta.x, size);
