@@ -31,7 +31,7 @@ namespace UI.Mediators
             backButton.Clicked -= OnBackButton;
         }
 
-        public event Action<DetailItemModel> DetailItemDragOutStarted
+        public event Action<DragOutInfo> DetailItemDragOutStarted
         {
             add => detailsScrollController.DragOutStarted += value;
             remove => detailsScrollController.DragOutStarted -= value;
@@ -52,7 +52,7 @@ namespace UI.Mediators
             detailsScrollController.UpdateModels(models);
         }
 
-        public void OnBackButton()
+        private void OnBackButton()
         {
             _levelMenu.BackToMainMenu();
         }

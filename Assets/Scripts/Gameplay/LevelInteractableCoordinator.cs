@@ -87,9 +87,9 @@ namespace Gameplay
             return detailModels;
         }
         
-        private void OnDetailItemDragOutStarted(DetailItemModel detailItemModel)
+        private void OnDetailItemDragOutStarted(DragOutInfo detailItemModel)
         {
-            _movingDetailId = detailItemModel.ID;
+            _movingDetailId = detailItemModel.DetailItemModel.ID;
             _levelMediator.MarkItemDragOutState(_movingDetailId, true);
             var detail = _levelService.GetDetailsInfo()[_movingDetailId];
             StartDetailViewMove(detail);
@@ -108,8 +108,10 @@ namespace Gameplay
             {
                 foreach (var point in detail.Points)
                 {
-                    if (!point.IsInstalled) 
+                    if (!point.IsInstalled)
+                    {
                         continue;
+                    }
                     
                     var spawnInfo = new DetailPrefabSpawnInfo(detail.Prefab, point.Position, point.Rotation);
                     spawnInfoList.Add(spawnInfo);

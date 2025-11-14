@@ -31,7 +31,7 @@ namespace Gameplay.Movement
 
         public void UpdateDepth(Vector3 worldDepthPosition)
         {
-            _depth = _camera.WorldToScreenPoint(worldDepthPosition).z;;
+            _depth = _camera.WorldToScreenPoint(worldDepthPosition).z;
         }
 
         public Vector3 GetDesiredPosition()

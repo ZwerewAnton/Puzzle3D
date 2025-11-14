@@ -20,8 +20,8 @@ MonoBehaviour:
     distance: 30
     minDistance: 20
     maxDistance: 40
-    xSpeed: 30
-    ySpeed: 30
+    xSpeed: 15
+    ySpeed: 15
     yMinLimit: 5
     yMaxLimit: 80
     targetOffset: {x: 0, y: 5, z: 0}

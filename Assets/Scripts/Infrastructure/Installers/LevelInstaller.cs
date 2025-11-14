@@ -1,5 +1,7 @@
 ﻿using _1_LEVEL_REWORK.New.Instances;
 using Cameras;
+using Cameras.Input;
+using Cameras.Movement;
 using Gameplay;
 using Gameplay.Movement;
 using UI;
@@ -21,7 +23,8 @@ namespace Infrastructure.Installers
         public override void InstallBindings()
         {
             BindCameraHandler();
-            BindCameraMovement();
+            BindCameraInputProvider();
+            BindOrbitCameraMovement();
             BindDetailPrefabSpawner();
             BindDetailViewMoverInput();
             BindDetailViewMover();
@@ -48,9 +51,27 @@ namespace Infrastructure.Installers
             Container.Bind<CameraHandler>().FromInstance(cameraHandler).AsSingle().NonLazy();
         }
 
-        private void BindCameraMovement()
+        private void BindCameraInputProvider()
         {
-            Container.Bind<ICameraMovement>().To<MouseCameraMovement>().AsSingle();
+#if UNITY_EDITOR || UNITY_STANDALONE
+            Container.Bind<ICameraInputProvider>().To<MouseCameraInputProvider>().AsSingle();
+#elif UNITY_ANDROID || UNITY_IOS
+            Container.Bind<ICameraInputProvider>().To<TouchCameraInputProvider>().AsSingle();
+#else
+            Container.Bind<ICameraInputProvider>().To<MouseCameraInputProvider>().AsSingle();
+#endif
+// #if UNITY_EDITOR || UNITY_STANDALONE
+//             Container.Bind<ICameraMovement>().To<MouseCameraMovement>().AsSingle();
+// #elif UNITY_ANDROID || UNITY_IOS
+//             Container.Bind<ICameraMovement>().To<TouchCameraMovement>().AsSingle();
+// #else
+//             Container.Bind<ICameraMovement>().To<MouseCameraMovement>().AsSingle();
+// #endif
+        }
+        
+        private void BindOrbitCameraMovement()
+        {
+            Container.Bind<OrbitCameraMovement>().AsSingle().NonLazy();
         }
         
         private void BindDetailPrefabSpawner()

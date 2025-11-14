@@ -15,7 +15,7 @@ namespace UI.Mediators
         {
             _sceneSwitcher = sceneSwitcher;
         }
-
+        
         private void Start()
         {
             _sceneSwitcher.SceneLoadingUpdated += loadingScreen.SetProgress;

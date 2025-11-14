@@ -28,7 +28,7 @@ namespace UI
         {
             SetProgress(0f);
         }
-
+        
         public void SetProgress(float value)
         {
             progressBar.value = value;

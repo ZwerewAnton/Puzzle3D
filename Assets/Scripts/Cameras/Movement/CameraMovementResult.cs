@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Cameras
+namespace Cameras.Movement
 {
     public struct CameraMovementResult
     {

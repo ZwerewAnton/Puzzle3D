@@ -12,16 +12,6 @@ namespace Utils
         [SerializeField] private string filenamePrefix = "screenshot";
         [SerializeField] private bool ensureTransparentBackground;
 
-        private void Update()
-        {
-#if UNITY_EDITOR
-            if (UnityEngine.Input.GetKey("space"))
-            {
-                TakeScreenshot();
-            }
-#endif
-        }
-
         [ContextMenu("Take Screenshot")]
         public void TakeScreenshot()
         {

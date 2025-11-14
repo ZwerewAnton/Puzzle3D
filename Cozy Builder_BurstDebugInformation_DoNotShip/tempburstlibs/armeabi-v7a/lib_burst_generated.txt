@@ -9,7 +9,8 @@ Library: D:\Unity\Puzzle3D\Temp\BurstOutput\tempburstlibs\armeabi-v7a\lib_burst_
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=D:\Unity\Puzzle3D\Temp\Burst
---key-folder=D:/Unity/UnityInstalls/2022.3.60f1/Editor/Data/PlaybackEngines/AndroidPlayer
+--debug=Full
+--key-folder=D:/Unity/UnityInstalls/2022.3.62f2/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=D:\Unity\Puzzle3D\Library\Burst
 --output=D:\Unity\Puzzle3D\Temp\BurstOutput\tempburstlibs\armeabi-v7a\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
@@ -31,7 +32,8 @@ Library: D:\Unity\Puzzle3D\Temp\BurstOutput\tempburstlibs\armeabi-v7a\lib_burst_
 --float-mode=Fast
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=D:\Unity\Puzzle3D\Temp\Burst
---key-folder=D:/Unity/UnityInstalls/2022.3.60f1/Editor/Data/PlaybackEngines/AndroidPlayer
+--debug=Full
+--key-folder=D:/Unity/UnityInstalls/2022.3.62f2/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=D:\Unity\Puzzle3D\Library\Burst
 --output=D:\Unity\Puzzle3D\Temp\BurstOutput\tempburstlibs\armeabi-v7a\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/

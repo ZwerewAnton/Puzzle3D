@@ -13,7 +13,7 @@ namespace UI.Game.DetailsScroll
         [Header("Drag Settings")]
         [SerializeField] private float dragThreshold = 30f;
 
-        public event Action<DetailItemModel> DragOutStarted;
+        public event Action<DragOutInfo> DragOutStarted;
 
         private float _scaledDragThreshold;
         private bool _isDragOutStarted;
@@ -108,7 +108,8 @@ namespace UI.Game.DetailsScroll
                 return;
 
             _isDragOutStarted = true;
-            DragOutStarted?.Invoke(Models[_draggedItemIndex]);
+            
+            DragOutStarted?.Invoke(new DragOutInfo(Models[_draggedItemIndex], eventData.pointerId));
             
             ExecuteEvents.Execute(scrollRect.gameObject, eventData, ExecuteEvents.endDragHandler);
         }
